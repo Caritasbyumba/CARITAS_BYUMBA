@@ -12,5 +12,5 @@ const schema = mongoose.Schema(
   },
   { timestamps: true }
 );
-const Moreonus = mongoose.model('Moreonus', schema);
-export default Moreonus;
+const Quote = mongoose.model('Quote', schema);
+export default Quote;

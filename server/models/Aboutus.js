@@ -5,7 +5,7 @@ const schema = mongoose.Schema(
     name: String,
     description: String,
     vision: String,
-    mision: String,
+    mission: String,
     objectives: String,
     isActive: { type: Boolean, default: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

@@ -8,6 +8,12 @@ import dotenv from 'dotenv';
 import { errorResponse, successResponse } from './helpers/responses.js';
 import userRoutes from './routes/userRoutes.js';
 import carouselRoutes from './routes/carouselRoutes.js';
+import moreonusRoutes from './routes/moreonusRoutes.js';
+import projectsRoutes from './routes/projectsRoutes.js';
+import footerLinksRoutes from './routes/footerLinksRoutes.js';
+import footerAddressRoutes from './routes/footerAddressRoutes.js';
+import aboutusRoutes from './routes/aboutusRoutes.js';
+import quotesRoutes from './routes/quotesRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -40,6 +46,12 @@ app.get('/api/', (req, res) =>
 );
 app.use('/api/', userRoutes);
 app.use('/api/', carouselRoutes);
+app.use('/api/', moreonusRoutes);
+app.use('/api/', projectsRoutes);
+app.use('/api/', footerLinksRoutes);
+app.use('/api/', footerAddressRoutes);
+app.use('/api/', aboutusRoutes);
+app.use('/api/', quotesRoutes);
 
 app.use((req, res) => errorResponse(res, 400, 'The route was not found'));
 

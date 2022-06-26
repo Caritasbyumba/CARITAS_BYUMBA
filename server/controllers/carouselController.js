@@ -5,14 +5,14 @@ import Carousel from '../models/Carousel.js';
 
 export const createCarousel = async (req, res) => {
   try {
-    const { title, description, image } = req.body;
+    const { title, description } = req.body;
     const userId = req.tokenData._id;
     const newCarousel = new Carousel({
       title: title,
       description: description,
       image: req.file.filename,
       createdBy: userId,
-      updateBy: userId,
+      updatedBy: userId,
     });
     const carousel = await newCarousel.save();
     return successResponse(res, 201, 'Carousel created successfully', carousel);
@@ -84,12 +84,12 @@ export const updateCarousel = async (req, res) => {
         $set: {
           title: title,
           description: description,
-          editedBy: userId,
+          updatedBy: userId,
         },
       },
       { new: true }
     );
-    return successResponse(res, 200, 'Carousel edieted successfully', carousel);
+    return successResponse(res, 200, 'Carousel edited successfully', carousel);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -105,6 +105,54 @@ export const deleteCarousel = async (req, res) => {
     await Carousel.deleteOne({ _id: itemId });
     fs.unlinkSync(`public/images/${carouselFound.image}`);
     return successResponse(res, 204);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const activateCarousel = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const carouselFound = await Carousel.findOne({ _id: itemId });
+    if (!carouselFound) {
+      return errorResponse(res, 404, 'Carousel not found');
+    }
+    const userId = req.tokenData._id;
+    const carousel = await Carousel.findOneAndUpdate(
+      { _id: itemId },
+      {
+        $set: {
+          isActive: true,
+          updatedBy: userId,
+        },
+      },
+      { new: true }
+    );
+    return successResponse(res, 200, 'Carousel edited successfully', carousel);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const archiveCarousel = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const carouselFound = await Carousel.findOne({ _id: itemId });
+    if (!carouselFound) {
+      return errorResponse(res, 404, 'Carousel not found');
+    }
+    const userId = req.tokenData._id;
+    const carousel = await Carousel.findOneAndUpdate(
+      { _id: itemId },
+      {
+        $set: {
+          isActive: false,
+          updatedBy: userId,
+        },
+      },
+      { new: true }
+    );
+    return successResponse(res, 200, 'Carousel edited successfully', carousel);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
