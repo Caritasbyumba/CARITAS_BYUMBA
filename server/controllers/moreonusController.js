@@ -21,7 +21,10 @@ export const createMoreonus = async (req, res) => {
 
 export const getAllMoreOnUs = async (req, res) => {
   try {
-    const moreonus = await Moreonus.find({});
+    const moreonus = await Moreonus.find({}).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     return successResponse(
       res,
       200,
@@ -54,7 +57,10 @@ export const getactiveMoreonus = async (req, res) => {
 export const getSpecificMoreonus = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const moreonusFound = await Moreonus.findOne({ _id: itemId });
+    const moreonusFound = await Moreonus.findOne({ _id: itemId }).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     if (!moreonusFound) {
       return errorResponse(res, 404, 'Moreonus not found');
     }
@@ -89,7 +95,7 @@ export const updateMoreonus = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Moreonus edited successfully', moreonus);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -127,7 +133,7 @@ export const activateMoreonus = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Moreonus edited successfully', moreonus);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -151,7 +157,7 @@ export const archiveMoreonus = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Moreonus edited successfully', moreonus);
   } catch (error) {
     return errorResponse(res, 500, error.message);

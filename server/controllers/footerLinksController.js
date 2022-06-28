@@ -31,7 +31,7 @@ export const getAllFooterLinks = async (req, res) => {
       200,
       'Footer links retrieved successfully',
       footerlinks
-    );
+    ).populate(['createdBy', 'updatedBy']);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -56,7 +56,10 @@ export const getActiveFooterLinks = async (req, res) => {
 export const getSpecificFooterLink = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const FooterLinkFound = await FooterLink.findOne({ _id: itemId });
+    const FooterLinkFound = await FooterLink.findOne({ _id: itemId }).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     if (!FooterLinkFound) {
       return errorResponse(res, 404, 'Footer link not found');
     }
@@ -90,7 +93,7 @@ export const updateFooterLink = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(
       res,
       200,
@@ -133,7 +136,7 @@ export const activateFooterLink = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(
       res,
       200,
@@ -162,7 +165,7 @@ export const archiveFooterLink = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(
       res,
       200,

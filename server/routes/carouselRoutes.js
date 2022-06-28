@@ -20,9 +20,9 @@ router.post(
   upload.single('image'),
   createCarousel
 );
-router.get('/carousels', getAllCarousels);
+router.get('/carousels', checkToken, getAllCarousels);
 router.get('/carousels/active', getActiveCarousels);
-router.get('/carousels/:itemId', getSpecificCarousel);
+router.get('/carousels/:itemId', checkToken, getSpecificCarousel);
 router.patch('/carousels/:itemId', checkToken, updateCarousel);
 router.delete('/carousels/:itemId', checkToken, deleteCarousel);
 router.patch('/carousels/activate/:itemId', checkToken, activateCarousel);

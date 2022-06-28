@@ -33,7 +33,10 @@ export const createProject = async (req, res) => {
 
 export const getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find({});
+    const projects = await Project.find({}).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     return successResponse(
       res,
       200,
@@ -83,7 +86,10 @@ export const getActiveMainProjects = async (req, res) => {
 export const getSpecificProject = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const projectFound = await Project.findOne({ _id: itemId });
+    const projectFound = await Project.findOne({ _id: itemId }).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     if (!projectFound) {
       return errorResponse(res, 404, 'Project not found');
     }
@@ -132,7 +138,7 @@ export const updateProject = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Project edieted successfully', project);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -173,7 +179,7 @@ export const activateProject = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Project edited successfully', project);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -197,7 +203,7 @@ export const archiveProject = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Project edited successfully', project);
   } catch (error) {
     return errorResponse(res, 500, error.message);

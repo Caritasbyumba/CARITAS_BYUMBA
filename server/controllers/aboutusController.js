@@ -23,7 +23,7 @@ export const createAboutus = async (req, res) => {
 
 export const getAllAboutus = async (req, res) => {
   try {
-    const aboutus = await Aboutus.find({});
+    const aboutus = await Aboutus.find({}).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Aboutus retrieved successfully', aboutus);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -44,7 +44,10 @@ export const getActiveAboutus = async (req, res) => {
 export const getSpecificAboutus = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const aboutusFound = await Aboutus.findOne({ _id: itemId });
+    const aboutusFound = await Aboutus.findOne({ _id: itemId }).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     if (!aboutusFound) {
       return errorResponse(res, 404, 'Aboutus not found');
     }
@@ -81,7 +84,7 @@ export const updateAboutus = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Aboutus edited successfully', aboutus);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -119,7 +122,7 @@ export const activateAboutus = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Aboutus edited successfully', aboutus);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -143,7 +146,7 @@ export const archiveAboutus = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Aboutus edited successfully', aboutus);
   } catch (error) {
     return errorResponse(res, 500, error.message);

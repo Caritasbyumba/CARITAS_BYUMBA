@@ -29,7 +29,7 @@ export const createQuote = async (req, res) => {
 
 export const getAllQuotes = async (req, res) => {
   try {
-    const quotes = await Quote.find({});
+    const quotes = await Quote.find({}).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Quotes retrieved successfully', quotes);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -50,7 +50,10 @@ export const getActiveQuotes = async (req, res) => {
 export const getSpecificCarousel = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const quoteFound = await Quote.findOne({ _id: itemId });
+    const quoteFound = await Quote.findOne({ _id: itemId }).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     if (!quoteFound) {
       return errorResponse(res, 404, 'Quote not found');
     }
@@ -85,7 +88,7 @@ export const updateCarousel = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Quote edited successfully', updatedQuote);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -124,7 +127,7 @@ export const activateQuote = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Quote edited successfully', quote);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -148,7 +151,7 @@ export const archiveQuote = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Quote edited successfully', quote);
   } catch (error) {
     return errorResponse(res, 500, error.message);

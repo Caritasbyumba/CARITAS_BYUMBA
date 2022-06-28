@@ -23,7 +23,10 @@ export const createCarousel = async (req, res) => {
 
 export const getAllCarousels = async (req, res) => {
   try {
-    const carousels = await Carousel.find({});
+    const carousels = await Carousel.find({}).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     return successResponse(
       res,
       200,
@@ -54,7 +57,10 @@ export const getActiveCarousels = async (req, res) => {
 export const getSpecificCarousel = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const carouselFound = await Carousel.findOne({ _id: itemId });
+    const carouselFound = await Carousel.findOne({ _id: itemId }).populate([
+      'createdBy',
+      'updatedBy',
+    ]);
     if (!carouselFound) {
       return errorResponse(res, 404, 'Carousel not found');
     }
@@ -88,7 +94,7 @@ export const updateCarousel = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Carousel edited successfully', carousel);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -127,7 +133,7 @@ export const activateCarousel = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Carousel edited successfully', carousel);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -151,7 +157,7 @@ export const archiveCarousel = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Carousel edited successfully', carousel);
   } catch (error) {
     return errorResponse(res, 500, error.message);

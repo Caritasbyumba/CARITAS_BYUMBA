@@ -32,7 +32,7 @@ export const getAllFooterAddress = async (req, res) => {
       200,
       'Footer address retrieved successfully',
       footerAddress
-    );
+    ).populate(['createdBy', 'updatedBy']);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -57,7 +57,9 @@ export const getActiveFooterAddress = async (req, res) => {
 export const getSpecificFooterAddress = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const footerAddressFound = await FooterAddress.findOne({ _id: itemId });
+    const footerAddressFound = await FooterAddress.findOne({
+      _id: itemId,
+    }).populate(['createdBy', 'updatedBy']);
     if (!footerAddressFound) {
       return errorResponse(res, 404, 'Footer address not found');
     }
@@ -92,7 +94,7 @@ export const updateFooterAddress = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(
       res,
       200,
@@ -135,7 +137,7 @@ export const activateFooterAddress = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(
       res,
       200,
@@ -164,7 +166,7 @@ export const archiveFooterAddress = async (req, res) => {
         },
       },
       { new: true }
-    );
+    ).populate(['createdBy', 'updatedBy']);
     return successResponse(
       res,
       200,
