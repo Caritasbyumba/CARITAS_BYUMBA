@@ -15,17 +15,17 @@ import upload from '../middlewares/uplaod.js';
 const router = express.Router();
 
 router.post(
-  '/carousels/add',
+  '/add',
   checkToken,
   upload.single('image'),
   createCarousel
 );
-router.get('/carousels', checkToken, getAllCarousels);
-router.get('/carousels/active', getActiveCarousels);
-router.get('/carousels/:itemId', checkToken, getSpecificCarousel);
-router.patch('/carousels/:itemId', checkToken, updateCarousel);
-router.delete('/carousels/:itemId', checkToken, deleteCarousel);
-router.patch('/carousels/activate/:itemId', checkToken, activateCarousel);
-router.patch('/carousels/archive/:itemId', checkToken, archiveCarousel);
+router.get('', checkToken, getAllCarousels);
+router.get('/active', getActiveCarousels);
+router.get('/:itemId', checkToken, getSpecificCarousel);
+router.patch('/:itemId', checkToken, updateCarousel);
+router.delete('/:itemId', checkToken, deleteCarousel);
+router.patch('/activate/:itemId', checkToken, activateCarousel);
+router.patch('/archive/:itemId', checkToken, archiveCarousel);
 
 export default router;

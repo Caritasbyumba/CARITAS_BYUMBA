@@ -6,8 +6,16 @@ export const createMoreonus = async (req, res) => {
     const { description, callToActionBtn, callToActionLink } = req.body;
     const userId = req.tokenData._id;
     const newMoreonus = new Moreonus({
-      description: description,
-      callToActionBtn: callToActionBtn,
+      description: {
+        en: description.en,
+        fr: description.fr,
+        rw: description.rw,
+      },
+      callToActionBtn: {
+        en: callToActionBtn.en,
+        fr: callToActionBtn.fr,
+        rw: callToActionBtn.rw,
+      },
       callToActionLink: callToActionLink,
       createdBy: userId,
       updatedBy: userId,
@@ -24,7 +32,7 @@ export const getAllMoreOnUs = async (req, res) => {
     const moreonus = await Moreonus.find({}).populate([
       'createdBy',
       'updatedBy',
-    ]);
+    ]).sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -47,7 +55,7 @@ export const getactiveMoreonus = async (req, res) => {
       res,
       200,
       'Moreonus retrieved successfully',
-      moreonus
+      moreonus[0]
     );
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -88,8 +96,16 @@ export const updateMoreonus = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          description: description,
-          callToActionBtn: callToActionBtn,
+          description: {
+            en: description.en,
+            fr: description.fr,
+            rw: description.rw,
+          },
+          callToActionBtn: {
+            en: callToActionBtn.en,
+            fr: callToActionBtn.fr,
+            rw: callToActionBtn.rw,
+          },
           callToActionLink: callToActionLink,
           updatedBy: userId,
         },

@@ -5,11 +5,22 @@ import Carousel from '../models/Carousel.js';
 
 export const createCarousel = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const {
+      enTitle,
+      frTitle,
+      rwTitle,
+      enDescription,
+      frDescription,
+      rwDescription,
+    } = req.body;
     const userId = req.tokenData._id;
     const newCarousel = new Carousel({
-      title: title,
-      description: description,
+      title: { en: enTitle, fr: frTitle, rw: rwTitle },
+      description: {
+        en: enDescription,
+        fr: frDescription,
+        rw: rwDescription,
+      },
       image: req.file.filename,
       createdBy: userId,
       updatedBy: userId,
@@ -23,10 +34,9 @@ export const createCarousel = async (req, res) => {
 
 export const getAllCarousels = async (req, res) => {
   try {
-    const carousels = await Carousel.find({}).populate([
-      'createdBy',
-      'updatedBy',
-    ]);
+    const carousels = await Carousel.find({})
+      .populate(['createdBy', 'updatedBy'])
+      .sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -42,7 +52,7 @@ export const getActiveCarousels = async (req, res) => {
   try {
     const carousels = await Carousel.find({
       isActive: true,
-    });
+    }).sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -82,14 +92,25 @@ export const updateCarousel = async (req, res) => {
     if (!carouselFound) {
       return errorResponse(res, 404, 'Carousel not found');
     }
-    const { title, description } = req.body;
+    const {
+      enTitle,
+      frTitle,
+      rwTitle,
+      enDescription,
+      frDescription,
+      rwDescription,
+    } = req.body;
     const userId = req.tokenData._id;
     const carousel = await Carousel.findOneAndUpdate(
       { _id: itemId },
       {
         $set: {
-          title: title,
-          description: description,
+          title: { en: enTitle, fr: frTitle, rw: rwTitle },
+          description: {
+            en: enDescription,
+            fr: frDescription,
+            rw: rwDescription,
+          },
           updatedBy: userId,
         },
       },

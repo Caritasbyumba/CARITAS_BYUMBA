@@ -9,8 +9,8 @@ export const createQuote = async (req, res) => {
     const userId = req.tokenData._id;
     const newQuote = new Quote({
       name: name,
-      role: role,
-      quote: quote,
+      role: { en: role.en, fr: role.fr, rw: role.rw },
+      quote: { en: quote.en, fr: quote.fr, rw: quote.rw },
       profile: req.file.filename,
       createdBy: userId,
       updatedBy: userId,
@@ -29,7 +29,9 @@ export const createQuote = async (req, res) => {
 
 export const getAllQuotes = async (req, res) => {
   try {
-    const quotes = await Quote.find({}).populate(['createdBy', 'updatedBy']);
+    const quotes = await Quote.find({})
+      .populate(['createdBy', 'updatedBy'])
+      .sort({ updatedAt: 'desc' });
     return successResponse(res, 200, 'Quotes retrieved successfully', quotes);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -40,7 +42,7 @@ export const getActiveQuotes = async (req, res) => {
   try {
     const quotes = await Quote.find({
       isActive: true,
-    });
+    }).sort({ updatedAt: 'desc' });
     return successResponse(res, 200, 'Quotes retrieved successfully', quotes);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -82,8 +84,8 @@ export const updateCarousel = async (req, res) => {
       {
         $set: {
           name: name,
-          role: role,
-          quote: quote,
+          role: { en: role.en, fr: role.fr, rw: role.rw },
+          quote: { en: quote.en, fr: quote.fr, rw: quote.rw },
           updatedBy: userId,
         },
       },

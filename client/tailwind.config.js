@@ -6,11 +6,14 @@ module.exports = {
       transparent: 'transparent',
       gray: {
         100: '#F3F4F6',
-        200: '#F0F0F0',
-        500: '#839098',
+        200: '#C3C3C3',
+        500: '#707070',
       },
+      red: '#751E17',
       black: '#000',
-      white: '#fff',
+      white: '#ffffff',
+      'white-pink': '#D7C5C1',
+      brown: '#BC6450'
     },
     fontFamily: {
       poppins: ['Poppins'],

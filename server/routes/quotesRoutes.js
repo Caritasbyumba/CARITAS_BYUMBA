@@ -16,13 +16,13 @@ import upload from '../middlewares/uplaod.js';
 
 const router = express.Router();
 
-router.post('/quotes/add', checkToken, upload.single('image'), createQuote);
-router.get('/quotes', getAllQuotes);
-router.get('/quotes/active', getActiveQuotes);
-router.get('/quotes/:itemId', getSpecificAboutus);
-router.patch('/quotes/:itemId', checkToken, updateAboutus);
-router.delete('/quotes/:itemId', checkToken, deleteAboutus);
-router.patch('/quotes/activate/:itemId', checkToken, activateAboutus);
-router.patch('/quotes/archive/:itemId', checkToken, archiveAboutus);
+router.post('/add', checkToken, upload.single('image'), createQuote);
+router.get('', getAllQuotes);
+router.get('/active', getActiveQuotes);
+router.get('/:itemId', getSpecificAboutus);
+router.patch('/:itemId', checkToken, updateAboutus);
+router.delete('/:itemId', checkToken, deleteAboutus);
+router.patch('/activate/:itemId', checkToken, activateAboutus);
+router.patch('/archive/:itemId', checkToken, archiveAboutus);
 
 export default router;

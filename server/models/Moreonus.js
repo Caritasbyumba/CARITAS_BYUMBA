@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const schema = mongoose.Schema(
   {
-    description: String,
-    callToActionBtn: String,
+    description: { en: String, fr: String, rw: String },
+    callToActionBtn: { en: String, fr: String, rw: String },
     callToActionLink: String,
     isActive: { type: Boolean, default: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

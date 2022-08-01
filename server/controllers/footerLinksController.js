@@ -6,7 +6,7 @@ export const createFooterLink = async (req, res) => {
     const { name, link } = req.body;
     const userId = req.tokenData._id;
     const newFooterLink = new FooterLink({
-      name: name,
+      name: { en: name.en, fr: name.fr, rw: name.rw },
       link: link,
       createdBy: userId,
       updatedBy: userId,
@@ -25,7 +25,7 @@ export const createFooterLink = async (req, res) => {
 
 export const getAllFooterLinks = async (req, res) => {
   try {
-    const footerlinks = await FooterLink.find({});
+    const footerlinks = await FooterLink.find({}).sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -41,7 +41,7 @@ export const getActiveFooterLinks = async (req, res) => {
   try {
     const footerLinks = await FooterLink.find({
       isActive: true,
-    });
+    }).sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -87,7 +87,7 @@ export const updateFooterLink = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          name: name,
+          name: { en: name.en, fr: name.fr, rw: name.rw },
           link: link,
           updatedBy: userId,
         },

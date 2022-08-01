@@ -5,7 +5,7 @@ import Carousel from '../components/containers/home/Carousel';
 import MainProjects from '../components/containers/home/MainProjects';
 import Moreonus from '../components/containers/home/Moreonus';
 
-const Home = () => {
+const Home = (props) => {
   return (
     <div>
       <Header />

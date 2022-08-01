@@ -6,7 +6,7 @@ export const createFooterAddress = async (req, res) => {
     const { name, value, type } = req.body;
     const userId = req.tokenData._id;
     const newFooterAddress = new FooterAddress({
-      name: name,
+      name: { en: name.en, fr: name.fr, rw: name.rw },
       value: value,
       type: type,
       createdBy: userId,
@@ -26,7 +26,9 @@ export const createFooterAddress = async (req, res) => {
 
 export const getAllFooterAddress = async (req, res) => {
   try {
-    const footerAddress = await FooterAddress.find({});
+    const footerAddress = await FooterAddress.find({}).sort({
+      updatedAt: 'desc',
+    });
     return successResponse(
       res,
       200,
@@ -42,7 +44,7 @@ export const getActiveFooterAddress = async (req, res) => {
   try {
     const footerAddress = await FooterAddress.find({
       isActive: true,
-    });
+    }).sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -87,7 +89,7 @@ export const updateFooterAddress = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          name: name,
+          name: { en: name.en, fr: name.fr, rw: name.rw },
           value: value,
           type: type,
           updatedBy: userId,

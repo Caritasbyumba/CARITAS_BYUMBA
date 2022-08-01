@@ -4,6 +4,7 @@ import {
   archiveProject,
   createProject,
   deleteProject,
+  getActiveMainProjects,
   getActiveProjects,
   getAllProjects,
   getSpecificProject,
@@ -14,18 +15,19 @@ import upload from '../middlewares/uplaod.js';
 
 const router = express.Router();
 
-router.post('/projects/add', checkToken, upload.array('images'), createProject);
-router.get('/projects', getAllProjects);
-router.get('/projects/active', getActiveProjects);
-router.get('/projects/:itemId', getSpecificProject);
+router.post('/add', checkToken, upload.array('images'), createProject);
+router.get('', getAllProjects);
+router.get('/active', getActiveProjects);
+router.get('/main', getActiveMainProjects);
+router.get('/:itemId', getSpecificProject);
 router.patch(
-  '/projects/:itemId',
+  '/:itemId',
   checkToken,
   upload.array('images'),
   updateProject
 );
-router.delete('/projects/:itemId', checkToken, deleteProject);
-router.patch('/projects/activate/:itemId', checkToken, activateProject);
-router.patch('/projects/archive/:itemId', checkToken, archiveProject);
+router.delete('/:itemId', checkToken, deleteProject);
+router.patch('/activate/:itemId', checkToken, activateProject);
+router.patch('/archive/:itemId', checkToken, archiveProject);
 
 export default router;

@@ -44,14 +44,14 @@ mongoose
 app.get('/api/', (req, res) =>
   successResponse(res, 200, 'WELCOME TO CARITAS BYUMBA WEBSITE BACKEND')
 );
-app.use('/api/', userRoutes);
-app.use('/api/', carouselRoutes);
-app.use('/api/', moreonusRoutes);
-app.use('/api/', projectsRoutes);
-app.use('/api/', footerLinksRoutes);
-app.use('/api/', footerAddressRoutes);
-app.use('/api/', aboutusRoutes);
-app.use('/api/', quotesRoutes);
+app.use('/api/users/', userRoutes);
+app.use('/api/carousels/', carouselRoutes);
+app.use('/api/moreonus/', moreonusRoutes);
+app.use('/api/projects/', projectsRoutes);
+app.use('/api/footerlinks/', footerLinksRoutes);
+app.use('/api/footeraddress/', footerAddressRoutes);
+app.use('/api/aboutus/', aboutusRoutes);
+app.use('/api/quotes/', quotesRoutes);
 
 app.use((req, res) => errorResponse(res, 400, 'The route was not found'));
 

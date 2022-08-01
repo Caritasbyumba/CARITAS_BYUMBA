@@ -4,8 +4,18 @@ import Project from '../models/Project.js';
 
 export const createProject = async (req, res) => {
   try {
-    const { name, smallDescription, description, startDate, endDate, isMain } =
-      req.body;
+    const {
+      name,
+      enSmallDescription,
+      frSmallDescription,
+      rwSmallDescription,
+      enDescription,
+      frDescription,
+      rwDescription,
+      startDate,
+      endDate,
+      isMain,
+    } = req.body;
     const userId = req.tokenData._id;
     let images = [];
     if (req.files && req.files.length > 0) {
@@ -15,12 +25,20 @@ export const createProject = async (req, res) => {
     }
     const newProject = new Project({
       name: name,
-      smallDescription: smallDescription,
-      description: description,
-      startDate: startDate,
-      endDate: endDate,
+      smallDescription: {
+        en: enSmallDescription,
+        fr: frSmallDescription,
+        rw: rwSmallDescription,
+      },
+      description: {
+        en: enDescription,
+        fr: frDescription,
+        rw: rwDescription,
+      },
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       gallery: images,
-      isMain: isMain,
+      isMain: JSON.parse(isMain),
       createdBy: userId,
       updatedBy: userId,
     });
@@ -33,10 +51,9 @@ export const createProject = async (req, res) => {
 
 export const getAllProjects = async (req, res) => {
   try {
-    const projects = await Project.find({}).populate([
-      'createdBy',
-      'updatedBy',
-    ]);
+    const projects = await Project.find({})
+      .populate(['createdBy', 'updatedBy'])
+      .sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -52,7 +69,7 @@ export const getActiveProjects = async (req, res) => {
   try {
     const projects = await Project.find({
       isActive: true,
-    });
+    }).sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -111,8 +128,20 @@ export const updateProject = async (req, res) => {
     if (!projectFound) {
       return errorResponse(res, 404, 'Project not found');
     }
-    const { name, smallDescription, description, startDate, endDate, isMain } =
-      req.body;
+    const {
+      enName,
+      frName,
+      rwName,
+      enSmallDescription,
+      frSmallDescription,
+      rwSmallDescription,
+      enDescription,
+      frDescription,
+      rwDescription,
+      startDate,
+      endDate,
+      isMain,
+    } = req.body;
     const userId = req.tokenData._id;
     let images = [];
     if (req.files && req.files.length > 0) {
@@ -127,13 +156,21 @@ export const updateProject = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          name: name,
-          smallDescription: smallDescription,
-          description: description,
-          startDate: startDate,
-          endDate: endDate,
+          name: { en: enName, fr: frName, rw: rwName },
+          smallDescription: {
+            en: enSmallDescription,
+            fr: frSmallDescription,
+            rw: rwSmallDescription,
+          },
+          description: {
+            en: enDescription,
+            fr: frDescription,
+            rw: rwDescription,
+          },
+          startDate: new Date(startDate),
+          endDate: new Date(endDate),
           gallery: images,
-          isMain: isMain,
+          isMain: JSON.parse(isMain),
           updatedBy: userId,
         },
       },

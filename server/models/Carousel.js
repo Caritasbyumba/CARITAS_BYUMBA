@@ -2,8 +2,8 @@ import mongoose from 'mongoose';
 
 const schema = mongoose.Schema(
   {
-    title: String,
-    description: String,
+    title: { en: String, fr: String, rw: String },
+    description: { en: String, fr: String, rw: String },
     image: String,
     isActive: { type: Boolean, default: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

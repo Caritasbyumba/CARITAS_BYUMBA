@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const schema = mongoose.Schema(
   {
-    name: String,
+    name: { en: String, fr: String, rw: String },
     value: String,
     type: String,
     isActive: { type: Boolean, default: true },

@@ -13,19 +13,19 @@ import checkToken from '../middlewares/checkToken.js';
 
 const router = express.Router();
 
-router.post('/footeraddress/add', checkToken, createFooterAddress);
-router.get('/footeraddress', getAllFooterAddress);
-router.get('/footeraddress/active', getActiveFooterAddress);
-router.get('/footeraddress/:itemId', getSpecificFooterAddress);
-router.patch('/footeraddress/:itemId', checkToken, updateFooterAddress);
-router.delete('/footeraddress/:itemId', checkToken, deleteFooterAddress);
+router.post('/add', checkToken, createFooterAddress);
+router.get('', getAllFooterAddress);
+router.get('/active', getActiveFooterAddress);
+router.get('/:itemId', getSpecificFooterAddress);
+router.patch('/:itemId', checkToken, updateFooterAddress);
+router.delete('/:itemId', checkToken, deleteFooterAddress);
 router.patch(
-  '/footeraddress/activate/:itemId',
+  '/activate/:itemId',
   checkToken,
   activateFooterAddress
 );
 router.patch(
-  '/footeraddress/archive/:itemId',
+  '/archive/:itemId',
   checkToken,
   archiveFooterAddress
 );

@@ -6,11 +6,15 @@ export const createAboutus = async (req, res) => {
     const { name, description, vision, mission, objectives } = req.body;
     const userId = req.tokenData._id;
     const newAboutus = new Aboutus({
-      name: name,
-      description: description,
-      vision: vision,
-      mission: mission,
-      objectives: objectives,
+      name: { en: name.en, fr: name.fr, rw: name.rw },
+      description: {
+        en: description.en,
+        fr: description.fr,
+        rw: description.rw,
+      },
+      vision: { en: vision.en, fr: vision.fr, rw: vision.rw },
+      mission: { en: mission.en, fr: mission.fr, rw: mission.rw },
+      objectives: { en: objectives.en, fr: objectives.fr, rw: objectives.rw },
       createdBy: userId,
       updatedBy: userId,
     });
@@ -23,7 +27,9 @@ export const createAboutus = async (req, res) => {
 
 export const getAllAboutus = async (req, res) => {
   try {
-    const aboutus = await Aboutus.find({}).populate(['createdBy', 'updatedBy']);
+    const aboutus = await Aboutus.find({})
+      .populate(['createdBy', 'updatedBy'])
+      .sort({ updatedAt: 'desc' });
     return successResponse(res, 200, 'Aboutus retrieved successfully', aboutus);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -34,7 +40,7 @@ export const getActiveAboutus = async (req, res) => {
   try {
     const aboutus = await Aboutus.find({
       isActive: true,
-    });
+    }).sort({ updatedAt: 'desc' });
     return successResponse(res, 200, 'Aboutus retrieved successfully', aboutus);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -75,11 +81,19 @@ export const updateAboutus = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          name: name,
-          description: description,
-          vision: vision,
-          mission: mission,
-          objectives: objectives,
+          name: { en: name.en, fr: name.fr, rw: name.rw },
+          description: {
+            en: description.en,
+            fr: description.fr,
+            rw: description.rw,
+          },
+          vision: { en: vision.en, fr: vision.fr, rw: vision.rw },
+          mission: { en: mission.en, fr: mission.fr, rw: mission.rw },
+          objectives: {
+            en: objectives.en,
+            fr: objectives.fr,
+            rw: objectives.rw,
+          },
           updatedBy: userId,
         },
       },
