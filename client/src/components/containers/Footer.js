@@ -5,6 +5,7 @@ import { CardBody, CardTitle } from '../text';
 import { TextButton } from '../UI/button';
 import { MdPlace, MdEmail, MdLocalPhone } from 'react-icons/md';
 import { BsMailbox2 } from 'react-icons/bs';
+import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -86,6 +87,42 @@ const Footer = () => {
             <MdEmail />
             <CardBody name="caritasbyumba81@gmail.com" />
           </Link>
+          <div className="flex space-x-2 mt-3">
+            <Link
+              to={{ pathname: 'https://twitter.com/CByumba' }}
+              target="_blank"
+              className="p-1 border border-black rounded-full"
+            >
+              <FaTwitter />
+            </Link>
+            <Link
+              to={{ pathname: 'https://www.instagram.com/caritas_byumba/' }}
+              target="_blank"
+              className="p-1 border border-black rounded-full"
+            >
+              <FaInstagram />
+            </Link>
+            <Link
+              to={{
+                pathname:
+                  'https://www.youtube.com/channel/UCASA8mGUghcIslIpZJSy4Eg',
+              }}
+              target="_blank"
+              className="p-1 border border-black rounded-full"
+            >
+              <FaYoutube />
+            </Link>
+            <Link
+              to={{
+                pathname:
+                  'https://www.facebook.com/profile.php?id=100081838735786&_rdc=2&_rdr',
+              }}
+              target="_blank"
+              className="p-1 border border-black rounded-full"
+            >
+              <FaFacebookF />
+            </Link>
+          </div>
         </div>
       </div>
       <div className="bg-gray-500 h-12 flex justify-center items-center">

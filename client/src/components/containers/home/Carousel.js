@@ -4,7 +4,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { CardBody, NormalText } from '../../text';
-import { Button } from '../../UI/button';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Spinner from '../../UI/spinner';
@@ -59,13 +58,13 @@ const Carousel = () => {
                 color="white"
               />
             </div>
-            <Button
+            {/* <Button
               name={t('Read More')}
               isSquare
               outline="false"
               color="red"
               clicked={() => {}}
-            />
+            /> */}
           </div>
         </div>
       ))}

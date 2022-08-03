@@ -16,7 +16,7 @@ import upload from '../middlewares/uplaod.js';
 
 const router = express.Router();
 
-router.post('/add', checkToken, upload.single('image'), createQuote);
+router.post('/add', checkToken, upload.single('profile'), createQuote);
 router.get('', getAllQuotes);
 router.get('/active', getActiveQuotes);
 router.get('/:itemId', getSpecificAboutus);

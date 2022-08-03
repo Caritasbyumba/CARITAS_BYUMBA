@@ -22,6 +22,21 @@ export const userApiSlice = createApi({
           return '/projects/main';
         },
       }),
+      fetchActivePartners: builder.query({
+        query: () => {
+          return '/partners/active';
+        },
+      }),
+      fetchActiveAboutus: builder.query({
+        query: () => {
+          return '/aboutus/active';
+        },
+      }),
+      fetchActiveQuotes: builder.query({
+        query: () => {
+          return '/quotes/active';
+        },
+      }),
     };
   },
 });
@@ -30,4 +45,7 @@ export const {
   useFetchActiveCarouselQuery,
   useFetchActiveMoreOnUsQuery,
   useFetchActiveMainProjectsQuery,
+  useFetchActivePartnersQuery,
+  useFetchActiveAboutusQuery,
+  useFetchActiveQuotesQuery,
 } = userApiSlice;

@@ -14,6 +14,7 @@ import footerLinksRoutes from './routes/footerLinksRoutes.js';
 import footerAddressRoutes from './routes/footerAddressRoutes.js';
 import aboutusRoutes from './routes/aboutusRoutes.js';
 import quotesRoutes from './routes/quotesRoutes.js';
+import partnersRoutes from './routes/partnersRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -52,6 +53,7 @@ app.use('/api/footerlinks/', footerLinksRoutes);
 app.use('/api/footeraddress/', footerAddressRoutes);
 app.use('/api/aboutus/', aboutusRoutes);
 app.use('/api/quotes/', quotesRoutes);
+app.use('/api/partners/', partnersRoutes);
 
 app.use((req, res) => errorResponse(res, 400, 'The route was not found'));
 

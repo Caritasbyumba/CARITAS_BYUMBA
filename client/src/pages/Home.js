@@ -4,6 +4,7 @@ import Header from '../components/containers/Header';
 import Carousel from '../components/containers/home/Carousel';
 import MainProjects from '../components/containers/home/MainProjects';
 import Moreonus from '../components/containers/home/Moreonus';
+import Partners from '../components/containers/home/Partners';
 
 const Home = (props) => {
   return (
@@ -12,6 +13,7 @@ const Home = (props) => {
       <Carousel />
       <Moreonus />
       <MainProjects />
+      <Partners />
       <Footer />
     </div>
   );

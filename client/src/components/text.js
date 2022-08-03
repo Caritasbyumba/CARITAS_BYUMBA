@@ -1,6 +1,7 @@
 export const PageTitle = function (props) {
   let classes =
-    'block text-4xl lg:text-5xl break-words font-extrabold tracking-tight md:text-' +
+    props.additional +
+    ' block text-4xl lg:text-5xl break-words font-extrabold tracking-tight md:text-' +
     props.alignment +
     ' text-' +
     props.color +

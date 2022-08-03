@@ -3,18 +3,34 @@ import Aboutus from '../models/Aboutus.js';
 
 export const createAboutus = async (req, res) => {
   try {
-    const { name, description, vision, mission, objectives } = req.body;
+    const {
+      enName,
+      frName,
+      rwName,
+      enDescription,
+      frDescription,
+      rwDescription,
+      enVision,
+      frVision,
+      rwVision,
+      enMission,
+      frMission,
+      rwMission,
+      enObjectives,
+      frObjectives,
+      rwObjectives,
+    } = req.body;
     const userId = req.tokenData._id;
     const newAboutus = new Aboutus({
-      name: { en: name.en, fr: name.fr, rw: name.rw },
+      name: { en: enName, fr: frName, rw: rwName },
       description: {
-        en: description.en,
-        fr: description.fr,
-        rw: description.rw,
+        en: enDescription,
+        fr: frDescription,
+        rw: rwDescription,
       },
-      vision: { en: vision.en, fr: vision.fr, rw: vision.rw },
-      mission: { en: mission.en, fr: mission.fr, rw: mission.rw },
-      objectives: { en: objectives.en, fr: objectives.fr, rw: objectives.rw },
+      vision: { en: enVision, fr: frVision, rw: rwVision },
+      mission: { en: enMission, fr: frMission, rw: rwMission },
+      objectives: { en: enObjectives, fr: frObjectives, rw: rwObjectives },
       createdBy: userId,
       updatedBy: userId,
     });
@@ -41,7 +57,12 @@ export const getActiveAboutus = async (req, res) => {
     const aboutus = await Aboutus.find({
       isActive: true,
     }).sort({ updatedAt: 'desc' });
-    return successResponse(res, 200, 'Aboutus retrieved successfully', aboutus);
+    return successResponse(
+      res,
+      200,
+      'Aboutus retrieved successfully',
+      aboutus[0]
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -75,25 +96,37 @@ export const updateAboutus = async (req, res) => {
     if (!aboutusFound) {
       return errorResponse(res, 404, 'Aboutus not found');
     }
-    const { name, description, vision, mission, objectives } = req.body;
+    const {
+      enName,
+      frName,
+      rwName,
+      enDescription,
+      frDescription,
+      rwDescription,
+      enVision,
+      frVision,
+      rwVision,
+      enMission,
+      frMission,
+      rwMission,
+      enObjectives,
+      frObjectives,
+      rwObjectives,
+    } = req.body;
     const userId = req.tokenData._id;
     const aboutus = await Aboutus.findOneAndUpdate(
       { _id: itemId },
       {
         $set: {
-          name: { en: name.en, fr: name.fr, rw: name.rw },
+          name: { en: enName, fr: frName, rw: rwName },
           description: {
-            en: description.en,
-            fr: description.fr,
-            rw: description.rw,
+            en: enDescription,
+            fr: frDescription,
+            rw: rwDescription,
           },
-          vision: { en: vision.en, fr: vision.fr, rw: vision.rw },
-          mission: { en: mission.en, fr: mission.fr, rw: mission.rw },
-          objectives: {
-            en: objectives.en,
-            fr: objectives.fr,
-            rw: objectives.rw,
-          },
+          vision: { en: enVision, fr: frVision, rw: rwVision },
+          mission: { en: enMission, fr: frMission, rw: rwMission },
+          objectives: { en: enObjectives, fr: frObjectives, rw: rwObjectives },
           updatedBy: userId,
         },
       },

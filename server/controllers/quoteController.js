@@ -5,12 +5,14 @@ import Quote from '../models/Quote.js';
 
 export const createQuote = async (req, res) => {
   try {
-    const { name, role, quote } = req.body;
+    const { name, enRole, frRole, rwRole, enQuote, frQuote, rwQuote, order } =
+      req.body;
     const userId = req.tokenData._id;
     const newQuote = new Quote({
       name: name,
-      role: { en: role.en, fr: role.fr, rw: role.rw },
-      quote: { en: quote.en, fr: quote.fr, rw: quote.rw },
+      role: { en: enRole, fr: frRole, rw: rwRole },
+      quote: { en: enQuote, fr: frQuote, rw: rwQuote },
+      order: order,
       profile: req.file.filename,
       createdBy: userId,
       updatedBy: userId,
@@ -43,7 +45,7 @@ export const getActiveQuotes = async (req, res) => {
     const quotes = await Quote.find({
       isActive: true,
     }).sort({ updatedAt: 'desc' });
-    return successResponse(res, 200, 'Quotes retrieved successfully', quotes);
+    return successResponse(res, 200, 'Quote retrieved successfully', quotes);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -77,15 +79,17 @@ export const updateCarousel = async (req, res) => {
     if (!carouselFound) {
       return errorResponse(res, 404, 'Carousel not found');
     }
-    const { name, role, quote } = req.body;
+    const { name, enRole, frRole, rwRole, enQuote, frQuote, rwQuote, order } =
+      req.body;
     const userId = req.tokenData._id;
     const updatedQuote = await Quote.findOneAndUpdate(
       { _id: itemId },
       {
         $set: {
           name: name,
-          role: { en: role.en, fr: role.fr, rw: role.rw },
-          quote: { en: quote.en, fr: quote.fr, rw: quote.rw },
+          role: { en: enRole, fr: frRole, rw: rwRole },
+          quote: { en: enQuote, fr: frQuote, rw: rwQuote },
+          order: order,
           updatedBy: userId,
         },
       },

@@ -3,18 +3,26 @@ import Moreonus from '../models/Moreonus.js';
 
 export const createMoreonus = async (req, res) => {
   try {
-    const { description, callToActionBtn, callToActionLink } = req.body;
+    const {
+      enDescription,
+      frDescription,
+      rwDescription,
+      enCallToActionBtn,
+      frCallToActionBtn,
+      rwCallToActionBtn,
+      callToActionLink,
+    } = req.body;
     const userId = req.tokenData._id;
     const newMoreonus = new Moreonus({
       description: {
-        en: description.en,
-        fr: description.fr,
-        rw: description.rw,
+        en: enDescription,
+        fr: frDescription,
+        rw: rwDescription,
       },
       callToActionBtn: {
-        en: callToActionBtn.en,
-        fr: callToActionBtn.fr,
-        rw: callToActionBtn.rw,
+        en: enCallToActionBtn,
+        fr: frCallToActionBtn,
+        rw: rwCallToActionBtn,
       },
       callToActionLink: callToActionLink,
       createdBy: userId,
@@ -29,10 +37,9 @@ export const createMoreonus = async (req, res) => {
 
 export const getAllMoreOnUs = async (req, res) => {
   try {
-    const moreonus = await Moreonus.find({}).populate([
-      'createdBy',
-      'updatedBy',
-    ]).sort({ updatedAt: 'desc' });
+    const moreonus = await Moreonus.find({})
+      .populate(['createdBy', 'updatedBy'])
+      .sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
@@ -90,21 +97,29 @@ export const updateMoreonus = async (req, res) => {
     if (!moreonusFound) {
       return errorResponse(res, 404, 'Moreonus not found');
     }
-    const { description, callToActionBtn, callToActionLink } = req.body;
+    const {
+      enDescription,
+      frDescription,
+      rwDescription,
+      enCallToActionBtn,
+      frCallToActionBtn,
+      rwCallToActionBtn,
+      callToActionLink,
+    } = req.body;
     const userId = req.tokenData._id;
     const moreonus = await Moreonus.findOneAndUpdate(
       { _id: itemId },
       {
         $set: {
           description: {
-            en: description.en,
-            fr: description.fr,
-            rw: description.rw,
+            en: enDescription,
+            fr: frDescription,
+            rw: rwDescription,
           },
           callToActionBtn: {
-            en: callToActionBtn.en,
-            fr: callToActionBtn.fr,
-            rw: callToActionBtn.rw,
+            en: enCallToActionBtn,
+            fr: frCallToActionBtn,
+            rw: rwCallToActionBtn,
           },
           callToActionLink: callToActionLink,
           updatedBy: userId,

@@ -94,7 +94,14 @@ const Header = (props) => {
                 >
                   <FaYoutube />
                 </Link>
-                <Link to="/" className="p-1 border border-black rounded-full">
+                <Link
+                  to={{
+                    pathname:
+                      'https://www.facebook.com/profile.php?id=100081838735786&_rdc=2&_rdr',
+                  }}
+                  target="_blank"
+                  className="p-1 border border-black rounded-full"
+                >
                   <FaFacebookF />
                 </Link>
               </div>
