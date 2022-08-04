@@ -1,6 +1,7 @@
 import fs from 'fs';
 import { errorResponse, successResponse } from '../helpers/responses.js';
 import Partner from '../models/Partner.js';
+import PartnersIntro from '../models/PartnersIntro.js';
 
 export const createPartner = async (req, res) => {
   try {
@@ -197,6 +198,213 @@ export const archivePartner = async (req, res) => {
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
     return successResponse(res, 200, 'Partner edited successfully', partner);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const createPartnersIntro = async (req, res) => {
+  try {
+    const {
+      enTitle,
+      frTitle,
+      rwTitle,
+      enDescription,
+      frDescription,
+      rwDescription,
+    } = req.body;
+    const userId = req.tokenData._id;
+    const newPartnersIntro = new PartnersIntro({
+      title: {
+        en: enTitle,
+        fr: frTitle,
+        rw: rwTitle,
+      },
+      description: {
+        en: enDescription,
+        fr: frDescription,
+        rw: rwDescription,
+      },
+      createdBy: userId,
+      updatedBy: userId,
+    });
+    const partnersIntro = await newPartnersIntro.save();
+    return successResponse(
+      res,
+      201,
+      'PartnersIntro created successfully',
+      partnersIntro
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const getAllPartnersIntros = async (req, res) => {
+  try {
+    const partnersIntros = await PartnersIntro.find({})
+      .populate(['createdBy', 'updatedBy'])
+      .sort({ updatedAt: 'desc' });
+    return successResponse(
+      res,
+      200,
+      'PartnersIntros retrieved successfully',
+      partnersIntros
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const getActivePartnersIntros = async (req, res) => {
+  try {
+    const partnersIntros = await PartnersIntro.find({
+      isActive: true,
+    }).sort({ updatedAt: 'desc' });
+    return successResponse(
+      res,
+      200,
+      'PartnersIntros retrieved successfully',
+      partnersIntros[0]
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const getSpecificPartnersIntro = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const partnersIntroFound = await PartnersIntro.findOne({
+      _id: itemId,
+    }).populate(['createdBy', 'updatedBy']);
+    if (!partnersIntroFound) {
+      return errorResponse(res, 404, 'PartnersIntro not found');
+    }
+    return successResponse(
+      res,
+      200,
+      'PartnersIntro retrieved successfully',
+      partnersIntroFound
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const updatePartnersIntro = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const partnersIntroFound = await PartnersIntro.findOne({ _id: itemId });
+    if (!partnersIntroFound) {
+      return errorResponse(res, 404, 'PartnersIntro not found');
+    }
+    const {
+      enTitle,
+      frTitle,
+      rwTitle,
+      enDescription,
+      frDescription,
+      rwDescription,
+    } = req.body;
+    const userId = req.tokenData._id;
+    const partnersIntro = await PartnersIntro.findOneAndUpdate(
+      { _id: itemId },
+      {
+        $set: {
+          title: {
+            en: enTitle,
+            fr: frTitle,
+            rw: rwTitle,
+          },
+          description: {
+            en: enDescription,
+            fr: frDescription,
+            rw: rwDescription,
+          },
+          updatedBy: userId,
+        },
+      },
+      { new: true }
+    ).populate(['createdBy', 'updatedBy']);
+    return successResponse(
+      res,
+      200,
+      'PartnersIntro edieted successfully',
+      partnersIntro
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const deletePartnersIntro = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const partnersIntroFound = await PartnersIntro.findOne({ _id: itemId });
+    if (!partnersIntroFound) {
+      return errorResponse(res, 404, 'PartnersIntro not found');
+    }
+    await PartnersIntro.deleteOne({ _id: itemId });
+    return successResponse(res, 204);
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const activatePartnersIntro = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const partnersIntroFound = await PartnersIntro.findOne({ _id: itemId });
+    if (!partnersIntroFound) {
+      return errorResponse(res, 404, 'PartnersIntro not found');
+    }
+    const userId = req.tokenData._id;
+    const partnersIntro = await PartnersIntro.findOneAndUpdate(
+      { _id: itemId },
+      {
+        $set: {
+          isActive: true,
+          updatedBy: userId,
+        },
+      },
+      { new: true }
+    ).populate(['createdBy', 'updatedBy']);
+    return successResponse(
+      res,
+      200,
+      'PartnersIntro edited successfully',
+      partnersIntro
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const archivePartnersIntro = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const partnersIntroFound = await PartnersIntro.findOne({ _id: itemId });
+    if (!partnersIntroFound) {
+      return errorResponse(res, 404, 'PartnersIntro not found');
+    }
+    const userId = req.tokenData._id;
+    const partnersIntro = await PartnersIntro.findOneAndUpdate(
+      { _id: itemId },
+      {
+        $set: {
+          isActive: false,
+          updatedBy: userId,
+        },
+      },
+      { new: true }
+    ).populate(['createdBy', 'updatedBy']);
+    return successResponse(
+      res,
+      200,
+      'PartnersIntro edited successfully',
+      partnersIntro
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }

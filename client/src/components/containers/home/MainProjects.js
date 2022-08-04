@@ -5,6 +5,7 @@ import { NormalText } from '../../text';
 import { useSelector } from 'react-redux';
 import { Button } from '../../UI/button';
 import Spinner from '../../UI/spinner';
+import { useHistory } from 'react-router-dom';
 
 const MainProjects = () => {
   const { data = [], isFetching } = useFetchActiveMainProjectsQuery();
@@ -12,7 +13,7 @@ const MainProjects = () => {
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
-  console.log(data);
+  const history = useHistory();
   return isFetching ? (
     <Spinner />
   ) : (
@@ -41,7 +42,9 @@ const MainProjects = () => {
               isSquare
               outline="false"
               color="red"
-              clicked={() => {}}
+              clicked={() => {
+                history.push(`/projects/${project._id}`);
+              }}
             />
           </div>
         </div>

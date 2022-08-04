@@ -2,7 +2,8 @@ import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import Footer from '../components/containers/Footer';
 import Header from '../components/containers/Header';
-import { CardBody, CardTitle, PageTitle } from '../components/text';
+import { CardBody, CardTitle, PageTitle, Quotes } from '../components/text';
+import CustomHelmet from '../components/UI/Helmet';
 import Spinner from '../components/UI/spinner';
 import {
   useFetchActiveAboutusQuery,
@@ -21,6 +22,7 @@ const Aboutus = () => {
 
   return (
     <div>
+      <CustomHelmet name="WHO WE ARE" />
       <Header />
       {isFetching ? (
         <Spinner />
@@ -84,7 +86,12 @@ const Aboutus = () => {
                 </div>
                 <div>
                   <CardTitle name={quote.name} />
-                  <CardBody name={`"${quote.quote[selectedLanguage]}"`} />
+                  <Quotes>
+                    <CardBody
+                      name={quote.quote[selectedLanguage]}
+                      additional="italic"
+                    />
+                  </Quotes>
                 </div>
               </div>
             </Fragment>

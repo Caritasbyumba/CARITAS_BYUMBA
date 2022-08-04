@@ -20,12 +20,7 @@ router.get('', getAllProjects);
 router.get('/active', getActiveProjects);
 router.get('/main', getActiveMainProjects);
 router.get('/:itemId', getSpecificProject);
-router.patch(
-  '/:itemId',
-  checkToken,
-  upload.array('images'),
-  updateProject
-);
+router.patch('/:itemId', checkToken, upload.array('images'), updateProject);
 router.delete('/:itemId', checkToken, deleteProject);
 router.patch('/activate/:itemId', checkToken, activateProject);
 router.patch('/archive/:itemId', checkToken, archiveProject);

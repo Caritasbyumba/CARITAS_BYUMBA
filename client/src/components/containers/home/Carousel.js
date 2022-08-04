@@ -4,13 +4,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Slider from 'react-slick';
 import { CardBody, NormalText } from '../../text';
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Spinner from '../../UI/spinner';
 
 const Carousel = () => {
   const { data = [], isFetching } = useFetchActiveCarouselQuery();
-  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(1);
   var settings = {
     dots: true,

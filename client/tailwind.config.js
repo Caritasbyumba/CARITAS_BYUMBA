@@ -13,7 +13,8 @@ module.exports = {
       black: '#000',
       white: '#ffffff',
       'white-pink': '#D7C5C1',
-      brown: '#BC6450'
+      brown: '#BC6450',
+      green: '#198754',
     },
     fontFamily: {
       poppins: ['Poppins'],

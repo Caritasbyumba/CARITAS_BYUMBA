@@ -122,3 +122,13 @@ export const SmallText = function (props) {
     </span>
   );
 };
+
+export const Quotes = (props) => {
+  return (
+    <>
+      <span className={props.className}>❝</span>
+      {props.children}
+      <span className={props.className}>❞</span>
+    </>
+  );
+};

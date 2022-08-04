@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { CardBody, CardTitle } from '../text';
 import { TextButton } from '../UI/button';
 import { MdPlace, MdEmail, MdLocalPhone } from 'react-icons/md';
@@ -9,6 +9,8 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 
 const Footer = () => {
   const { t } = useTranslation();
+  const history = useHistory();
+
   return (
     <div className="bg-gray-200">
       <div className="flex justify-between">
@@ -27,26 +29,31 @@ const Footer = () => {
             name={t('Who we are')}
             color="red"
             additional="hover:underline h-fit text-left"
+            onClick={() => history.push(`/aboutus`)}
           />
           <TextButton
             name={t('Projects')}
             color="red"
             additional="hover:underline h-fit text-left"
+            onClick={() => history.push(`/projects`)}
           />
           <TextButton
             name={t('Partners')}
             color="red"
             additional="hover:underline h-fit text-left"
+            onClick={() => history.push(`/partners`)}
           />
           <TextButton
             name={t('Publications')}
             color="red"
             additional="hover:underline h-fit text-left"
+            onClick={() => history.push(`publications`)}
           />
           <TextButton
             name={t('Contact Us')}
             color="red"
             additional="hover:underline h-fit text-left"
+            onClick={() => history.push(`contactus`)}
           />
         </div>
         <div className="w-25% flex flex-col p-5">
@@ -56,6 +63,12 @@ const Footer = () => {
           <CardTitle name="MOBILE MONEY" />
           <CardBody name="MTN: +25078888888" />
           <CardBody name="Airtel: +25073333333" />
+          <TextButton
+            name={t('Donate')}
+            color="red"
+            additional="hover:underline h-fit text-left font-bold"
+            onClick={() => history.push(`/donate`)}
+          />
         </div>
         <div className="w-25% flex flex-col p-5">
           <CardTitle name={t('ADDRESS & CONTACTS')} />

@@ -49,7 +49,7 @@ const Header = (props) => {
                   name={t('Who we are')}
                 />
                 <CustomLink page="/donate" name={t('Donation')} />
-                <CustomLink page="/project" name={t('Projects')} />
+                <CustomLink page="/projects" name={t('Projects')} />
                 <CustomLink page="/partners" name={t('Partners')} />
                 <CustomLink page="/publications" name={t('Publications')} />
                 <CustomLink page="/contactus" name={t('Contact Us')} />

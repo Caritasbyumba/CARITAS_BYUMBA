@@ -106,7 +106,7 @@ export const TextButton = (props) => {
   return (
     <button
       className={`${props.additional} text-${props.color}`}
-      onClick={props.clicked}
+      onClick={props.onClick}
     >
       {props.name}
     </button>

@@ -7,6 +7,7 @@ import Projects from './pages/projects/Projects';
 import Partners from './pages/Partners';
 import Publications from './pages/publications/Publications';
 import Contactus from './pages/Contactus';
+import Project from './pages/projects/Project';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/aboutus" component={Aboutus} />
         <Route exact path="/donate" component={Donation} />
         <Route exact path="/projects" component={Projects} />
+        <Route exact path="/projects/:projectId" component={Project} />
         <Route exact path="/partners" component={Partners} />
         <Route exact path="/publications" component={Publications} />
         <Route exact path="/contactus" component={Contactus} />

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useFetchActiveMoreOnUsQuery } from '../../../features/API/user-api-slice';
 import { CardBody, PageTitle } from '../../text';
 import { TextButton } from '../../UI/button';
 import Spinner from '../../UI/spinner';
 
 const Moreonus = (props) => {
-  const location = useLocation();
+  const history = useHistory();
   const { data = [], isFetching } = useFetchActiveMoreOnUsQuery();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -43,7 +43,7 @@ const Moreonus = (props) => {
             color="red"
             additional="font-bold"
             onClick={() => {
-              location.push(moreonus.callToActionLink);
+              history.push(moreonus.callToActionLink);
             }}
           />
         </div>
