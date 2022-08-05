@@ -63,7 +63,7 @@ export const NormalText = function (props) {
 export const CardTitle = function (props) {
   let classes =
     props.additional +
-    ' truncate block text-md font-semibold text-' +
+    ' block text-md font-semibold text-' +
     props.alignment +
     ' text-' +
     props.color;

@@ -19,6 +19,8 @@ import projectsIntroRoutes from './routes/projectsIntroRoutes.js';
 import partnersIntroRoutes from './routes/partnersIntroRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import faqRoutes from './routes/faqRoutes.js';
+import publicationsRoutes from './routes/publicationsRoutes.js';
+import publicationsIntroRoutes from './routes/publicationsIntroRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -62,6 +64,8 @@ app.use('/api/projectsintro/', projectsIntroRoutes);
 app.use('/api/partnersintro/', partnersIntroRoutes);
 app.use('/api/messages/', messageRoutes);
 app.use('/api/faqs/', faqRoutes);
+app.use('/api/publications/', publicationsRoutes);
+app.use('/api/publicationsintro/', publicationsIntroRoutes);
 
 app.use((req, res) => errorResponse(res, 400, 'The route was not found'));
 

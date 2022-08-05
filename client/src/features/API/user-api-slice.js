@@ -62,6 +62,21 @@ export const userApiSlice = createApi({
           return '/faqs/active';
         },
       }),
+      fetchActivePublicationsIntro: builder.query({
+        query: () => {
+          return '/publicationsintro/active';
+        },
+      }),
+      fetchActivePublications: builder.query({
+        query: () => {
+          return '/publications/active';
+        },
+      }),
+      fetchSpecificPublication: builder.query({
+        query: (publicationId) => {
+          return `/publications/${publicationId}`;
+        },
+      }),
     };
   },
 });
@@ -78,4 +93,7 @@ export const {
   useFetchSpecificProjectQuery,
   useFetchActivePartnersIntroQuery,
   useFetchActiveFaqsQuery,
+  useFetchActivePublicationsIntroQuery,
+  useFetchActivePublicationsQuery,
+  useFetchSpecificPublicationQuery,
 } = userApiSlice;

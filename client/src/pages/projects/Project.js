@@ -31,7 +31,7 @@ const Project = () => {
 
   return (
     <div>
-      <CustomHelmet name="PROJECT" />
+      <CustomHelmet name={project?.name || 'PROJECT'} />
       <Header />
       {isFetching ? (
         <Spinner />

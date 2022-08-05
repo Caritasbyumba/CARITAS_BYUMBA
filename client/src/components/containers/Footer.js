@@ -118,7 +118,7 @@ const Footer = () => {
             <Link
               to={{
                 pathname:
-                  'https://www.youtube.com/channel/UCASA8mGUghcIslIpZJSy4Eg',
+                  'https://www.youtube.com/watch?v=fBKN6ZuzCN4https://www.youtube.com/watch?v=fBKN6ZuzCN4',
               }}
               target="_blank"
               className="p-1 border border-black rounded-full"

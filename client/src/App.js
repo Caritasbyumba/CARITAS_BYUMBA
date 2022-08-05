@@ -8,6 +8,7 @@ import Partners from './pages/Partners';
 import Publications from './pages/publications/Publications';
 import Contactus from './pages/Contactus';
 import Project from './pages/projects/Project';
+import Publication from './pages/publications/Publication';
 
 function App() {
   return (
@@ -20,6 +21,11 @@ function App() {
         <Route exact path="/projects/:projectId" component={Project} />
         <Route exact path="/partners" component={Partners} />
         <Route exact path="/publications" component={Publications} />
+        <Route
+          exact
+          path="/publications/:publicationId"
+          component={Publication}
+        />
         <Route exact path="/contactus" component={Contactus} />
       </Switch>
     </Router>
