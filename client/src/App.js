@@ -9,6 +9,7 @@ import Publications from './pages/publications/Publications';
 import Contactus from './pages/Contactus';
 import Project from './pages/projects/Project';
 import Publication from './pages/publications/Publication';
+import Login from './pages/Login';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           component={Publication}
         />
         <Route exact path="/contactus" component={Contactus} />
+        <Route exact path="/login" component={Login} />
       </Switch>
     </Router>
   );

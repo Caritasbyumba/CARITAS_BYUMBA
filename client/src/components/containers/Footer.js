@@ -55,6 +55,12 @@ const Footer = () => {
             additional="hover:underline h-fit text-left"
             onClick={() => history.push(`contactus`)}
           />
+          <TextButton
+            name={t('Log In')}
+            color="red"
+            additional="hover:underline h-fit text-left"
+            onClick={() => history.push(`login`)}
+          />
         </div>
         <div className="w-25% flex flex-col p-5">
           <CardTitle name={t('BANK ACCOUNT')} />

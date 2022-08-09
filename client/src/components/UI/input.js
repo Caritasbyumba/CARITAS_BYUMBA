@@ -35,7 +35,6 @@ const Input = (props) => {
       setValid(checkValidity(value, props.validation));
       setTouched(true);
       if (props.isSubmitted === true && value === '') {
-        console.log(`COndtirion true`);
         setValid(checkValidity(value, { notEmpty: true }));
         setTouched(true);
       }

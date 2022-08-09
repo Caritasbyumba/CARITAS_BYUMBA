@@ -14,7 +14,10 @@ const Faq = (props) => {
         className="flex justify-between items-center py-3 cursor-pointer"
         onClick={() => setShowAnswer(!showAnswer)}
       >
-        <CardBody name={props.question[selectedLanguage]} color="green" />
+        <CardBody
+          name={props.question[selectedLanguage]}
+          color="red font-semibold"
+        />
         <MdOutlineArrowDropDownCircle />
       </div>
       {showAnswer && <CardBody name={props.answer[selectedLanguage]} />}

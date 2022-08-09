@@ -34,7 +34,7 @@ export const login = async (req, res) => {
         userFound.name,
         userFound.role
       );
-      return successResponse(res, 201, 'User created', {
+      return successResponse(res, 200, 'User logged in', {
         token,
         ...userFound._doc,
       });

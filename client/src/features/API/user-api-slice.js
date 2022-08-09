@@ -77,6 +77,16 @@ export const userApiSlice = createApi({
           return `/publications/${publicationId}`;
         },
       }),
+      fetchActiveDonateIntro: builder.query({
+        query: () => {
+          return '/donateintro/active';
+        },
+      }),
+      fetchActiveDonationAreaIntro: builder.query({
+        query: () => {
+          return '/donationareas/active';
+        },
+      }),
     };
   },
 });
@@ -96,4 +106,6 @@ export const {
   useFetchActivePublicationsIntroQuery,
   useFetchActivePublicationsQuery,
   useFetchSpecificPublicationQuery,
+  useFetchActiveDonateIntroQuery,
+  useFetchActiveDonationAreaIntroQuery,
 } = userApiSlice;

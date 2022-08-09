@@ -6,12 +6,12 @@ import Spinner from '../../UI/spinner';
 
 const Partners = () => {
   const { data = [], isFetching } = useFetchActivePartnersQuery();
-  console.log(data);
   var settings = {
     arrows: false,
     dots: false,
     centerMode: true,
     lazyLoad: true,
+    swipeToSlide: true,
     infinite: true,
     autoplay: true,
     speed: 500,

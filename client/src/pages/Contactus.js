@@ -38,8 +38,6 @@ const Contactus = () => {
       .catch((err) => setError(err.response.data));
   }, [name, email, body]);
 
-  console.log(data);
-
   return (
     <div>
       <CustomHelmet name="CONTACT US" />
