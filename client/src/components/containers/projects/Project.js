@@ -13,14 +13,14 @@ const Project = (props) => {
     <div
       className={`flex ${
         props.index % 2 === 0
-          ? 'flex-row space-x-10'
-          : 'flex-row-reverse space-x-reverse space-x-10'
+          ? 'md:flex-row md:space-x-10 flex-col'
+          : 'md:flex-row-reverse md:space-x-reverse md:space-x-10 flex-col'
       } justify-between items-center py-5 cursor-pointer`}
       onClick={() => history.push(`/projects/${props._id}`)}
     >
       <Images images={props.gallery} />
       <div>
-        <SectionTitle name={props.name} color="red" />
+        <SectionTitle name={props.name} color="red" additional="pt-5 md:pt-0" />
         <Quotes>
           <CardBody name={props.smallDescription[selectedLanguage]} />
         </Quotes>

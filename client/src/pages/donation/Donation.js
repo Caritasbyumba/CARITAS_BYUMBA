@@ -31,13 +31,16 @@ const Donation = () => {
         <Spinner />
       ) : (
         <div className="bg-gray-200 py-5">
-          <div className="w-70% m-auto">
+          <div className="w-90% lg:w-70% m-auto">
             <PageTitle
               name={donateIntro.title[selectedLanguage]}
               color="red"
               additional="text-center"
             />
-            <CardBody name={donateIntro.description[selectedLanguage]} />
+            <CardBody
+              name={donateIntro.description[selectedLanguage]}
+              additional="text-center"
+            />
           </div>
         </div>
       )}
@@ -50,7 +53,7 @@ const Donation = () => {
             color="red"
             additional="text-center"
           />
-          <div className="w-70% m-auto grid grid-cols-3 gap-2 py-5">
+          <div className="w-90% lg:w-70% m-auto grid grid-cols-1 md:grid-cols-3 gap-2 py-5">
             {donationAreas.map((area, index) => (
               <DonationArea
                 key={index}

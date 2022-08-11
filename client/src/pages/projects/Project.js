@@ -41,7 +41,7 @@ const Project = () => {
             <PageTitle
               name={project.name}
               color="red"
-              additional="text-center"
+              additional="text-center mx-10"
             />
             <CardSubText
               name={`${t('Started')}: ${new Date(
@@ -58,19 +58,19 @@ const Project = () => {
                 day: 'numeric',
               })}`}
               color="red"
-              additional="text-center"
+              additional="text-center mx-10"
             />
           </div>
-          <div className="w-70% m-auto py-5">
+          <div className="w-90% lg:w-70% m-auto py-5">
             <CardBody
               name={project.description[selectedLanguage]}
               additional="text-center"
             />
           </div>
-          <div className="w-70% m-auto mb-10">
+          <div className="w-90% lg:w-70% m-auto mb-10">
             <Slider {...settings}>
               {project.gallery.map((image, index) => (
-                <div key={index} className="w-full h-70vh">
+                <div key={index} className="w-full h-30vh md:h-50vh lg:h-70vh">
                   <img
                     className="w-full h-full object-cover object-center"
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}

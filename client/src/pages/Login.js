@@ -34,7 +34,7 @@ const Login = () => {
     <div>
       <CustomHelmet name="LOGIN" />
       <Header />
-      <div className="block my-32 mx-auto p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md">
+      <div className="block my-40 mx-5 md:mx-auto p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md">
         <SectionTitle name={t('LOGIN')} color="red" additional="uppercase" />
         <Input
           elementType="input"

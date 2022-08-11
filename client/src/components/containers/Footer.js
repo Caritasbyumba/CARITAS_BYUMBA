@@ -13,8 +13,8 @@ const Footer = () => {
 
   return (
     <div className="bg-gray-200">
-      <div className="flex justify-between">
-        <div className="w-25% grid place-items-center">
+      <div className="flex flex-col lg:flex-row justify-between divide-y divide-gray-500 lg:divide-y-0">
+        <div className="lg:w-25% grid place-items-center">
           <Link to="/" className="p-5 grid place-items-center">
             <img
               className="w-1/2 w-full object-cover object-center"
@@ -23,7 +23,7 @@ const Footer = () => {
             />
           </Link>
         </div>
-        <div className="w-25% flex flex-col p-5">
+        <div className="lg:w-25% flex flex-col p-5 mx-0 md:mx-auto">
           <CardTitle name={t('EXPLORE MORE')} color="red" />
           <TextButton
             name={t('Who we are')}
@@ -62,7 +62,7 @@ const Footer = () => {
             onClick={() => history.push(`login`)}
           />
         </div>
-        <div className="w-25% flex flex-col p-5">
+        <div className="lg:w-25% flex flex-col p-5 mx-0 md:mx-auto">
           <CardTitle name={t('BANK ACCOUNT')} />
           <CardBody name="I&M Bank: 0000-0000-00000-0000" />
           <CardBody name="Swift code: IMRWRWRW" />
@@ -76,7 +76,7 @@ const Footer = () => {
             onClick={() => history.push(`/donate`)}
           />
         </div>
-        <div className="w-25% flex flex-col p-5">
+        <div className="lg:w-25% flex flex-col p-5 mx-0 md:mx-auto">
           <CardTitle name={t('ADDRESS & CONTACTS')} />
           <Link
             to={{ pathname: 'https://goo.gl/maps/LGcs8U8Znr9UG4mr9' }}

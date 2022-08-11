@@ -40,22 +40,22 @@ const Aboutus = () => {
               alignment="center"
             />
           </div>
-          <div className="flex justify-between divide-x divide-gray-200 py-5">
-            <div className="w-1/3 text-center">
+          <div className="flex flex-col lg:flex-row justify-between divide-y divide-x-0 lg:divide-x lg:divide-y-0 divide-gray-200 py-5">
+            <div className="lg:w-1/3 text-center">
               <CardTitle name="Vision" color="red" alignment="center" />
               <CardBody
                 name={aboutus.vision[selectedLanguage]}
                 additional="p-5"
               />
             </div>
-            <div className="w-1/3 text-center">
+            <div className="lg:w-1/3 text-center">
               <CardTitle name="Mission" color="red" alignment="center" />
               <CardBody
                 name={aboutus.mission[selectedLanguage]}
                 additional="p-5"
               />
             </div>
-            <div className="w-1/3 text-center">
+            <div className="lg:w-1/3 text-center">
               <CardTitle name="Objectives" color="red" alignment="center" />
               <CardBody
                 name={aboutus.objectives[selectedLanguage]}
@@ -68,7 +68,7 @@ const Aboutus = () => {
       {isQuotesFetching ? (
         <Spinner />
       ) : (
-        <div className="w-70% m-auto">
+        <div className="w-90% lg:w-70% m-auto">
           {quotes.map((quote, index) => (
             <Fragment key={index}>
               <CardTitle
@@ -76,7 +76,7 @@ const Aboutus = () => {
                 color="red"
                 additional="text-center"
               />
-              <div className="flex space-x-10 items-center py-5">
+              <div className="flex flex-col lg:flex-row lg:space-x-10 items-center py-5">
                 <div className="w-40 h-40 shrink-0">
                   <img
                     className="w-full h-full object-cover object-center rounded-full"
@@ -85,7 +85,10 @@ const Aboutus = () => {
                   />
                 </div>
                 <div>
-                  <CardTitle name={quote.name} />
+                  <CardTitle
+                    name={quote.name}
+                    additional="text-center lg:text-left"
+                  />
                   <Quotes>
                     <CardBody
                       name={quote.quote[selectedLanguage]}

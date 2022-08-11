@@ -31,7 +31,7 @@ const Publications = () => {
         <Spinner />
       ) : (
         <div className="bg-gray-200 py-5">
-          <div className="w-70% m-auto">
+          <div className="w-90% lg:w-70% m-auto">
             <PageTitle
               name={publicationsIntro.results.title[selectedLanguage]}
               color="red"
@@ -39,6 +39,7 @@ const Publications = () => {
             />
             <CardBody
               name={publicationsIntro.results.description[selectedLanguage]}
+              additional="text-center"
             />
           </div>
         </div>
@@ -46,7 +47,7 @@ const Publications = () => {
       {isFetchingPublications ? (
         <Spinner />
       ) : (
-        <div className="w-70% m-auto py-5 grid grid-cols-3 gap-5">
+        <div className="w-90% lg:w-70% m-auto py-5 grid grid-col-1 md:grid-col-2 lg:grid-cols-3 gap-5">
           {publication.results.map((publication, index) => (
             <Publication key={index} {...publication} />
           ))}

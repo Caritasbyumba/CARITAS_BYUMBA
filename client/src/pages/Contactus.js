@@ -42,9 +42,9 @@ const Contactus = () => {
     <div>
       <CustomHelmet name="CONTACT US" />
       <Header />
-      <div className="bg-red p-10">
-        <div className="w-70% m-auto flex space-x-2 bg-white rounded">
-          <div className="w-50% flex flex-col md:space-y-2 p-5">
+      <div className="bg-red py-4 md:p-10">
+        <div className="w-90% lg:w-70% m-auto flex flex-col md:flex-row md:space-x-2 bg-white rounded">
+          <div className="w-full md:w-50% flex flex-col md:space-y-2 p-2 md:p-5">
             <SectionTitle name={t('Get in touch with us')} color="red" />
             <div>
               <Link
@@ -76,7 +76,7 @@ const Contactus = () => {
                 <CardBody name="caritasbyumba81@gmail.com" />
               </Link>
             </div>
-            <div className="flex justify-between space-x-1 w-full">
+            <div className="flex flex-col lg:flex-row justify-between lg:space-x-1 w-full">
               <Input
                 elementType="input"
                 elementConfig={{
@@ -122,6 +122,7 @@ const Contactus = () => {
               outline="false"
               color="red"
               clicked={sendMessage}
+              additional="my-3"
             />
             {error && (
               <CardBody
@@ -138,7 +139,7 @@ const Contactus = () => {
               />
             )}
           </div>
-          <div className="w-50%">
+          <div className="w-full md:w-50%">
             <iframe
               className="w-full h-full rounded"
               title="googlemap"
@@ -152,7 +153,7 @@ const Contactus = () => {
           </div>
         </div>
       </div>
-      <div className="w-70% m-auto">
+      <div className="w-90% lg:w-70% m-auto">
         <SectionTitle
           name={t('Frequently Asked Questions')}
           color="red"

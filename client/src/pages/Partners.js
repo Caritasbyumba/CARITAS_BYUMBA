@@ -29,7 +29,7 @@ const Partners = () => {
         <Spinner />
       ) : (
         <div className="bg-gray-200 py-5">
-          <div className="w-70% m-auto">
+          <div className="w-90% lg:w-70% m-auto">
             <PageTitle
               name={partnersIntro.results.title[selectedLanguage]}
               color="red"
@@ -37,6 +37,7 @@ const Partners = () => {
             />
             <CardBody
               name={partnersIntro.results.description[selectedLanguage]}
+              additional="text-center"
             />
           </div>
         </div>
@@ -44,7 +45,7 @@ const Partners = () => {
       {isFetchingPartners ? (
         <Spinner />
       ) : (
-        <div className="w-70% m-auto py-5 divide-y">
+        <div className="w-90% lg:w-70% m-auto py-5 divide-y">
           {partners.results.map((project, index) => (
             <Partner key={index} index={index} {...project} />
           ))}

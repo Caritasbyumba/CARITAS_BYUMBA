@@ -46,7 +46,7 @@ const Publication = () => {
             <SectionTitle
               name={publication.title[selectedLanguage]}
               color="red"
-              additional="text-center w-70% m-auto"
+              additional="text-center w-90% lg:w-70% m-auto"
             />
             <CardSubText
               name={`Posted by ${publication.updatedBy.name} on  ${new Date(
@@ -57,19 +57,19 @@ const Publication = () => {
                 day: 'numeric',
               })}`}
               color="red"
-              additional="text-center"
+              additional="text-center mx-10"
             />
           </div>
-          <div className="w-70% m-auto py-5">
+          <div className="w-90% lg:w-70% m-auto py-5">
             <CardBody
               name={publication.description[selectedLanguage]}
               additional="text-center"
             />
           </div>
-          <div className="w-70% m-auto mb-10">
+          <div className="w-90% lg:w-70% m-auto mb-10">
             <Slider {...settings}>
               {publication.gallery.map((image, index) => (
-                <div key={index} className="w-full h-70vh">
+                <div key={index} className="w-full h-30vh md:h-50vh lg:h-70vh">
                   <img
                     className="w-full h-full object-cover object-center"
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}

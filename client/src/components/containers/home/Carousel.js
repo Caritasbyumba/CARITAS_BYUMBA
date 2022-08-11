@@ -15,7 +15,8 @@ const Carousel = () => {
     arrows: false,
     infinite: true,
     autoplay: true,
-    speed: 500,
+    autoplaySpeed: 10000,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
     beforeChange: (prev, next) => {
@@ -37,7 +38,7 @@ const Carousel = () => {
   ) : (
     <Slider {...settings}>
       {data.results.map((slide, index) => (
-        <div key={index} className="relative h-70vh">
+        <div key={index} className="relative h-30vh md:h-50vh lg:h-70vh">
           <img
             className="w-full h-full object-cover object-center"
             src={`${process.env.REACT_APP_BACKEND_URL}/images/${slide.image}`}
@@ -49,7 +50,7 @@ const Carousel = () => {
                 name={slide.title[selectedLanguage]}
                 color="white"
                 alignment="center"
-                additional="text-5xl font-semibold uppercase"
+                additional="text-2xl md:text-3xl lg:text-5xl font-semibold uppercase"
               />
               <CardBody
                 name={slide.description[selectedLanguage]}

@@ -19,22 +19,23 @@ const MainProjects = () => {
   ) : (
     <div className="flex">
       {data.results.map((project, index) => (
-        <div key={index} className="w-50% h-50vh relative">
+        <div key={index} className="w-50% h-25vh md:h-40vh lg:h-50vh relative">
           <img
             className="w-full h-full object-cover"
             src={`${process.env.REACT_APP_BACKEND_URL}/images/${project.gallery[0]}`}
             alt={project.name}
           />
           <div className="absolute inset-0 bg-black bg-opacity-20 hover:bg-opacity-50 grid place-items-center">
-            <div className="w-70% text-center">
+            <div className="lg:w-70% text-center">
               <NormalText
                 name={project.name}
                 color="white"
-                additional="text-4xl font-bold capitalize"
+                additional="text-xl lg:text-4xl font-bold capitalize"
               />
               <NormalText
                 name={project.smallDescription[selectedLanguage]}
                 color="white"
+                additional="hidden lg:block"
               />
             </div>
             <Button
