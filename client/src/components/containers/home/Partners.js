@@ -1,10 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import { useFetchActivePartnersQuery } from '../../../features/API/user-api-slice';
 import { CardTitle, PageTitle } from '../../text';
 import Spinner from '../../UI/spinner';
 
 const Partners = () => {
+  const { t } = useTranslation();
   const { data = [], isFetching } = useFetchActivePartnersQuery();
   var settings = {
     arrows: false,
@@ -37,10 +39,11 @@ const Partners = () => {
   ) : (
     <>
       <PageTitle
-        name="Our Partners"
+        name={t('Our Partners')}
         color="red"
         alignment="center"
         mobileAlignment="center"
+        additional="py-5"
       />
       <Slider {...settings}>
         {data.results.map((slide, index) => (

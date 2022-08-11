@@ -45,7 +45,7 @@ const Contactus = () => {
       <div className="bg-red py-4 md:p-10">
         <div className="w-90% lg:w-70% m-auto flex flex-col md:flex-row md:space-x-2 bg-white rounded">
           <div className="w-full md:w-50% flex flex-col md:space-y-2 p-2 md:p-5">
-            <SectionTitle name={t('Get in touch with us')} color="red" />
+            <SectionTitle name={t('Get in touch with us')} color="red" additional="text-center md:text-left" />
             <div>
               <Link
                 to={{ pathname: 'https://goo.gl/maps/LGcs8U8Znr9UG4mr9' }}

@@ -22,7 +22,7 @@ const Partner = (props) => {
         />
       </div>
       <div className="w-full md:w-50%">
-        <SectionTitle name={props.name} color="red" additional="text-center md:text-left" />
+        <SectionTitle name={props.name} color="red" additional="text-center md:text-left py-5" />
         <CardBody
           name={props.description[selectedLanguage]}
           additional="py-3"

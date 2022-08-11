@@ -35,7 +35,7 @@ const Publications = () => {
             <PageTitle
               name={publicationsIntro.results.title[selectedLanguage]}
               color="red"
-              additional="text-center"
+              additional="text-center py-5"
             />
             <CardBody
               name={publicationsIntro.results.description[selectedLanguage]}

@@ -35,7 +35,7 @@ const Donation = () => {
             <PageTitle
               name={donateIntro.title[selectedLanguage]}
               color="red"
-              additional="text-center"
+              additional="text-center py-5"
             />
             <CardBody
               name={donateIntro.description[selectedLanguage]}
@@ -51,7 +51,7 @@ const Donation = () => {
           <SectionTitle
             name={t('Which project would you like to donate to?')}
             color="red"
-            additional="text-center"
+            additional="text-center py-5"
           />
           <div className="w-90% lg:w-70% m-auto grid grid-cols-1 md:grid-cols-3 gap-2 py-5">
             {donationAreas.map((area, index) => (

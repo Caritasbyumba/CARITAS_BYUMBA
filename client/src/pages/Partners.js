@@ -33,7 +33,7 @@ const Partners = () => {
             <PageTitle
               name={partnersIntro.results.title[selectedLanguage]}
               color="red"
-              additional="text-center"
+              additional="text-center py-5"
             />
             <CardBody
               name={partnersIntro.results.description[selectedLanguage]}

@@ -34,6 +34,7 @@ const Aboutus = () => {
               color="red"
               alignment="center"
               mobileAlignment="center"
+              additional="py-5"
             />
             <CardBody
               name={aboutus.description[selectedLanguage]}

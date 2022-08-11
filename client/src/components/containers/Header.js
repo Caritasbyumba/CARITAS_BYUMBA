@@ -134,6 +134,24 @@ const Header = (props) => {
           <CustomLink page="/partners" name={t('Partners')} />
           <CustomLink page="/publications" name={t('Publications')} />
           <CustomLink page="/contactus" name={t('Contact Us')} />
+          <div className="m-auto flex space-x-2">
+            {languages.map((lang, index) => (
+              <NormalText
+                key={index}
+                name={lang.language}
+                color="red"
+                additional={
+                  lang.abbreviation === selectLng
+                    ? 'font-bold cursor-pointer'
+                    : 'cursor-pointer'
+                }
+                onClick={() => {
+                  handleLang(lang.abbreviation);
+                  setShowMobileNavBar(false);
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </nav>
