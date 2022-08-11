@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Footer from '../components/containers/Footer';
 import Header from '../components/containers/Header';
@@ -11,6 +12,7 @@ import {
 } from '../features/API/user-api-slice';
 
 const Aboutus = () => {
+  const { t } = useTranslation();
   const { data = [], isFetching } = useFetchActiveAboutusQuery();
   const { data: quotesData = [], isFetching: isQuotesFetching } =
     useFetchActiveQuotesQuery();
@@ -43,21 +45,25 @@ const Aboutus = () => {
           </div>
           <div className="flex flex-col lg:flex-row justify-between divide-y divide-x-0 lg:divide-x lg:divide-y-0 divide-gray-200 py-5">
             <div className="lg:w-1/3 text-center">
-              <CardTitle name="Vision" color="red" alignment="center" />
+              <CardTitle name={t('Vision')} color="red" alignment="center" />
               <CardBody
                 name={aboutus.vision[selectedLanguage]}
                 additional="p-5"
               />
             </div>
             <div className="lg:w-1/3 text-center">
-              <CardTitle name="Mission" color="red" alignment="center" />
+              <CardTitle name={t('Mission')} color="red" alignment="center" />
               <CardBody
                 name={aboutus.mission[selectedLanguage]}
                 additional="p-5"
               />
             </div>
             <div className="lg:w-1/3 text-center">
-              <CardTitle name="Objectives" color="red" alignment="center" />
+              <CardTitle
+                name={t('Objectives')}
+                color="red"
+                alignment="center"
+              />
               <CardBody
                 name={aboutus.objectives[selectedLanguage]}
                 additional="p-5"

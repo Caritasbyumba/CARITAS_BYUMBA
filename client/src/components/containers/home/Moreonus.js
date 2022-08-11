@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useFetchActiveMoreOnUsQuery } from '../../../features/API/user-api-slice';
@@ -6,7 +7,8 @@ import { CardBody, PageTitle } from '../../text';
 import { TextButton } from '../../UI/button';
 import Spinner from '../../UI/spinner';
 
-const Moreonus = (props) => {
+const Moreonus = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const { data = [], isFetching } = useFetchActiveMoreOnUsQuery();
   const selectedLanguage = useSelector(
@@ -18,7 +20,7 @@ const Moreonus = (props) => {
   ) : (
     <div className="bg-gray-100">
       <PageTitle
-        name="About us"
+        name={t('About us')}
         color="red"
         alignment="center"
         mobileAlignment="center"
