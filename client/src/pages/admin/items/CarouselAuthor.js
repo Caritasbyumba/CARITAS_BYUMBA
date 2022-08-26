@@ -47,7 +47,32 @@ const CarouselAuthor = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [carouselId, setCarouselId] = useState('');
 
+  const updateForm = useCallback(
+    (carouselId) => {
+      setLoading(true);
+      axios
+        .get(`/api/carousels/${carouselId}`, {
+          headers: { Authorization: token },
+        })
+        .then((res) => {
+          setEnTitle(res.data.results.title.en);
+          setFrTitle(res.data.results.title.fr);
+          setRwTitle(res.data.results.title.rw);
+          setEnDescription(res.data.results.description.en);
+          setFrDescription(res.data.results.description.fr);
+          setRwDescription(res.data.results.description.rw);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+          setError(err.response.data);
+        });
+    },
+    [token]
+  );
   const myData = useMemo(
     () =>
       data?.results
@@ -57,6 +82,7 @@ const CarouselAuthor = () => {
               title: carousel.title[selectedLanguage],
               updatedBy: carousel.updatedBy.name,
               updatedAt: carousel.updatedAt,
+              status: carousel.isActive,
               _id: carousel._id,
             };
           })
@@ -80,6 +106,13 @@ const CarouselAuthor = () => {
         },
       },
       {
+        Header: 'Status',
+        accessor: 'status',
+        Cell: ({ value }) => {
+          return value ? 'Active' : 'Inactive';
+        },
+      },
+      {
         Header: 'Actions',
         accessor: '_id',
         Cell: ({ value }) => {
@@ -88,21 +121,32 @@ const CarouselAuthor = () => {
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
+                  setCarouselId(value);
+                  setError(null);
                   setIsUpdating(true);
                   setShowEditModal(true);
+                  updateForm(value);
                 }}
               >
                 <MdEdit />
               </button>
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
-                onClick={() => setShowArchiveModal(true)}
+                onClick={() => {
+                  setShowArchiveModal(true);
+                  setCarouselId(value);
+                  setError(null);
+                }}
               >
                 <MdArchive />
               </button>
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
-                onClick={() => setShowDeleteModal(true)}
+                onClick={() => {
+                  setShowDeleteModal(true);
+                  setCarouselId(value);
+                  setError(null);
+                }}
               >
                 <MdDelete color="#751E17" />
               </button>
@@ -111,7 +155,7 @@ const CarouselAuthor = () => {
         },
       },
     ],
-    []
+    [updateForm]
   );
   const {
     getTableProps,
@@ -192,37 +236,53 @@ const CarouselAuthor = () => {
     t,
     refetch,
   ]);
+
   const handleUpdate = useCallback(() => {
-    setLoading(true);
-    setShowProgressBar(true);
-    setError(null);
-    const formData = new FormData();
-    formData.append('enTitle', enTitle);
-    formData.append('frTitle', frTitle);
-    formData.append('rwTitle', rwTitle);
-    formData.append('enDescription', enDescription);
-    formData.append('frDescription', frDescription);
-    formData.append('rwDescription', rwDescription);
-    formData.append('image', selectedFiles[0]);
-    axios
-      .post('/api/carousels/add', formData, {
-        headers: { Authorization: token },
-        onUploadProgress: (progressEvent) => {
-          setUploadProgress(
-            Math.round(progressEvent.loaded / progressEvent.total) * 100
-          );
-        },
-      })
-      .then((res) => {
-        setLoading(false);
-        setShowEditModal(false);
-        setShowProgressBar(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setShowProgressBar(false);
-        setError(err.response.data);
-      });
+    if (
+      enTitle !== '' &&
+      frTitle !== '' &&
+      rwTitle !== '' &&
+      enDescription !== '' &&
+      frDescription !== '' &&
+      rwDescription !== '' &&
+      selectedFiles != null
+    ) {
+      setLoading(true);
+      setShowProgressBar(true);
+      setError(null);
+      const formData = new FormData();
+      formData.append('enTitle', enTitle);
+      formData.append('frTitle', frTitle);
+      formData.append('rwTitle', rwTitle);
+      formData.append('enDescription', enDescription);
+      formData.append('frDescription', frDescription);
+      formData.append('rwDescription', rwDescription);
+      if (selectedFiles) {
+        formData.append('image', selectedFiles[0]);
+      }
+      axios
+        .patch(`/api/carousels/${carouselId}`, formData, {
+          headers: { Authorization: token },
+          onUploadProgress: (progressEvent) => {
+            setUploadProgress(
+              Math.round(progressEvent.loaded / progressEvent.total) * 100
+            );
+          },
+        })
+        .then((res) => {
+          setLoading(false);
+          setShowEditModal(false);
+          setShowProgressBar(false);
+          refetch();
+        })
+        .catch((err) => {
+          setLoading(false);
+          setShowProgressBar(false);
+          setError(err.response.data);
+        });
+    } else {
+      setError({ error: t('All fields must be filled') });
+    }
   }, [
     enTitle,
     frTitle,
@@ -232,7 +292,46 @@ const CarouselAuthor = () => {
     rwDescription,
     selectedFiles,
     token,
+    t,
+    refetch,
+    carouselId,
   ]);
+
+  const handleArchive = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    axios
+      .patch(`/api/carousels/archive/${carouselId}`, null, {
+        headers: { Authorization: token },
+      })
+      .then((res) => {
+        setLoading(false);
+        setShowArchiveModal(false);
+        refetch();
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(err.response.data);
+      });
+  }, [token, carouselId, refetch]);
+
+  const handleDelete = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    axios
+      .delete(`/api/carousels/${carouselId}`, {
+        headers: { Authorization: token },
+      })
+      .then((res) => {
+        setLoading(false);
+        setShowDeleteModal(false);
+        refetch();
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(err.response.data);
+      });
+  }, [token, carouselId, refetch]);
 
   return (
     <div>
@@ -248,7 +347,7 @@ const CarouselAuthor = () => {
         />
         <div className="flex space-x-2">
           <Input
-            label="English Title"
+            label={t('English Title')}
             elementType="input"
             elementConfig={{
               type: 'text',
@@ -261,7 +360,7 @@ const CarouselAuthor = () => {
             error={t('English title is required')}
           />
           <Input
-            label="French Title"
+            label={t('French Title')}
             elementType="input"
             elementConfig={{
               type: 'text',
@@ -274,7 +373,7 @@ const CarouselAuthor = () => {
             error={t('French title is required')}
           />
           <Input
-            label="Kinyarwanda Title"
+            label={t('Kinyarwanda Title')}
             elementType="input"
             elementConfig={{
               type: 'text',
@@ -289,7 +388,7 @@ const CarouselAuthor = () => {
         </div>
         <div className="flex space-x-2">
           <Input
-            label="English Description"
+            label={t('English Description')}
             elementType="input"
             elementConfig={{
               type: 'text',
@@ -302,7 +401,7 @@ const CarouselAuthor = () => {
             error={t('English Description is required')}
           />
           <Input
-            label="French Description"
+            label={t('French Description')}
             elementType="input"
             elementConfig={{
               type: 'text',
@@ -315,7 +414,7 @@ const CarouselAuthor = () => {
             error={t('French Description is required')}
           />
           <Input
-            label="Kinyarwanda Description"
+            label={t('Kinyarwanda Description')}
             elementType="input"
             elementConfig={{
               type: 'text',
@@ -346,7 +445,7 @@ const CarouselAuthor = () => {
           isSquare
           outline="false"
           color="red"
-          clicked={isUpdating ? handleUpdate : handleAdd}
+          clicked={isUpdating ? () => handleUpdate(carouselId) : handleAdd}
         />
       </Modal>
       <Modal
@@ -355,14 +454,66 @@ const CarouselAuthor = () => {
         modalClosed={(e) => {
           setShowArchiveModal(false);
         }}
-      ></Modal>
+      >
+        <CardTitle name={t('Archive carousel')} color="red" />
+        <CardBody
+          name={t('Are you sure you want to archive/unarchive this carousel?')}
+        />
+        {loading && <Spinner />}
+        {error && (
+          <CardBody name={error.error} color="red" additional="font-semibold" />
+        )}
+        <div className="flex justify-between">
+          <Button
+            name={t('Cancel')}
+            isSquare
+            outline="false"
+            color="blue"
+            clicked={() => setShowArchiveModal(false)}
+          />
+          <Button
+            name={t('Archive/Unarchive')}
+            isSquare
+            outline="false"
+            color="red"
+            clicked={handleArchive}
+          />
+        </div>
+      </Modal>
       <Modal
         show={showDeleteModal}
         small
         modalClosed={(e) => {
           setShowDeleteModal(false);
         }}
-      ></Modal>
+      >
+        <CardTitle name={t('Delete carousel')} color="red" />
+        <CardBody
+          name={`${t('Are you sure you want to delete this carousel?')} ${t(
+            'Contents deleted can not be retrieved.'
+          )}`}
+        />
+        {loading && <Spinner />}
+        {error && (
+          <CardBody name={error.error} color="red" additional="font-semibold" />
+        )}
+        <div className="flex justify-between">
+          <Button
+            name={t('Cancel')}
+            isSquare
+            outline="false"
+            color="blue"
+            clicked={() => setShowDeleteModal(false)}
+          />
+          <Button
+            name={t('Delete')}
+            isSquare
+            outline="false"
+            color="red"
+            clicked={handleDelete}
+          />
+        </div>
+      </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
         <SectionTitle name={t('List of all Carousels')} />
@@ -373,7 +524,7 @@ const CarouselAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label="Search"
+                  label={t('Search')}
                   elementType="input"
                   elementConfig={{
                     type: 'text',
@@ -391,6 +542,13 @@ const CarouselAuthor = () => {
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
+                  setEnTitle('');
+                  setFrTitle('');
+                  setRwTitle('');
+                  setEnDescription('');
+                  setFrDescription('');
+                  setRwDescription('');
+                  setError(null);
                 }}
               />
             </div>

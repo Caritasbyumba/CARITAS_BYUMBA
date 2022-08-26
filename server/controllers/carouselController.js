@@ -101,6 +101,7 @@ export const updateCarousel = async (req, res) => {
       rwDescription,
     } = req.body;
     const userId = req.tokenData._id;
+    fs.unlinkSync(`public/images/${carouselFound.image}`);
     const carousel = await Carousel.findOneAndUpdate(
       { _id: itemId },
       {
@@ -111,6 +112,7 @@ export const updateCarousel = async (req, res) => {
             fr: frDescription,
             rw: rwDescription,
           },
+          image: req.file.filename,
           updatedBy: userId,
         },
       },
@@ -173,7 +175,7 @@ export const archiveCarousel = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !carouselFound.isActive,
           updatedBy: userId,
         },
       },

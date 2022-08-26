@@ -188,7 +188,7 @@ export const archiveAboutus = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !aboutusFound.isActive,
           updatedBy: userId,
         },
       },

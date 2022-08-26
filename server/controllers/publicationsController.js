@@ -217,7 +217,7 @@ export const archivePublication = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !publicationFound.isActive,
           updatedBy: userId,
         },
       },
@@ -432,7 +432,7 @@ export const archivePublicationsIntro = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !publicationsIntroFound.isActive,
           updatedBy: userId,
         },
       },

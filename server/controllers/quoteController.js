@@ -152,7 +152,7 @@ export const archiveQuote = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !quoteFound.isActive,
           updatedBy: userId,
         },
       },

@@ -191,7 +191,7 @@ export const archivePartner = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !partnerFound.isActive,
           updatedBy: userId,
         },
       },
@@ -393,7 +393,7 @@ export const archivePartnersIntro = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !partnersIntroFound.isActive,
           updatedBy: userId,
         },
       },

@@ -234,7 +234,7 @@ export const archiveProject = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !projectFound.isActive,
           updatedBy: userId,
         },
       },
@@ -436,7 +436,7 @@ export const archiveProjectsIntro = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !projectsIntroFound.isActive,
           updatedBy: userId,
         },
       },

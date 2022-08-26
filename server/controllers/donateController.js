@@ -192,7 +192,7 @@ export const archiveDonateIntro = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !donateIntroFound.isActive,
           updatedBy: userId,
         },
       },
@@ -399,7 +399,7 @@ export const archiveDonationArea = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !donationAreaFound.isActive,
           updatedBy: userId,
         },
       },

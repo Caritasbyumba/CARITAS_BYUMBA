@@ -142,7 +142,7 @@ export const archiveFaq = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !faqFound.isActive,
           updatedBy: userId,
         },
       },

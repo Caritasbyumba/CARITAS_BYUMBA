@@ -183,7 +183,7 @@ export const archiveMoreonus = async (req, res) => {
       { _id: itemId },
       {
         $set: {
-          isActive: false,
+          isActive: !moreonusFound.isActive,
           updatedBy: userId,
         },
       },
