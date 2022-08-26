@@ -153,7 +153,7 @@ const Input = (props) => {
     <div
       className={`w-full box-border mt-2 flex flex-col justify-center align-start`}
     >
-      <CardSubText name={props.label} color="black" />
+      <CardSubText name={props.label} color="black" additional="font-semibold" />
       {inputElement}
       <span className={errorClasses}>
         <MdWarning size="14" color="#BE1E2D" />

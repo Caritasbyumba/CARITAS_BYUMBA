@@ -10,6 +10,10 @@ import Contactus from './pages/Contactus';
 import Project from './pages/projects/Project';
 import Publication from './pages/publications/Publication';
 import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import Dashboard from './pages/admin/Dashboard';
+import AdminHome from './pages/admin/AdminHome';
+import CarouselAuthor from './pages/admin/items/CarouselAuthor';
 
 function App() {
   return (
@@ -29,6 +33,13 @@ function App() {
         />
         <Route exact path="/contactus" component={Contactus} />
         <Route exact path="/login" component={Login} />
+        <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+        <ProtectedRoute exact path="/dashboard/home" component={AdminHome} />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/carousel"
+          component={CarouselAuthor}
+        />
       </Switch>
     </Router>
   );

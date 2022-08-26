@@ -93,12 +93,11 @@ export const CardBody = function (props) {
 
 export const CardSubText = function (props) {
   let classes =
-    'text-sm font-normal text-' +
+    props.additional +
+    ' text-sm text-' +
     props.alignment +
     ' text-' +
-    props.color +
-    ' ' +
-    props.additional;
+    props.color;
 
   return (
     <span className={classes} onClick={props.onClick}>

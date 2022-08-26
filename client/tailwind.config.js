@@ -15,6 +15,7 @@ module.exports = {
       'white-pink': '#D7C5C1',
       brown: '#BC6450',
       green: '#198754',
+      blue: '#0275d8',
     },
     fontFamily: {
       poppins: ['Poppins'],
