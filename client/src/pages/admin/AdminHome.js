@@ -15,16 +15,16 @@ const AdminHome = (props) => {
         <title>CARITAS BYUMBA</title>
       </Helmet>
       <Header />
-      <Wrapper {...props} item="carousel">
+      <Wrapper {...props} item="carousels">
         <Carousel />
       </Wrapper>
-      <Wrapper {...props}>
+      <Wrapper {...props} item="moreonus">
         <Moreonus />
       </Wrapper>
-      <Wrapper {...props}>
+      <Wrapper {...props} item="projects">
         <MainProjects />
       </Wrapper>
-      <Wrapper {...props}>
+      <Wrapper {...props} item="partners">
         <Partners />
       </Wrapper>
       <Footer />

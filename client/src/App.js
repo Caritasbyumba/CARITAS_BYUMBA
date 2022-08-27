@@ -14,6 +14,21 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/admin/Dashboard';
 import AdminHome from './pages/admin/AdminHome';
 import CarouselAuthor from './pages/admin/items/CarouselAuthor';
+import MoreonusAuthor from './pages/admin/items/MoreonusAuthor';
+import ProjectsAuthor from './pages/admin/items/ProjectsAuthor';
+import PartnersAuthor from './pages/admin/items/PartnersAuthor';
+import AdminAboutus from './pages/admin/AdminAboutus';
+import AboutusAuthor from './pages/admin/items/AboutusAuthor';
+import QuotesAuthor from './pages/admin/items/QuotesAuthor';
+import AdminProjects from './pages/admin/AdminProjects';
+import AdminPartners from './pages/admin/AdminPartners';
+import AdminPublications from './pages/admin/AdminPublications';
+import AdminContactus from './pages/admin/AdminContactus';
+import ProjectsIntroAuthor from './pages/admin/items/ProjectsIntroAuthor';
+import PartnersIntroAuthor from './pages/admin/items/PartnersIntroAuthor';
+import PublicationsIntroAuthor from './pages/admin/items/PublicationsIntroAuthor';
+import PublicationsAuthor from './pages/admin/items/PublicationAuthor';
+import FaqAuthor from './pages/admin/items/FaqAuthor';
 
 function App() {
   return (
@@ -37,8 +52,88 @@ function App() {
         <ProtectedRoute exact path="/dashboard/home" component={AdminHome} />
         <ProtectedRoute
           exact
-          path="/dashboard/item/carousel"
+          path="/dashboard/item/carousels"
           component={CarouselAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/moreonus"
+          component={MoreonusAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/projects"
+          component={ProjectsAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/partners"
+          component={PartnersAuthor}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/aboutus"
+          component={AdminAboutus}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/aboutus"
+          component={AboutusAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/quotes"
+          component={QuotesAuthor}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/projects"
+          component={AdminProjects}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/projectsintro"
+          component={ProjectsIntroAuthor}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/partners"
+          component={AdminPartners}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/partnersintro"
+          component={PartnersIntroAuthor}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/publications"
+          component={AdminPublications}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/publications"
+          component={PublicationsAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/publicationsintro"
+          component={PublicationsIntroAuthor}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/contactus"
+          component={AdminContactus}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/faqs"
+          component={FaqAuthor}
         />
       </Switch>
     </Router>

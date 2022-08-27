@@ -4,14 +4,11 @@ import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import Footer from '../../components/containers/Footer';
 import Header from '../../components/containers/Header';
-import {
-  CardBody,
-  CardSubText,
-  SectionTitle,
-} from '../../components/text';
+import { CardBody, CardSubText, SectionTitle } from '../../components/text';
 import CustomHelmet from '../../components/UI/Helmet';
 import Spinner from '../../components/UI/spinner';
 import { useFetchSpecificPublicationQuery } from '../../features/API/user-api-slice';
+import parse from 'html-react-parser';
 
 const Publication = () => {
   const { publicationId } = useParams();
@@ -62,7 +59,7 @@ const Publication = () => {
           </div>
           <div className="w-90% lg:w-70% m-auto py-5">
             <CardBody
-              name={publication.description[selectedLanguage]}
+              name={parse(publication.description[selectedLanguage])}
               additional="text-center"
             />
           </div>

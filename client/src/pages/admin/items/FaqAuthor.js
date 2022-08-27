@@ -4,7 +4,6 @@ import Footer from '../../../components/containers/Footer';
 import Header from '../../../components/containers/Header';
 import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
 import Spinner from '../../../components/UI/spinner';
-import { useFetchAllCarouselsQuery } from '../../../features/API/admin-api-slice';
 import { useSelector } from 'react-redux';
 import {
   useTable,
@@ -21,11 +20,11 @@ import {
   MdDelete,
   MdArchive,
 } from 'react-icons/md';
-import FileUpload from '../../../components/UI/FileUpload';
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
+import { useFetchAllFaqsQuery } from '../../../features/API/admin-api-slice';
 
-const CarouselAuthor = () => {
+const FaqAuthor = () => {
   const { t } = useTranslation();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -34,35 +33,32 @@ const CarouselAuthor = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { data, isFetching, refetch } = useFetchAllCarouselsQuery();
-  const [enTitle, setEnTitle] = useState('');
-  const [frTitle, setFrTitle] = useState('');
-  const [rwTitle, setRwTitle] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState(null);
+  const { data, isFetching, refetch } = useFetchAllFaqsQuery();
+  const [enQuestion, setEnQuestion] = useState('');
+  const [frQuestion, setFrQuestion] = useState('');
+  const [rwQuestion, setRwQuestion] = useState('');
+  const [enAnswer, setEnAnswer] = useState('');
+  const [frAnswer, setFrAnswer] = useState('');
+  const [rwAnswer, setRwAnswer] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showProgressBar, setShowProgressBar] = useState(false);
-  const [carouselId, setCarouselId] = useState('');
+  const [faqId, setFaqId] = useState('');
 
   const updateForm = useCallback(
-    (carouselId) => {
+    (faqId) => {
       setLoading(true);
       axios
-        .get(`/api/carousels/${carouselId}`, {
+        .get(`/api/faqs/${faqId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
-          setEnTitle(res.data.results.title.en);
-          setFrTitle(res.data.results.title.fr);
-          setRwTitle(res.data.results.title.rw);
-          setEnDescription(res.data.results.description.en);
-          setFrDescription(res.data.results.description.fr);
-          setRwDescription(res.data.results.description.rw);
+          setEnQuestion(res.data.results.question.en);
+          setFrQuestion(res.data.results.question.fr);
+          setRwQuestion(res.data.results.question.rw);
+          setEnAnswer(res.data.results.answer.en);
+          setFrAnswer(res.data.results.answer.fr);
+          setRwAnswer(res.data.results.answer.rw);
           setLoading(false);
         })
         .catch((err) => {
@@ -76,14 +72,14 @@ const CarouselAuthor = () => {
   const myData = useMemo(
     () =>
       data?.results
-        ? data.results.map((carousel, index) => {
+        ? data.results.map((faq, index) => {
             return {
               id: index + 1,
-              title: carousel.title[selectedLanguage],
-              updatedBy: carousel.updatedBy.name,
-              updatedAt: carousel.updatedAt,
-              status: carousel.isActive,
-              _id: carousel._id,
+              question: faq.question[selectedLanguage],
+              updatedBy: faq.updatedBy.name,
+              updatedAt: faq.updatedAt,
+              status: faq.isActive,
+              _id: faq._id,
             };
           })
         : [],
@@ -92,7 +88,7 @@ const CarouselAuthor = () => {
   const columns = useMemo(
     () => [
       { Header: 'N0', accessor: 'id' },
-      { Header: 'Title', accessor: 'title' },
+      { Header: 'Question', accessor: 'question' },
       { Header: 'UpdatedBy', accessor: 'updatedBy' },
       {
         Header: 'UpdatedAt',
@@ -121,7 +117,7 @@ const CarouselAuthor = () => {
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
-                  setCarouselId(value);
+                  setFaqId(value);
                   setError(null);
                   setIsUpdating(true);
                   setShowEditModal(true);
@@ -134,7 +130,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowArchiveModal(true);
-                  setCarouselId(value);
+                  setFaqId(value);
                   setError(null);
                 }}
               >
@@ -144,7 +140,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowDeleteModal(true);
-                  setCarouselId(value);
+                  setFaqId(value);
                   setError(null);
                 }}
               >
@@ -180,58 +176,46 @@ const CarouselAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
-      selectedFiles != null
+      enQuestion !== '' &&
+      frQuestion !== '' &&
+      rwQuestion !== '' &&
+      enAnswer !== '' &&
+      frAnswer !== '' &&
+      rwAnswer !== ''
     ) {
       setLoading(true);
-      setShowProgressBar(true);
       setError(null);
-      const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
-      }
+      const formData = {
+        enQuestion,
+        frQuestion,
+        rwQuestion,
+        enAnswer,
+        frAnswer,
+        rwAnswer,
+      };
       axios
-        .post('/api/carousels/add', formData, {
+        .post('/api/faqs/add', formData, {
           headers: { Authorization: token },
-          onUploadProgress: (progressEvent) => {
-            setUploadProgress(
-              Math.round(progressEvent.loaded / progressEvent.total) * 100
-            );
-          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
-          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
-          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
-    enDescription,
-    frDescription,
-    rwDescription,
-    selectedFiles,
+    enQuestion,
+    frQuestion,
+    rwQuestion,
+    enAnswer,
+    frAnswer,
+    rwAnswer,
     token,
     t,
     refetch,
@@ -239,68 +223,57 @@ const CarouselAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      enQuestion !== '' &&
+      frQuestion !== '' &&
+      rwQuestion !== '' &&
+      enAnswer !== '' &&
+      frAnswer !== '' &&
+      rwAnswer !== ''
     ) {
       setLoading(true);
-      setShowProgressBar(true);
       setError(null);
-      const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
-      }
+      const formData = {
+        enQuestion,
+        frQuestion,
+        rwQuestion,
+        enAnswer,
+        frAnswer,
+        rwAnswer,
+      };
       axios
-        .patch(`/api/carousels/${carouselId}`, formData, {
+        .patch(`/api/faqs/${faqId}`, formData, {
           headers: { Authorization: token },
-          onUploadProgress: (progressEvent) => {
-            setUploadProgress(
-              Math.round(progressEvent.loaded / progressEvent.total) * 100
-            );
-          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
-          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
-          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
-    enDescription,
-    frDescription,
-    rwDescription,
-    selectedFiles,
+    enQuestion,
+    frQuestion,
+    rwQuestion,
+    enAnswer,
+    frAnswer,
+    rwAnswer,
     token,
     t,
     refetch,
-    carouselId,
+    faqId,
   ]);
 
   const handleArchive = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/carousels/archive/${carouselId}`, null, {
+      .patch(`/api/faqs/archive/${faqId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -312,13 +285,13 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, faqId, refetch]);
 
   const handleDelete = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/carousels/${carouselId}`, {
+      .delete(`/api/faqs/${faqId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -330,7 +303,7 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, faqId, refetch]);
 
   return (
     <div>
@@ -341,106 +314,98 @@ const CarouselAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update carousel') : t('Add new carousel')}`}
+          name={`${isUpdating ? t('Update faq') : t('Add new faq')}`}
           color="red"
         />
+
         <div className="flex space-x-2">
           <Input
-            label={t('English Title')}
-            elementType="input"
+            label={t('English question')}
+            elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('English Title'),
+              placeholder: t('English question'),
             }}
-            value={enTitle}
-            changed={setEnTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={enQuestion}
+            changed={setEnQuestion}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 70 characters'
+              'English question is required and should be less than 15 characters'
             )}
           />
           <Input
-            label={t('French Title')}
-            elementType="input"
+            label={t('French question')}
+            elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('French Title'),
+              placeholder: t('French question'),
             }}
-            value={frTitle}
-            changed={setFrTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={frQuestion}
+            changed={setFrQuestion}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 70 characters'
+              'French question is required and should be less than 15 characters'
             )}
           />
           <Input
-            label={t('Kinyarwanda Title')}
-            elementType="input"
+            label={t('Kinyarwanda question')}
+            elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('Kinyarwanda Title'),
+              placeholder: t('Kinyarwanda question'),
             }}
-            value={rwTitle}
-            changed={setRwTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={rwQuestion}
+            changed={setRwQuestion}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 70 characters'
+              'Kinyarwanda question is required and should be less than 15 characters'
             )}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Description')}
+            label={t('English answer')}
             elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('English Description'),
+              placeholder: t('English answer'),
             }}
-            value={enDescription}
-            changed={setEnDescription}
+            value={enAnswer}
+            changed={setEnAnswer}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Description is required')}
+            error={t('English answer is required')}
           />
           <Input
-            label={t('French Description')}
+            label={t('French answer')}
             elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('French Description'),
+              placeholder: t('French answer'),
             }}
-            value={frDescription}
-            changed={setFrDescription}
+            value={frAnswer}
+            changed={setFrAnswer}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Description is required')}
+            error={t('French answer is required')}
           />
           <Input
-            label={t('Kinyarwanda Description')}
+            label={t('Kinyarwanda answer')}
             elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('Kinyarwanda Description'),
+              placeholder: t('Kinyarwanda answer'),
             }}
-            value={rwDescription}
-            changed={setRwDescription}
+            value={rwAnswer}
+            changed={setRwAnswer}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Description is required')}
+            error={t('Kinyarwanda answer is required')}
           />
         </div>
-        <FileUpload
-          elementConfig={{
-            accept: 'image/*',
-          }}
-          btnName="Upload image"
-          uploadProgress={uploadProgress}
-          showProgressBar={showProgressBar}
-          setSelectedFiles={setSelectedFiles}
-        />
         {loading && <Spinner />}
         {error && (
           <CardBody name={error.error} color="red" additional="font-semibold" />
@@ -450,7 +415,8 @@ const CarouselAuthor = () => {
           isSquare
           outline="false"
           color="red"
-          clicked={isUpdating ? () => handleUpdate(carouselId) : handleAdd}
+          additional="mt-3"
+          clicked={isUpdating ? () => handleUpdate(faqId) : handleAdd}
         />
       </Modal>
       <Modal
@@ -460,9 +426,9 @@ const CarouselAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive carousel')} color="red" />
+        <CardTitle name={t('Archive faqs')} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this carousel?')}
+          name={t('Are you sure you want to archive/unarchive this faqs?')}
         />
         {loading && <Spinner />}
         {error && (
@@ -492,9 +458,9 @@ const CarouselAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete carousel')} color="red" />
+        <CardTitle name={t('Delete faq')} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this carousel?')} ${t(
+          name={`${t('Are you sure you want to delete this faq?')} ${t(
             'Contents deleted can not be retrieved.'
           )}`}
         />
@@ -521,7 +487,7 @@ const CarouselAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all Carousels')} />
+        <SectionTitle name={t('List of all faq')} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -540,19 +506,19 @@ const CarouselAuthor = () => {
                 />
               </div>
               <Button
-                name={t('Add new carousel')}
+                name={t('Add new faq')}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnTitle('');
-                  setFrTitle('');
-                  setRwTitle('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnQuestion('');
+                  setFrQuestion('');
+                  setRwQuestion('');
+                  setEnAnswer('');
+                  setFrAnswer('');
+                  setRwAnswer('');
                   setError(null);
                 }}
               />
@@ -622,4 +588,4 @@ const CarouselAuthor = () => {
   );
 };
 
-export default CarouselAuthor;
+export default FaqAuthor;

@@ -6,7 +6,8 @@ import { NormalText } from '../text';
 import i18n from '../../utils/i18n';
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import { languageChanged } from '../../features/global/global-slice';
+import { languageChanged, logout } from '../../features/global/global-slice';
+import { TextButton } from '../UI/button';
 
 const Header = (props) => {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ const Header = (props) => {
   const dispatch = useDispatch();
 
   const selectLng = useSelector((state) => state.global.selectedLanguage);
+  const isAuthenticated = useSelector((state) => state.global.token !== null);
   const handleLang = (value) => {
     i18n.changeLanguage(value);
     dispatch(languageChanged(value));
@@ -49,6 +51,19 @@ const Header = (props) => {
                 <CustomLink page="/partners" name={t('Partners')} />
                 <CustomLink page="/publications" name={t('Publications')} />
                 <CustomLink page="/contactus" name={t('Contact Us')} />
+                {isAuthenticated && (
+                  <CustomLink page="/dashboard" name={t('Dashboard')} />
+                )}
+                {isAuthenticated && (
+                  <TextButton
+                    name={t('Log out')}
+                    color="red"
+                    additional="hover:font-bold"
+                    onClick={() => {
+                      dispatch(logout());
+                    }}
+                  />
+                )}
               </div>
               <div className="ml-10 flex space-x-2">
                 {languages.map((lang, index) => (

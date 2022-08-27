@@ -4,7 +4,7 @@ import Footer from '../../../components/containers/Footer';
 import Header from '../../../components/containers/Header';
 import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
 import Spinner from '../../../components/UI/spinner';
-import { useFetchAllCarouselsQuery } from '../../../features/API/admin-api-slice';
+import { useFetchAllAboutusQuery } from '../../../features/API/admin-api-slice';
 import { useSelector } from 'react-redux';
 import {
   useTable,
@@ -21,11 +21,10 @@ import {
   MdDelete,
   MdArchive,
 } from 'react-icons/md';
-import FileUpload from '../../../components/UI/FileUpload';
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
 
-const CarouselAuthor = () => {
+const AboutusAuthor = () => {
   const { t } = useTranslation();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -34,35 +33,50 @@ const CarouselAuthor = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { data, isFetching, refetch } = useFetchAllCarouselsQuery();
-  const [enTitle, setEnTitle] = useState('');
-  const [frTitle, setFrTitle] = useState('');
-  const [rwTitle, setRwTitle] = useState('');
+  const { data, isFetching, refetch } = useFetchAllAboutusQuery();
+  const [enName, setEnName] = useState('');
+  const [frName, setFrName] = useState('');
+  const [rwName, setRwName] = useState('');
   const [enDescription, setEnDescription] = useState('');
   const [frDescription, setFrDescription] = useState('');
   const [rwDescription, setRwDescription] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState(null);
+  const [enVision, setEnVision] = useState('');
+  const [frVision, setFrVision] = useState('');
+  const [rwVision, setRwVision] = useState('');
+  const [enMission, setEnMission] = useState('');
+  const [frMission, setFrMission] = useState('');
+  const [rwMission, setRwMission] = useState('');
+  const [enObjectives, setEnObjectives] = useState('');
+  const [frObjectives, setFrObjectives] = useState('');
+  const [rwObjectives, setRwObjectives] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showProgressBar, setShowProgressBar] = useState(false);
-  const [carouselId, setCarouselId] = useState('');
+  const [aboutusId, setAboutusId] = useState('');
 
   const updateForm = useCallback(
-    (carouselId) => {
+    (aboutusId) => {
       setLoading(true);
       axios
-        .get(`/api/carousels/${carouselId}`, {
+        .get(`/api/aboutus/${aboutusId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
-          setEnTitle(res.data.results.title.en);
-          setFrTitle(res.data.results.title.fr);
-          setRwTitle(res.data.results.title.rw);
+          setEnName(res.data.results.name.en);
+          setFrName(res.data.results.name.fr);
+          setRwName(res.data.results.name.rw);
           setEnDescription(res.data.results.description.en);
           setFrDescription(res.data.results.description.fr);
           setRwDescription(res.data.results.description.rw);
+          setEnVision(res.data.results.vision.en);
+          setFrVision(res.data.results.vision.fr);
+          setRwVision(res.data.results.vision.rw);
+          setEnMission(res.data.results.mission.en);
+          setFrMission(res.data.results.mission.fr);
+          setRwMission(res.data.results.mission.rw);
+          setEnObjectives(res.data.results.objectives.en);
+          setFrObjectives(res.data.results.objectives.fr);
+          setRwObjectives(res.data.results.objectives.rw);
           setLoading(false);
         })
         .catch((err) => {
@@ -76,14 +90,14 @@ const CarouselAuthor = () => {
   const myData = useMemo(
     () =>
       data?.results
-        ? data.results.map((carousel, index) => {
+        ? data.results.map((aboutus, index) => {
             return {
               id: index + 1,
-              title: carousel.title[selectedLanguage],
-              updatedBy: carousel.updatedBy.name,
-              updatedAt: carousel.updatedAt,
-              status: carousel.isActive,
-              _id: carousel._id,
+              description: aboutus.description[selectedLanguage],
+              updatedBy: aboutus.updatedBy.name,
+              updatedAt: aboutus.updatedAt,
+              status: aboutus.isActive,
+              _id: aboutus._id,
             };
           })
         : [],
@@ -92,7 +106,7 @@ const CarouselAuthor = () => {
   const columns = useMemo(
     () => [
       { Header: 'N0', accessor: 'id' },
-      { Header: 'Title', accessor: 'title' },
+      { Header: 'Description', accessor: 'description' },
       { Header: 'UpdatedBy', accessor: 'updatedBy' },
       {
         Header: 'UpdatedAt',
@@ -121,7 +135,7 @@ const CarouselAuthor = () => {
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
-                  setCarouselId(value);
+                  setAboutusId(value);
                   setError(null);
                   setIsUpdating(true);
                   setShowEditModal(true);
@@ -134,7 +148,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowArchiveModal(true);
-                  setCarouselId(value);
+                  setAboutusId(value);
                   setError(null);
                 }}
               >
@@ -144,7 +158,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowDeleteModal(true);
-                  setCarouselId(value);
+                  setAboutusId(value);
                   setError(null);
                 }}
               >
@@ -180,58 +194,73 @@ const CarouselAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
+      enName !== '' &&
+      frName !== '' &&
+      rwName !== '' &&
       enDescription !== '' &&
       frDescription !== '' &&
       rwDescription !== '' &&
-      selectedFiles != null
+      enVision !== '' &&
+      frVision !== '' &&
+      rwVision !== '' &&
+      enMission !== '' &&
+      frMission !== '' &&
+      rwMission !== '' &&
+      enObjectives !== '' &&
+      frObjectives !== '' &&
+      rwObjectives !== ''
     ) {
       setLoading(true);
-      setShowProgressBar(true);
       setError(null);
-      const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
-      }
+      const formData = {
+        enName,
+        frName,
+        rwName,
+        enDescription,
+        frDescription,
+        rwDescription,
+        enVision,
+        frVision,
+        rwVision,
+        enMission,
+        frMission,
+        rwMission,
+        enObjectives,
+        frObjectives,
+        rwObjectives,
+      };
       axios
-        .post('/api/carousels/add', formData, {
+        .post('/api/aboutus/add', formData, {
           headers: { Authorization: token },
-          onUploadProgress: (progressEvent) => {
-            setUploadProgress(
-              Math.round(progressEvent.loaded / progressEvent.total) * 100
-            );
-          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
-          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
-          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
+    enName,
+    frName,
+    rwName,
     enDescription,
     frDescription,
     rwDescription,
-    selectedFiles,
+    enVision,
+    frVision,
+    rwVision,
+    enMission,
+    frMission,
+    rwMission,
+    enObjectives,
+    frObjectives,
+    rwObjectives,
     token,
     t,
     refetch,
@@ -239,68 +268,84 @@ const CarouselAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
+      enName !== '' &&
+      frName !== '' &&
+      rwName !== '' &&
       enDescription !== '' &&
       frDescription !== '' &&
-      rwDescription !== ''
+      rwDescription !== '' &&
+      enVision !== '' &&
+      frVision !== '' &&
+      rwVision !== '' &&
+      enMission !== '' &&
+      frMission !== '' &&
+      rwMission !== '' &&
+      enObjectives !== '' &&
+      frObjectives !== '' &&
+      rwObjectives !== ''
     ) {
       setLoading(true);
-      setShowProgressBar(true);
       setError(null);
-      const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
-      }
+      const formData = {
+        enName,
+        frName,
+        rwName,
+        enDescription,
+        frDescription,
+        rwDescription,
+        enVision,
+        frVision,
+        rwVision,
+        enMission,
+        frMission,
+        rwMission,
+        enObjectives,
+        frObjectives,
+        rwObjectives,
+      };
       axios
-        .patch(`/api/carousels/${carouselId}`, formData, {
+        .patch(`/api/aboutus/${aboutusId}`, formData, {
           headers: { Authorization: token },
-          onUploadProgress: (progressEvent) => {
-            setUploadProgress(
-              Math.round(progressEvent.loaded / progressEvent.total) * 100
-            );
-          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
-          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
-          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
+    enName,
+    frName,
+    rwName,
     enDescription,
     frDescription,
     rwDescription,
-    selectedFiles,
+    enVision,
+    frVision,
+    rwVision,
+    enMission,
+    frMission,
+    rwMission,
+    enObjectives,
+    frObjectives,
+    rwObjectives,
     token,
     t,
     refetch,
-    carouselId,
+    aboutusId,
   ]);
 
   const handleArchive = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/carousels/archive/${carouselId}`, null, {
+      .patch(`/api/aboutus/archive/${aboutusId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -312,13 +357,13 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, aboutusId, refetch]);
 
   const handleDelete = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/carousels/${carouselId}`, {
+      .delete(`/api/aboutus/${aboutusId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -330,7 +375,7 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, aboutusId, refetch]);
 
   return (
     <div>
@@ -341,53 +386,53 @@ const CarouselAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update carousel') : t('Add new carousel')}`}
+          name={`${isUpdating ? t('Update About us') : t('Add new About us')}`}
           color="red"
         />
         <div className="flex space-x-2">
           <Input
-            label={t('English Title')}
+            label={t('English name')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('English Title'),
+              placeholder: t('English name'),
             }}
-            value={enTitle}
-            changed={setEnTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={enName}
+            changed={setEnName}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 70 characters'
+              'English name is required and should be less than 15 characters'
             )}
           />
           <Input
-            label={t('French Title')}
+            label={t('French name')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('French Title'),
+              placeholder: t('French name'),
             }}
-            value={frTitle}
-            changed={setFrTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={frName}
+            changed={setFrName}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 70 characters'
+              'French name is required and should be less than 15 characters'
             )}
           />
           <Input
-            label={t('Kinyarwanda Title')}
+            label={t('Kinyarwanda name')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('Kinyarwanda Title'),
+              placeholder: t('Kinyarwanda name'),
             }}
-            value={rwTitle}
-            changed={setRwTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={rwName}
+            changed={setRwName}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 70 characters'
+              'Kinyarwanda name is required and should be less than 15 characters'
             )}
           />
         </div>
@@ -432,15 +477,129 @@ const CarouselAuthor = () => {
             error={t('Kinyarwanda Description is required')}
           />
         </div>
-        <FileUpload
-          elementConfig={{
-            accept: 'image/*',
-          }}
-          btnName="Upload image"
-          uploadProgress={uploadProgress}
-          showProgressBar={showProgressBar}
-          setSelectedFiles={setSelectedFiles}
-        />
+        <div className="flex space-x-2">
+          <Input
+            label={t('English Vision')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('English Vision'),
+            }}
+            value={enVision}
+            changed={setEnVision}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('English Vision is required')}
+          />
+          <Input
+            label={t('French Vision')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('French Vision'),
+            }}
+            value={frVision}
+            changed={setFrVision}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('French Vision is required')}
+          />
+          <Input
+            label={t('Kinyarwanda Vision')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('Kinyarwanda Vision'),
+            }}
+            value={rwVision}
+            changed={setRwVision}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('Kinyarwanda Vision is required')}
+          />
+        </div>
+        <div className="flex space-x-2">
+          <Input
+            label={t('English Mission')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('English Mission'),
+            }}
+            value={enMission}
+            changed={setEnMission}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('English Mission is required')}
+          />
+          <Input
+            label={t('French Mission')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('French Mission'),
+            }}
+            value={frMission}
+            changed={setFrMission}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('French Mission is required')}
+          />
+          <Input
+            label={t('Kinyarwanda Mission')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('Kinyarwanda Mission'),
+            }}
+            value={rwMission}
+            changed={setRwMission}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('Kinyarwanda Mission is required')}
+          />
+        </div>
+        <div className="flex space-x-2">
+          <Input
+            label={t('English Objectives')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('English Objectives'),
+            }}
+            value={enObjectives}
+            changed={setEnObjectives}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('English Objectives is required')}
+          />
+          <Input
+            label={t('French Objectives')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('French Objectives'),
+            }}
+            value={frObjectives}
+            changed={setFrObjectives}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('French Objectives is required')}
+          />
+          <Input
+            label={t('Kinyarwanda Objectives')}
+            elementType="textarea"
+            elementConfig={{
+              type: 'text',
+              placeholder: t('Kinyarwanda Objectives'),
+            }}
+            value={rwObjectives}
+            changed={setRwObjectives}
+            validation={{ required: true }}
+            shouldValidate
+            error={t('Kinyarwanda Objectives is required')}
+          />
+        </div>
         {loading && <Spinner />}
         {error && (
           <CardBody name={error.error} color="red" additional="font-semibold" />
@@ -450,7 +609,8 @@ const CarouselAuthor = () => {
           isSquare
           outline="false"
           color="red"
-          clicked={isUpdating ? () => handleUpdate(carouselId) : handleAdd}
+          additional="mt-3"
+          clicked={isUpdating ? () => handleUpdate(aboutusId) : handleAdd}
         />
       </Modal>
       <Modal
@@ -460,9 +620,9 @@ const CarouselAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive carousel')} color="red" />
+        <CardTitle name={t('Archive about us')} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this carousel?')}
+          name={t('Are you sure you want to archive/unarchive this about us?')}
         />
         {loading && <Spinner />}
         {error && (
@@ -492,9 +652,9 @@ const CarouselAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete carousel')} color="red" />
+        <CardTitle name={t('Delete about us')} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this carousel?')} ${t(
+          name={`${t('Are you sure you want to delete this about us?')} ${t(
             'Contents deleted can not be retrieved.'
           )}`}
         />
@@ -521,7 +681,7 @@ const CarouselAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all Carousels')} />
+        <SectionTitle name={t('List of all about us')} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -540,16 +700,16 @@ const CarouselAuthor = () => {
                 />
               </div>
               <Button
-                name={t('Add new carousel')}
+                name={t('Add new about us')}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnTitle('');
-                  setFrTitle('');
-                  setRwTitle('');
+                  setEnName('');
+                  setFrName('');
+                  setRwName('');
                   setEnDescription('');
                   setFrDescription('');
                   setRwDescription('');
@@ -622,4 +782,4 @@ const CarouselAuthor = () => {
   );
 };
 
-export default CarouselAuthor;
+export default AboutusAuthor;

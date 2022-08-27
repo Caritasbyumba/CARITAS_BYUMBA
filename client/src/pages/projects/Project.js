@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import CustomHelmet from '../../components/UI/Helmet';
+import parse from 'html-react-parser';
 
 const Project = () => {
   const { t } = useTranslation();
@@ -63,7 +64,7 @@ const Project = () => {
           </div>
           <div className="w-90% lg:w-70% m-auto py-5">
             <CardBody
-              name={project.description[selectedLanguage]}
+              name={parse(project.description[selectedLanguage])}
               additional="text-center"
             />
           </div>

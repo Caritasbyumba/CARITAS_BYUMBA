@@ -7,7 +7,7 @@ const Modal = (props) => {
     "fixed bg-white border border-solid border-gray-500 shadow p-4 box-border transition-all duration-300 ease-out rounded-lg";
   if (props.show) {
     classes =
-      "w-90% fixed z-50 bg-white border border-solid border-gray-500 shadow p-4 box-border transition-all duration-300 ease-out rounded-lg";
+      "w-90% max-h-80vh fixed z-50 bg-white border border-solid border-gray-500 shadow p-4 box-border transition-all duration-300 ease-out rounded-lg overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100";
   }
   return (
     <Fragment>

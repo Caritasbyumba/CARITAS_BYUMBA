@@ -4,7 +4,6 @@ import Footer from '../../../components/containers/Footer';
 import Header from '../../../components/containers/Header';
 import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
 import Spinner from '../../../components/UI/spinner';
-import { useFetchAllCarouselsQuery } from '../../../features/API/admin-api-slice';
 import { useSelector } from 'react-redux';
 import {
   useTable,
@@ -21,11 +20,11 @@ import {
   MdDelete,
   MdArchive,
 } from 'react-icons/md';
-import FileUpload from '../../../components/UI/FileUpload';
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
+import { useFetchAllProjectsIntroQuery } from '../../../features/API/admin-api-slice';
 
-const CarouselAuthor = () => {
+const ProjectsIntroAuthor = () => {
   const { t } = useTranslation();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -34,26 +33,23 @@ const CarouselAuthor = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { data, isFetching, refetch } = useFetchAllCarouselsQuery();
+  const { data, isFetching, refetch } = useFetchAllProjectsIntroQuery();
   const [enTitle, setEnTitle] = useState('');
   const [frTitle, setFrTitle] = useState('');
   const [rwTitle, setRwTitle] = useState('');
   const [enDescription, setEnDescription] = useState('');
   const [frDescription, setFrDescription] = useState('');
   const [rwDescription, setRwDescription] = useState('');
-  const [selectedFiles, setSelectedFiles] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [showProgressBar, setShowProgressBar] = useState(false);
-  const [carouselId, setCarouselId] = useState('');
+  const [projectsIntroId, setProjectsIntroId] = useState('');
 
   const updateForm = useCallback(
-    (carouselId) => {
+    (projectsIntroId) => {
       setLoading(true);
       axios
-        .get(`/api/carousels/${carouselId}`, {
+        .get(`/api/projectsintro/${projectsIntroId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -76,14 +72,14 @@ const CarouselAuthor = () => {
   const myData = useMemo(
     () =>
       data?.results
-        ? data.results.map((carousel, index) => {
+        ? data.results.map((projectsIntro, index) => {
             return {
               id: index + 1,
-              title: carousel.title[selectedLanguage],
-              updatedBy: carousel.updatedBy.name,
-              updatedAt: carousel.updatedAt,
-              status: carousel.isActive,
-              _id: carousel._id,
+              description: projectsIntro.description[selectedLanguage],
+              updatedBy: projectsIntro.updatedBy.name,
+              updatedAt: projectsIntro.updatedAt,
+              status: projectsIntro.isActive,
+              _id: projectsIntro._id,
             };
           })
         : [],
@@ -92,7 +88,7 @@ const CarouselAuthor = () => {
   const columns = useMemo(
     () => [
       { Header: 'N0', accessor: 'id' },
-      { Header: 'Title', accessor: 'title' },
+      { Header: 'Description', accessor: 'description' },
       { Header: 'UpdatedBy', accessor: 'updatedBy' },
       {
         Header: 'UpdatedAt',
@@ -121,7 +117,7 @@ const CarouselAuthor = () => {
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
-                  setCarouselId(value);
+                  setProjectsIntroId(value);
                   setError(null);
                   setIsUpdating(true);
                   setShowEditModal(true);
@@ -134,7 +130,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowArchiveModal(true);
-                  setCarouselId(value);
+                  setProjectsIntroId(value);
                   setError(null);
                 }}
               >
@@ -144,7 +140,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowDeleteModal(true);
-                  setCarouselId(value);
+                  setProjectsIntroId(value);
                   setError(null);
                 }}
               >
@@ -185,40 +181,29 @@ const CarouselAuthor = () => {
       rwTitle !== '' &&
       enDescription !== '' &&
       frDescription !== '' &&
-      rwDescription !== '' &&
-      selectedFiles != null
+      rwDescription !== ''
     ) {
       setLoading(true);
-      setShowProgressBar(true);
       setError(null);
-      const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
-      }
+      const formData = {
+        enTitle,
+        frTitle,
+        rwTitle,
+        enDescription,
+        frDescription,
+        rwDescription,
+      };
       axios
-        .post('/api/carousels/add', formData, {
+        .post('/api/projectsintro/add', formData, {
           headers: { Authorization: token },
-          onUploadProgress: (progressEvent) => {
-            setUploadProgress(
-              Math.round(progressEvent.loaded / progressEvent.total) * 100
-            );
-          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
-          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
-          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
@@ -231,7 +216,6 @@ const CarouselAuthor = () => {
     enDescription,
     frDescription,
     rwDescription,
-    selectedFiles,
     token,
     t,
     refetch,
@@ -247,36 +231,26 @@ const CarouselAuthor = () => {
       rwDescription !== ''
     ) {
       setLoading(true);
-      setShowProgressBar(true);
       setError(null);
-      const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
-      }
+      const formData = {
+        enTitle,
+        frTitle,
+        rwTitle,
+        enDescription,
+        frDescription,
+        rwDescription,
+      };
       axios
-        .patch(`/api/carousels/${carouselId}`, formData, {
+        .patch(`/api/projectsintro/${projectsIntroId}`, formData, {
           headers: { Authorization: token },
-          onUploadProgress: (progressEvent) => {
-            setUploadProgress(
-              Math.round(progressEvent.loaded / progressEvent.total) * 100
-            );
-          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
-          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
-          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
@@ -289,18 +263,17 @@ const CarouselAuthor = () => {
     enDescription,
     frDescription,
     rwDescription,
-    selectedFiles,
     token,
     t,
     refetch,
-    carouselId,
+    projectsIntroId,
   ]);
 
   const handleArchive = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/carousels/archive/${carouselId}`, null, {
+      .patch(`/api/projectsintro/archive/${projectsIntroId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -312,13 +285,13 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, projectsIntroId, refetch]);
 
   const handleDelete = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/carousels/${carouselId}`, {
+      .delete(`/api/projectsintro/${projectsIntroId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -330,7 +303,7 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, projectsIntroId, refetch]);
 
   return (
     <div>
@@ -341,53 +314,58 @@ const CarouselAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update carousel') : t('Add new carousel')}`}
+          name={`${
+            isUpdating
+              ? t('Update projects introduction')
+              : t('Add new projects introduction')
+          }`}
           color="red"
         />
+
         <div className="flex space-x-2">
           <Input
-            label={t('English Title')}
+            label={t('English title')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('English Title'),
+              placeholder: t('English title'),
             }}
             value={enTitle}
             changed={setEnTitle}
-            validation={{ required: true, maxLength: 70 }}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 70 characters'
+              'English title is required and should be less than 15 characters'
             )}
           />
           <Input
-            label={t('French Title')}
+            label={t('French title')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('French Title'),
+              placeholder: t('French title'),
             }}
             value={frTitle}
             changed={setFrTitle}
-            validation={{ required: true, maxLength: 70 }}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 70 characters'
+              'French title is required and should be less than 15 characters'
             )}
           />
           <Input
-            label={t('Kinyarwanda Title')}
+            label={t('Kinyarwanda title')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('Kinyarwanda Title'),
+              placeholder: t('Kinyarwanda title'),
             }}
             value={rwTitle}
             changed={setRwTitle}
-            validation={{ required: true, maxLength: 70 }}
+            validation={{ required: true, maxLength: 15 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 70 characters'
+              'Kinyarwanda title is required and should be less than 15 characters'
             )}
           />
         </div>
@@ -432,15 +410,6 @@ const CarouselAuthor = () => {
             error={t('Kinyarwanda Description is required')}
           />
         </div>
-        <FileUpload
-          elementConfig={{
-            accept: 'image/*',
-          }}
-          btnName="Upload image"
-          uploadProgress={uploadProgress}
-          showProgressBar={showProgressBar}
-          setSelectedFiles={setSelectedFiles}
-        />
         {loading && <Spinner />}
         {error && (
           <CardBody name={error.error} color="red" additional="font-semibold" />
@@ -450,7 +419,8 @@ const CarouselAuthor = () => {
           isSquare
           outline="false"
           color="red"
-          clicked={isUpdating ? () => handleUpdate(carouselId) : handleAdd}
+          additional="mt-3"
+          clicked={isUpdating ? () => handleUpdate(projectsIntroId) : handleAdd}
         />
       </Modal>
       <Modal
@@ -460,9 +430,11 @@ const CarouselAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive carousel')} color="red" />
+        <CardTitle name={t('Archive project introduction')} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this carousel?')}
+          name={t(
+            'Are you sure you want to archive/unarchive this project introduction?'
+          )}
         />
         {loading && <Spinner />}
         {error && (
@@ -492,11 +464,11 @@ const CarouselAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete carousel')} color="red" />
+        <CardTitle name={t('Delete projects introduction')} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this carousel?')} ${t(
-            'Contents deleted can not be retrieved.'
-          )}`}
+          name={`${t(
+            'Are you sure you want to delete this projects introduction?'
+          )} ${t('Contents deleted can not be retrieved.')}`}
         />
         {loading && <Spinner />}
         {error && (
@@ -521,7 +493,7 @@ const CarouselAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all Carousels')} />
+        <SectionTitle name={t('List of all projects introduction')} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -540,7 +512,7 @@ const CarouselAuthor = () => {
                 />
               </div>
               <Button
-                name={t('Add new carousel')}
+                name={t('Add new about us')}
                 isSquare
                 outline="false"
                 color="blue"
@@ -622,4 +594,4 @@ const CarouselAuthor = () => {
   );
 };
 
-export default CarouselAuthor;
+export default ProjectsIntroAuthor;

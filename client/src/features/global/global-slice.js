@@ -35,6 +35,9 @@ const globalSlice = createSlice({
       state.name = localStorage.getItem('name');
     },
     logout(state) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('name');
       state.token = null;
       state.name = null;
       state.userId = null;

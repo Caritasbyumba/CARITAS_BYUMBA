@@ -17,8 +17,70 @@ export const adminApiSlice = createApi({
           return '/carousels';
         },
       }),
+      fetchAllMoreonus: builder.query({
+        query: () => {
+          return '/moreonus';
+        },
+      }),
+      fetchAllProjects: builder.query({
+        query: () => {
+          return '/projects';
+        },
+      }),
+      fetchAllPartners: builder.query({
+        query: () => {
+          return '/partners';
+        },
+      }),
+      fetchAllAboutus: builder.query({
+        query: () => {
+          return '/aboutus';
+        },
+      }),
+      fetchAllQuotes: builder.query({
+        query: () => {
+          return '/quotes';
+        },
+      }),
+      fetchAllProjectsIntro: builder.query({
+        query: () => {
+          return '/projectsintro';
+        },
+      }),
+      fetchAllPartnersIntro: builder.query({
+        query: () => {
+          return '/partnersintro';
+        },
+      }),
+      fetchAllPublicationsIntro: builder.query({
+        query: () => {
+          return '/publicationsintro';
+        },
+      }),
+      fetchAllPublications: builder.query({
+        query: () => {
+          return '/publications';
+        },
+      }),
+      fetchAllFaqs: builder.query({
+        query: () => {
+          return '/faqs';
+        },
+      }),
     };
   },
 });
 
-export const { useFetchAllCarouselsQuery } = adminApiSlice;
+export const {
+  useFetchAllCarouselsQuery,
+  useFetchAllMoreonusQuery,
+  useFetchAllProjectsQuery,
+  useFetchAllPartnersQuery,
+  useFetchAllAboutusQuery,
+  useFetchAllQuotesQuery,
+  useFetchAllFaqsQuery,
+  useFetchAllPartnersIntroQuery,
+  useFetchAllProjectsIntroQuery,
+  useFetchAllPublicationsIntroQuery,
+  useFetchAllPublicationsQuery,
+} = adminApiSlice;

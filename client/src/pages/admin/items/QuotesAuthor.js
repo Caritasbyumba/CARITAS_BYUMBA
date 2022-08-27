@@ -4,7 +4,6 @@ import Footer from '../../../components/containers/Footer';
 import Header from '../../../components/containers/Header';
 import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
 import Spinner from '../../../components/UI/spinner';
-import { useFetchAllCarouselsQuery } from '../../../features/API/admin-api-slice';
 import { useSelector } from 'react-redux';
 import {
   useTable,
@@ -24,45 +23,47 @@ import {
 import FileUpload from '../../../components/UI/FileUpload';
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
+import { useFetchAllQuotesQuery } from '../../../features/API/admin-api-slice';
 
-const CarouselAuthor = () => {
+const QuotesAuthor = () => {
   const { t } = useTranslation();
-  const selectedLanguage = useSelector(
-    (state) => state.global.selectedLanguage
-  );
   const token = useSelector((state) => state.global.token);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { data, isFetching, refetch } = useFetchAllCarouselsQuery();
-  const [enTitle, setEnTitle] = useState('');
-  const [frTitle, setFrTitle] = useState('');
-  const [rwTitle, setRwTitle] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
+  const { data, isFetching, refetch } = useFetchAllQuotesQuery();
+  const [name, setName] = useState('');
+  const [enRole, setEnRole] = useState('');
+  const [frRole, setFrRole] = useState('');
+  const [rwRole, setRwRole] = useState('');
+  const [enQuote, setEnQuote] = useState('');
+  const [frQuote, setFrQuote] = useState('');
+  const [rwQuote, setRwQuote] = useState('');
+  const [order, setOrder] = useState(100);
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
-  const [carouselId, setCarouselId] = useState('');
+  const [quoteId, setQuoteId] = useState('');
 
   const updateForm = useCallback(
-    (carouselId) => {
+    (quoteId) => {
       setLoading(true);
       axios
-        .get(`/api/carousels/${carouselId}`, {
+        .get(`/api/quotes/${quoteId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
-          setEnTitle(res.data.results.title.en);
-          setFrTitle(res.data.results.title.fr);
-          setRwTitle(res.data.results.title.rw);
-          setEnDescription(res.data.results.description.en);
-          setFrDescription(res.data.results.description.fr);
-          setRwDescription(res.data.results.description.rw);
+          setName(res.data.results.name);
+          setEnRole(res.data.results.role.en);
+          setFrRole(res.data.results.role.fr);
+          setRwRole(res.data.results.role.rw);
+          setEnQuote(res.data.results.quote.en);
+          setFrQuote(res.data.results.quote.fr);
+          setRwQuote(res.data.results.quote.rw);
+          setOrder(res.data.results.order);
           setLoading(false);
         })
         .catch((err) => {
@@ -79,7 +80,7 @@ const CarouselAuthor = () => {
         ? data.results.map((carousel, index) => {
             return {
               id: index + 1,
-              title: carousel.title[selectedLanguage],
+              name: carousel.name,
               updatedBy: carousel.updatedBy.name,
               updatedAt: carousel.updatedAt,
               status: carousel.isActive,
@@ -87,12 +88,12 @@ const CarouselAuthor = () => {
             };
           })
         : [],
-    [data, selectedLanguage]
+    [data]
   );
   const columns = useMemo(
     () => [
       { Header: 'N0', accessor: 'id' },
-      { Header: 'Title', accessor: 'title' },
+      { Header: 'Name', accessor: 'name' },
       { Header: 'UpdatedBy', accessor: 'updatedBy' },
       {
         Header: 'UpdatedAt',
@@ -121,7 +122,7 @@ const CarouselAuthor = () => {
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
-                  setCarouselId(value);
+                  setQuoteId(value);
                   setError(null);
                   setIsUpdating(true);
                   setShowEditModal(true);
@@ -134,7 +135,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowArchiveModal(true);
-                  setCarouselId(value);
+                  setQuoteId(value);
                   setError(null);
                 }}
               >
@@ -144,7 +145,7 @@ const CarouselAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowDeleteModal(true);
-                  setCarouselId(value);
+                  setQuoteId(value);
                   setError(null);
                 }}
               >
@@ -180,29 +181,33 @@ const CarouselAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
+      name !== '' &&
+      enRole !== '' &&
+      frRole !== '' &&
+      rwRole !== '' &&
+      enQuote !== '' &&
+      frQuote !== '' &&
+      rwQuote !== '' &&
+      order !== '' &&
       selectedFiles != null
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
+      formData.append('name', name);
+      formData.append('enRole', enRole);
+      formData.append('frRole', frRole);
+      formData.append('rwRole', rwRole);
+      formData.append('enQuote', enQuote);
+      formData.append('frQuote', frQuote);
+      formData.append('rwQuote', rwQuote);
+      formData.append('order', order);
       if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
+        formData.append('profile', selectedFiles[0]);
       }
       axios
-        .post('/api/carousels/add', formData, {
+        .post('/api/quotes/add', formData, {
           headers: { Authorization: token },
           onUploadProgress: (progressEvent) => {
             setUploadProgress(
@@ -225,12 +230,14 @@ const CarouselAuthor = () => {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
-    enDescription,
-    frDescription,
-    rwDescription,
+    name,
+    enRole,
+    frRole,
+    rwRole,
+    enQuote,
+    frQuote,
+    rwQuote,
+    order,
     selectedFiles,
     token,
     t,
@@ -239,28 +246,32 @@ const CarouselAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      name !== '' &&
+      enRole !== '' &&
+      frRole !== '' &&
+      rwRole !== '' &&
+      enQuote !== '' &&
+      frQuote !== '' &&
+      rwQuote !== '' &&
+      order !== ''
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
+      formData.append('name', name);
+      formData.append('enRole', enRole);
+      formData.append('frRole', frRole);
+      formData.append('rwRole', rwRole);
+      formData.append('enQuote', enQuote);
+      formData.append('frQuote', frQuote);
+      formData.append('rwQuote', rwQuote);
+      formData.append('order', order);
       if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
+        formData.append('profile', selectedFiles[0]);
       }
       axios
-        .patch(`/api/carousels/${carouselId}`, formData, {
+        .patch(`/api/quotes/${quoteId}`, formData, {
           headers: { Authorization: token },
           onUploadProgress: (progressEvent) => {
             setUploadProgress(
@@ -283,24 +294,26 @@ const CarouselAuthor = () => {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
-    enDescription,
-    frDescription,
-    rwDescription,
+    name,
+    enRole,
+    frRole,
+    rwRole,
+    enQuote,
+    frQuote,
+    rwQuote,
+    order,
     selectedFiles,
     token,
     t,
     refetch,
-    carouselId,
+    quoteId,
   ]);
 
   const handleArchive = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/carousels/archive/${carouselId}`, null, {
+      .patch(`/api/quotes/archive/${quoteId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -312,13 +325,13 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, quoteId, refetch]);
 
   const handleDelete = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/carousels/${carouselId}`, {
+      .delete(`/api/quotes/${quoteId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -330,7 +343,7 @@ const CarouselAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, carouselId, refetch]);
+  }, [token, quoteId, refetch]);
 
   return (
     <div>
@@ -341,97 +354,118 @@ const CarouselAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update carousel') : t('Add new carousel')}`}
+          name={`${isUpdating ? t('Update quote') : t('Add new quote')}`}
           color="red"
+        />
+
+        <Input
+          label={t('Name')}
+          elementType="input"
+          elementConfig={{
+            type: 'text',
+            placeholder: t('Name'),
+          }}
+          value={name}
+          changed={setName}
+          validation={{ required: true }}
+          shouldValidate
+          error={t('Name is required')}
         />
         <div className="flex space-x-2">
           <Input
-            label={t('English Title')}
-            elementType="input"
+            label={t('English role')}
+            elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('English Title'),
+              placeholder: t('English role'),
             }}
-            value={enTitle}
-            changed={setEnTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={enRole}
+            changed={setEnRole}
+            validation={{ required: true }}
             shouldValidate
-            error={t(
-              'English title is required and should be less than 70 characters'
-            )}
+            error={t('English role is required')}
           />
           <Input
-            label={t('French Title')}
-            elementType="input"
+            label={t('French role')}
+            elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('French Title'),
+              placeholder: t('French role'),
             }}
-            value={frTitle}
-            changed={setFrTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={frRole}
+            changed={setFrRole}
+            validation={{ required: true }}
             shouldValidate
-            error={t(
-              'French title is required and should be less than 70 characters'
-            )}
+            error={t('French role is required')}
           />
           <Input
-            label={t('Kinyarwanda Title')}
-            elementType="input"
+            label={t('Kinyarwanda role')}
+            elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('Kinyarwanda Title'),
+              placeholder: t('Kinyarwanda role'),
             }}
-            value={rwTitle}
-            changed={setRwTitle}
-            validation={{ required: true, maxLength: 70 }}
+            value={rwRole}
+            changed={setRwRole}
+            validation={{ required: true }}
             shouldValidate
-            error={t(
-              'Kinyarwanda title is required and should be less than 70 characters'
-            )}
+            error={t('Kinyarwanda role is required')}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Description')}
+            label={t('English Quote')}
             elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('English Description'),
+              placeholder: t('English Quote'),
             }}
-            value={enDescription}
-            changed={setEnDescription}
+            value={enQuote}
+            changed={setEnQuote}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Description is required')}
+            error={t('English Quote is required')}
           />
           <Input
-            label={t('French Description')}
+            label={t('French Quote')}
             elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('French Description'),
+              placeholder: t('French Quote'),
             }}
-            value={frDescription}
-            changed={setFrDescription}
+            value={frQuote}
+            changed={setFrQuote}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Description is required')}
+            error={t('French Quote is required')}
           />
           <Input
-            label={t('Kinyarwanda Description')}
+            label={t('Kinyarwanda Quote')}
             elementType="textarea"
             elementConfig={{
               type: 'text',
-              placeholder: t('Kinyarwanda Description'),
+              placeholder: t('Kinyarwanda Quote'),
             }}
-            value={rwDescription}
-            changed={setRwDescription}
+            value={rwQuote}
+            changed={setRwQuote}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Description is required')}
+            error={t('Kinyarwanda Quote is required')}
           />
         </div>
+        <Input
+          label={t('Order')}
+          elementType="input"
+          elementConfig={{
+            type: 'number',
+            placeholder: t('Order'),
+          }}
+          value={order}
+          changed={setOrder}
+          validation={{ required: true }}
+          shouldValidate
+          error={t('Order is required')}
+        />
         <FileUpload
           elementConfig={{
             accept: 'image/*',
@@ -450,7 +484,7 @@ const CarouselAuthor = () => {
           isSquare
           outline="false"
           color="red"
-          clicked={isUpdating ? () => handleUpdate(carouselId) : handleAdd}
+          clicked={isUpdating ? () => handleUpdate(quoteId) : handleAdd}
         />
       </Modal>
       <Modal
@@ -460,9 +494,9 @@ const CarouselAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive carousel')} color="red" />
+        <CardTitle name={t('Archive quote')} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this carousel?')}
+          name={t('Are you sure you want to archive/unarchive this quote?')}
         />
         {loading && <Spinner />}
         {error && (
@@ -492,9 +526,9 @@ const CarouselAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete carousel')} color="red" />
+        <CardTitle name={t('Delete quote')} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this carousel?')} ${t(
+          name={`${t('Are you sure you want to delete this quote?')} ${t(
             'Contents deleted can not be retrieved.'
           )}`}
         />
@@ -521,7 +555,7 @@ const CarouselAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all Carousels')} />
+        <SectionTitle name={t('List of all quotes')} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -540,19 +574,19 @@ const CarouselAuthor = () => {
                 />
               </div>
               <Button
-                name={t('Add new carousel')}
+                name={t('Add new quote')}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnTitle('');
-                  setFrTitle('');
-                  setRwTitle('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnRole('');
+                  setFrRole('');
+                  setRwRole('');
+                  setEnQuote('');
+                  setFrQuote('');
+                  setRwQuote('');
                   setError(null);
                 }}
               />
@@ -622,4 +656,4 @@ const CarouselAuthor = () => {
   );
 };
 
-export default CarouselAuthor;
+export default QuotesAuthor;

@@ -13,7 +13,7 @@ const Dashboard = (props) => {
     { name: 'Donate', path: '/dashboard/donate' },
     { name: 'Projects', path: '/dashboard/projects' },
     { name: 'Partners', path: '/dashboard/partners' },
-    { name: 'Publications', path: '/dashboard/publication' },
+    { name: 'Publications', path: '/dashboard/publications' },
     { name: 'Contact us', path: '/dashboard/contactus' },
   ];
   const name = useSelector((state) => state.global.name);
