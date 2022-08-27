@@ -143,6 +143,7 @@ export const updateProject = async (req, res) => {
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let project;
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
         images.push(image.filename);
@@ -150,31 +151,55 @@ export const updateProject = async (req, res) => {
       projectFound.gallery.forEach((image) => {
         fs.unlinkSync(`public/images/${image}`);
       });
-    }
-    const project = await Project.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          name: name,
-          smallDescription: {
-            en: enSmallDescription,
-            fr: frSmallDescription,
-            rw: rwSmallDescription,
+      project = await Project.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            smallDescription: {
+              en: enSmallDescription,
+              fr: frSmallDescription,
+              rw: rwSmallDescription,
+            },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            gallery: images,
+            isMain: JSON.parse(isMain),
+            updatedBy: userId,
           },
-          description: {
-            en: enDescription,
-            fr: frDescription,
-            rw: rwDescription,
-          },
-          startDate: new Date(startDate),
-          endDate: new Date(endDate),
-          gallery: images,
-          isMain: JSON.parse(isMain),
-          updatedBy: userId,
         },
-      },
-      { new: true }
-    ).populate(['createdBy', 'updatedBy']);
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    } else {
+      project = await Project.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            smallDescription: {
+              en: enSmallDescription,
+              fr: frSmallDescription,
+              rw: rwSmallDescription,
+            },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
+            isMain: JSON.parse(isMain),
+            updatedBy: userId,
+          },
+        },
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    }
     return successResponse(res, 200, 'Project edieted successfully', project);
   } catch (error) {
     return errorResponse(res, 500, error.message);

@@ -44,14 +44,14 @@ export const getActiveQuotes = async (req, res) => {
   try {
     const quotes = await Quote.find({
       isActive: true,
-    }).sort({ updatedAt: 'desc' });
+    }).sort({ order: 'asc' });
     return successResponse(res, 200, 'Quote retrieved successfully', quotes);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
 };
 
-export const getSpecificCarousel = async (req, res) => {
+export const getSpecificQuote = async (req, res) => {
   try {
     const { itemId } = req.params;
     const quoteFound = await Quote.findOne({ _id: itemId }).populate([
@@ -72,29 +72,49 @@ export const getSpecificCarousel = async (req, res) => {
   }
 };
 
-export const updateCarousel = async (req, res) => {
+export const updateQuote = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const carouselFound = await Carousel.findOne({ _id: itemId });
-    if (!carouselFound) {
-      return errorResponse(res, 404, 'Carousel not found');
+    const quoteFound = await Quote.findOne({ _id: itemId });
+    if (!quoteFound) {
+      return errorResponse(res, 404, 'Quote not found');
     }
     const { name, enRole, frRole, rwRole, enQuote, frQuote, rwQuote, order } =
       req.body;
+    console.log(req.body);
     const userId = req.tokenData._id;
-    const updatedQuote = await Quote.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          name: name,
-          role: { en: enRole, fr: frRole, rw: rwRole },
-          quote: { en: enQuote, fr: frQuote, rw: rwQuote },
-          order: order,
-          updatedBy: userId,
+    let updatedQuote;
+    if (req.file?.filename) {
+      fs.unlinkSync(`public/images/${quoteFound.image}`);
+      updatedQuote = await Quote.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            role: { en: enRole, fr: frRole, rw: rwRole },
+            quote: { en: enQuote, fr: frQuote, rw: rwQuote },
+            order: order,
+            profile: req.file.filename,
+            updatedBy: userId,
+          },
         },
-      },
-      { new: true }
-    ).populate(['createdBy', 'updatedBy']);
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    } else {
+      updatedQuote = await Quote.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            role: { en: enRole, fr: frRole, rw: rwRole },
+            quote: { en: enQuote, fr: frQuote, rw: rwQuote },
+            order: order,
+            updatedBy: userId,
+          },
+        },
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    }
     return successResponse(res, 200, 'Quote edited successfully', updatedQuote);
   } catch (error) {
     return errorResponse(res, 500, error.message);

@@ -119,6 +119,7 @@ export const updatePublication = async (req, res) => {
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let publication;
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
         images.push(image.filename);
@@ -126,28 +127,50 @@ export const updatePublication = async (req, res) => {
       publicationFound.gallery.forEach((image) => {
         fs.unlinkSync(`public/images/${image}`);
       });
-    }
-    const publication = await Publication.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          title: {
-            en: enTitle,
-            fr: frTitle,
-            rw: rwTitle,
+
+      publication = await Publication.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            title: {
+              en: enTitle,
+              fr: frTitle,
+              rw: rwTitle,
+            },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            tags: JSON.parse(tags),
+            gallery: images,
+            updatedBy: userId,
           },
-          description: {
-            en: enDescription,
-            fr: frDescription,
-            rw: rwDescription,
-          },
-          tags: JSON.parse(tags),
-          gallery: images,
-          updatedBy: userId,
         },
-      },
-      { new: true }
-    ).populate(['createdBy', 'updatedBy']);
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    } else {
+      publication = await Publication.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            title: {
+              en: enTitle,
+              fr: frTitle,
+              rw: rwTitle,
+            },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            tags: JSON.parse(tags),
+            updatedBy: userId,
+          },
+        },
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    }
     return successResponse(
       res,
       200,

@@ -108,30 +108,53 @@ export const updatePartner = async (req, res) => {
       rwDescription,
     } = req.body;
     const userId = req.tokenData._id;
-    partnerFound.gallery.forEach((image) => {
-      fs.unlinkSync(`public/images/${image}`);
-    });
-    const partner = await Partner.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          name: name,
-          quote: {
-            en: enQuote,
-            fr: frQuote,
-            rw: rwQuote,
+    let partner;
+    if (req.file?.filename) {
+      fs.unlinkSync(`public/images/${partnerFound.image}`);
+
+      partner = await Partner.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            quote: {
+              en: enQuote,
+              fr: frQuote,
+              rw: rwQuote,
+            },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            image: req.file.filename,
+            updatedBy: userId,
           },
-          description: {
-            en: enDescription,
-            fr: frDescription,
-            rw: rwDescription,
-          },
-          image: req.file.filename,
-          updatedBy: userId,
         },
-      },
-      { new: true }
-    ).populate(['createdBy', 'updatedBy']);
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    } else {
+      partner = await Partner.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            quote: {
+              en: enQuote,
+              fr: frQuote,
+              rw: rwQuote,
+            },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            updatedBy: userId,
+          },
+        },
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    }
     return successResponse(res, 200, 'Partner edieted successfully', partner);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -146,9 +169,7 @@ export const deletePartner = async (req, res) => {
       return errorResponse(res, 404, 'Partner not found');
     }
     await Partner.deleteOne({ _id: itemId });
-    partnerFound.gallery.forEach((image) => {
-      fs.unlinkSync(`public/images/${image}`);
-    });
+    fs.unlinkSync(`public/images/${partnerFound.image}`);
     return successResponse(res, 204);
   } catch (error) {
     return errorResponse(res, 500, error.message);

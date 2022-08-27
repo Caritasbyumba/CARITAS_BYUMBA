@@ -1,15 +1,13 @@
 import express from 'express';
 import {
-  activateAboutus,
-  archiveAboutus,
-  deleteAboutus,
-  getSpecificAboutus,
-  updateAboutus,
-} from '../controllers/aboutusController.js';
-import {
+  activateQuote,
+  archiveQuote,
   createQuote,
+  deleteQuote,
   getActiveQuotes,
   getAllQuotes,
+  getSpecificQuote,
+  updateQuote,
 } from '../controllers/quoteController.js';
 import checkToken from '../middlewares/checkToken.js';
 import upload from '../middlewares/uplaod.js';
@@ -19,10 +17,10 @@ const router = express.Router();
 router.post('/add', checkToken, upload.single('profile'), createQuote);
 router.get('', getAllQuotes);
 router.get('/active', getActiveQuotes);
-router.get('/:itemId', getSpecificAboutus);
-router.patch('/:itemId', checkToken, updateAboutus);
-router.delete('/:itemId', checkToken, deleteAboutus);
-router.patch('/activate/:itemId', checkToken, activateAboutus);
-router.patch('/archive/:itemId', checkToken, archiveAboutus);
+router.get('/:itemId', getSpecificQuote);
+router.patch('/:itemId', checkToken, upload.single('profile'), updateQuote);
+router.delete('/:itemId', checkToken, deleteQuote);
+router.patch('/activate/:itemId', checkToken, activateQuote);
+router.patch('/archive/:itemId', checkToken, archiveQuote);
 
 export default router;

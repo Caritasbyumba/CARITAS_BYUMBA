@@ -101,23 +101,42 @@ export const updateCarousel = async (req, res) => {
       rwDescription,
     } = req.body;
     const userId = req.tokenData._id;
-    fs.unlinkSync(`public/images/${carouselFound.image}`);
-    const carousel = await Carousel.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          title: { en: enTitle, fr: frTitle, rw: rwTitle },
-          description: {
-            en: enDescription,
-            fr: frDescription,
-            rw: rwDescription,
+    let carousel;
+    if (req.file?.filename) {
+      fs.unlinkSync(`public/images/${carouselFound.image}`);
+      carousel = await Carousel.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            title: { en: enTitle, fr: frTitle, rw: rwTitle },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            image: req.file.filename,
+            updatedBy: userId,
           },
-          image: req.file.filename,
-          updatedBy: userId,
         },
-      },
-      { new: true }
-    ).populate(['createdBy', 'updatedBy']);
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    } else {
+      carousel = await Carousel.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            title: { en: enTitle, fr: frTitle, rw: rwTitle },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            updatedBy: userId,
+          },
+        },
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    }
     return successResponse(res, 200, 'Carousel edited successfully', carousel);
   } catch (error) {
     return errorResponse(res, 500, error.message);
