@@ -29,6 +29,7 @@ import PartnersIntroAuthor from './pages/admin/items/PartnersIntroAuthor';
 import PublicationsIntroAuthor from './pages/admin/items/PublicationsIntroAuthor';
 import PublicationsAuthor from './pages/admin/items/PublicationAuthor';
 import FaqAuthor from './pages/admin/items/FaqAuthor';
+import Checkout from './pages/donation/Checkout';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route exact path="/" component={Home} />
         <Route exact path="/aboutus" component={Aboutus} />
         <Route exact path="/donate" component={Donation} />
+        <Route exact path="/donate/checkout" component={Checkout} />
         <Route exact path="/projects" component={Projects} />
         <Route exact path="/projects/:projectId" component={Project} />
         <Route exact path="/partners" component={Partners} />

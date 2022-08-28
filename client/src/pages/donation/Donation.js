@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import DonationArea from '../../components/containers/donation/DonationArea';
+import Payment from '../../components/containers/donation/Payment';
 import Footer from '../../components/containers/Footer';
 import Header from '../../components/containers/Header';
 import { CardBody, PageTitle, SectionTitle } from '../../components/text';
@@ -12,7 +13,7 @@ import {
   useFetchActiveDonationAreaIntroQuery,
 } from '../../features/API/user-api-slice';
 
-const Donation = () => {
+const Donation = (props) => {
   const { t } = useTranslation();
   const { data = [], isFetching } = useFetchActiveDonateIntroQuery();
   const { data: donationAreasData = [], isFetching: isDonationAreasFetching } =
@@ -65,6 +66,10 @@ const Donation = () => {
           </div>
         </>
       )}
+      <Payment
+        {...props}
+        chosenArea={donationAreas ? donationAreas[chosenArea]._id : ''}
+      />
       <Footer />
     </div>
   );

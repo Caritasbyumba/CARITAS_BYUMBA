@@ -9,7 +9,7 @@ const DonationArea = (props) => {
 
   return (
     <div
-      className={`block p-6 max-w-sm bg-white rounded-lg ${
+      className={`block p-3 max-w-sm bg-white rounded-lg ${
         props.isChosen ? 'border-2 border-red' : 'border border-gray-200'
       } shadow-md hover:bg-gray-100 cursor-pointer`}
       onClick={props.onClick}
