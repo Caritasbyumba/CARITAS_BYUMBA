@@ -49,5 +49,17 @@
   "Home": "Accueil",
   "Welcome back": "Content de te revoir",
   "To edit content, choose a page": "Pour modifier le contenu, choisissez une page",
+  "Donation description": "Description du don",
+  "Name": "Nom",
+  "Name is required": "Le nom est requis",
+  "Email": "E-mail",
+  "Email should be valid email": "L'e-mail doit être un e-mail valide",
+  "Choose amount": "Choix du montant",
+  "Amount is required": "Le montant est requis",
+  "Or Choose your own amount": "Ou choisissez un autre montant",
+  "Thank you": "Merci",
+  "for donating to": "pour faire un don à",
+  "project": "project",
+  "Go to homepage": "Aller à la page d'accueil",
   "Which project would you like to donate to?": "À quel projet souhaitez-vous faire un don ?"
 }

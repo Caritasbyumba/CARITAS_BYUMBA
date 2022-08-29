@@ -332,10 +332,10 @@ const PublicationsIntroAuthor = () => {
             }}
             value={enTitle}
             changed={setEnTitle}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 15 characters'
+              'English title is required and should be less than 50 characters'
             )}
           />
           <Input
@@ -347,10 +347,10 @@ const PublicationsIntroAuthor = () => {
             }}
             value={frTitle}
             changed={setFrTitle}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 15 characters'
+              'French title is required and should be less than 50 characters'
             )}
           />
           <Input
@@ -362,10 +362,10 @@ const PublicationsIntroAuthor = () => {
             }}
             value={rwTitle}
             changed={setRwTitle}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 15 characters'
+              'Kinyarwanda title is required and should be less than 50 characters'
             )}
           />
         </div>

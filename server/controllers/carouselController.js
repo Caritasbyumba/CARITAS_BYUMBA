@@ -28,6 +28,7 @@ export const createCarousel = async (req, res) => {
     const carousel = await newCarousel.save();
     return successResponse(res, 201, 'Carousel created successfully', carousel);
   } catch (error) {
+    fs.unlinkSync(`public/images/${req.file.filename}`);
     return errorResponse(res, 500, error.message);
   }
 };
@@ -139,6 +140,7 @@ export const updateCarousel = async (req, res) => {
     }
     return successResponse(res, 200, 'Carousel edited successfully', carousel);
   } catch (error) {
+    fs.unlinkSync(`public/images/${req.file.filename}`);
     return errorResponse(res, 500, error.message);
   }
 };

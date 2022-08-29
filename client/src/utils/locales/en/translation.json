@@ -49,5 +49,17 @@
   "Home": "Home",
   "Welcome back": "Welcome back",
   "To edit content, choose a page": "To edit content, choose a page",
+  "Donation description": "Donation description",
+  "Name": "Name",
+  "Name is required": "Name is required",
+  "Email": "Email",
+  "Email should be valid email": "Email should be valid email",
+  "Choose amount": "Choose amount",
+  "Amount is required": "Amount is required",
+  "Or Choose your own amount": "Or choose another amount",
+  "Thank you": "Thank you",
+  "for donating to": "for donating to",
+  "project": "project",
+  "Go to homepage": "Go to homepage",
   "Which project would you like to donate to?": "Which project would you like to donate to?"
 }

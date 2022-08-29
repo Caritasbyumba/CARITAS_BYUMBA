@@ -15,6 +15,6 @@ const checkMessage = (req, res, next) => {
     body: Joi.string().trim().required(),
   });
   const schemasValidation = Joi.validate(req.body, messageSchemas);
-  validationHelper(res, schemasValidation, next);
+  validationHelper(req, res, schemasValidation, next);
 };
 export default checkMessage;

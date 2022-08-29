@@ -376,7 +376,7 @@ const PublicationsAuthor = () => {
             }}
             value={enTitle}
             changed={setEnTitle}
-            validation={{ required: true, maxLength: 300 }}
+            validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
               'English title is required and should be less than 300 characters'
@@ -391,7 +391,7 @@ const PublicationsAuthor = () => {
             }}
             value={frTitle}
             changed={setFrTitle}
-            validation={{ required: true, maxLength: 300 }}
+            validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
               'French title is required and should be less than 300 characters'
@@ -406,7 +406,7 @@ const PublicationsAuthor = () => {
             }}
             value={rwTitle}
             changed={setRwTitle}
-            validation={{ required: true, maxLength: 300 }}
+            validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
               'Kinyarwanda title is required and should be less than 300 characters'

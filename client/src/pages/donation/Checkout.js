@@ -30,7 +30,7 @@ const Checkout = () => {
               <Quotes>
                 <CardBody name={chosenArea[selectedLanguage]} color="white" />
               </Quotes>
-              <CardBody name={` project`} />
+              <CardBody name={` ${t('project')}`} />
             </div>
             <div class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
               <CardBody name={chosenAreaDescription[selectedLanguage]} />

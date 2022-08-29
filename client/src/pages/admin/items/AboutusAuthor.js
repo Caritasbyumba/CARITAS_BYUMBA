@@ -399,10 +399,10 @@ const AboutusAuthor = () => {
             }}
             value={enName}
             changed={setEnName}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English name is required and should be less than 15 characters'
+              'English name is required and should be less than 50 characters'
             )}
           />
           <Input
@@ -414,10 +414,10 @@ const AboutusAuthor = () => {
             }}
             value={frName}
             changed={setFrName}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French name is required and should be less than 15 characters'
+              'French name is required and should be less than 50 characters'
             )}
           />
           <Input
@@ -429,10 +429,10 @@ const AboutusAuthor = () => {
             }}
             value={rwName}
             changed={setRwName}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda name is required and should be less than 15 characters'
+              'Kinyarwanda name is required and should be less than 50 characters'
             )}
           />
         </div>

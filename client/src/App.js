@@ -30,6 +30,9 @@ import PublicationsIntroAuthor from './pages/admin/items/PublicationsIntroAuthor
 import PublicationsAuthor from './pages/admin/items/PublicationAuthor';
 import FaqAuthor from './pages/admin/items/FaqAuthor';
 import Checkout from './pages/donation/Checkout';
+import DonationAreasAuthor from './pages/admin/items/DonationAreasAuthor';
+import DonateIntroAuthor from './pages/admin/items/DonateIntroAuthor';
+import AdminDonation from './pages/admin/AdminDonation';
 
 function App() {
   return (
@@ -136,6 +139,22 @@ function App() {
           exact
           path="/dashboard/item/faqs"
           component={FaqAuthor}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/donate"
+          component={AdminDonation}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/donationintro"
+          component={DonateIntroAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/donationareas"
+          component={DonationAreasAuthor}
         />
       </Switch>
     </Router>

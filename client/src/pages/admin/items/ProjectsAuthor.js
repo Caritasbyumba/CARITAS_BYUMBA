@@ -401,7 +401,7 @@ const ProjectsAuthor = () => {
             }}
             value={enSmallDescription}
             changed={setEnSmallDescription}
-            validation={{ required: true, maxLength: 300 }}
+            validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
               'English short description is required and should be less than 300 characters'
@@ -416,7 +416,7 @@ const ProjectsAuthor = () => {
             }}
             value={frSmallDescription}
             changed={setFrSmallDescription}
-            validation={{ required: true, maxLength: 300 }}
+            validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
               'French short description is required and should be less than 300 characters'
@@ -431,7 +431,7 @@ const ProjectsAuthor = () => {
             }}
             value={rwSmallDescription}
             changed={setRwSmallDescription}
-            validation={{ required: true, maxLength: 300 }}
+            validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
               'Kinyarwanda short description is required and should be less than 300 characters'

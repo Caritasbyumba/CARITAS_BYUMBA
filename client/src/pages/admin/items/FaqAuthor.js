@@ -328,10 +328,10 @@ const FaqAuthor = () => {
             }}
             value={enQuestion}
             changed={setEnQuestion}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English question is required and should be less than 15 characters'
+              'English question is required and should be less than 50 characters'
             )}
           />
           <Input
@@ -343,10 +343,10 @@ const FaqAuthor = () => {
             }}
             value={frQuestion}
             changed={setFrQuestion}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French question is required and should be less than 15 characters'
+              'French question is required and should be less than 50 characters'
             )}
           />
           <Input
@@ -358,10 +358,10 @@ const FaqAuthor = () => {
             }}
             value={rwQuestion}
             changed={setRwQuestion}
-            validation={{ required: true, maxLength: 15 }}
+            validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda question is required and should be less than 15 characters'
+              'Kinyarwanda question is required and should be less than 50 characters'
             )}
           />
         </div>

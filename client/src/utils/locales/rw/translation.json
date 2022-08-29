@@ -49,5 +49,17 @@
   "Home": "Ahabanza",
   "Welcome back": "Kaze neza",
   "To edit content, choose a page": "Kugira icyo uhindura, hitamo page kiriho",
+  "Donation description": "Ibisobanuro by'impano",
+  "Name": "Izina",
+  "Name is required": "Izina rirakenewe",
+  "Email": "Imeri",
+  "Email should be valid email": "Imeri igomba kuba imeri yemewe",
+  "Choose amount": "Hitamo amafaranga",
+  "Amount is required": "Amafaranga arakenewe",
+  "Or Choose your own amount": "Cyangwa hitamo undi mubare",
+  "Thank you": "Murakoze",
+  "for donating to": "for donating to",
+  "project": "gutanga inkunga yo",
+  "Go to homepage": "Jya ahabanza",
   "Which project would you like to donate to?": "Nuwuhe mushinga wifuza gufasha?"
 }

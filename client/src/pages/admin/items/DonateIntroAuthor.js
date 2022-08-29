@@ -1,30 +1,19 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
 import { useSelector } from 'react-redux';
-import {
-  useTable,
-  useSortBy,
-  useGlobalFilter,
-  usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
-import {
-  MdSkipPrevious,
-  MdSkipNext,
-  MdEdit,
-  MdDelete,
-  MdArchive,
-} from 'react-icons/md';
+import { useFetchAllDonateIntrosQuery } from '../../../features/API/admin-api-slice';
 import axios from '../../../axios-base';
+import { MdArchive, MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
+import Modal from '../../../components/UI/modal';
+import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
+import Input from '../../../components/UI/input';
+import Spinner from '../../../components/UI/spinner';
 import { Button } from '../../../components/UI/button';
-import { useFetchAllProjectsIntroQuery } from '../../../features/API/admin-api-slice';
+import Header from '../../../components/containers/Header';
+import Footer from '../../../components/containers/Footer';
 
-const ProjectsIntroAuthor = () => {
+const DonateIntroAuthor = () => {
   const { t } = useTranslation();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -33,7 +22,7 @@ const ProjectsIntroAuthor = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { data, isFetching, refetch } = useFetchAllProjectsIntroQuery();
+  const { data, isFetching, refetch } = useFetchAllDonateIntrosQuery();
   const [enTitle, setEnTitle] = useState('');
   const [frTitle, setFrTitle] = useState('');
   const [rwTitle, setRwTitle] = useState('');
@@ -43,13 +32,13 @@ const ProjectsIntroAuthor = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [projectsIntroId, setProjectsIntroId] = useState('');
+  const [donateIntroId, setDonateIntroId] = useState('');
 
   const updateForm = useCallback(
-    (projectsIntroId) => {
+    (donateIntroId) => {
       setLoading(true);
       axios
-        .get(`/api/projectsintro/${projectsIntroId}`, {
+        .get(`/api/donateintro/${donateIntroId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -72,14 +61,14 @@ const ProjectsIntroAuthor = () => {
   const myData = useMemo(
     () =>
       data?.results
-        ? data.results.map((projectsIntro, index) => {
+        ? data.results.map((donateIntro, index) => {
             return {
               id: index + 1,
-              description: projectsIntro.description[selectedLanguage],
-              updatedBy: projectsIntro.updatedBy.name,
-              updatedAt: projectsIntro.updatedAt,
-              status: projectsIntro.isActive,
-              _id: projectsIntro._id,
+              description: donateIntro.description[selectedLanguage],
+              updatedBy: donateIntro.updatedBy.name,
+              updatedAt: donateIntro.updatedAt,
+              status: donateIntro.isActive,
+              _id: donateIntro._id,
             };
           })
         : [],
@@ -117,7 +106,7 @@ const ProjectsIntroAuthor = () => {
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
-                  setProjectsIntroId(value);
+                  setDonateIntroId(value);
                   setError(null);
                   setIsUpdating(true);
                   setShowEditModal(true);
@@ -130,7 +119,7 @@ const ProjectsIntroAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowArchiveModal(true);
-                  setProjectsIntroId(value);
+                  setDonateIntroId(value);
                   setError(null);
                 }}
               >
@@ -140,7 +129,7 @@ const ProjectsIntroAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowDeleteModal(true);
-                  setProjectsIntroId(value);
+                  setDonateIntroId(value);
                   setError(null);
                 }}
               >
@@ -194,7 +183,7 @@ const ProjectsIntroAuthor = () => {
         rwDescription,
       };
       axios
-        .post('/api/projectsintro/add', formData, {
+        .post('/api/donateintro/add', formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -241,7 +230,7 @@ const ProjectsIntroAuthor = () => {
         rwDescription,
       };
       axios
-        .patch(`/api/projectsintro/${projectsIntroId}`, formData, {
+        .patch(`/api/donateintro/${donateIntroId}`, formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -266,14 +255,14 @@ const ProjectsIntroAuthor = () => {
     token,
     t,
     refetch,
-    projectsIntroId,
+    donateIntroId,
   ]);
 
   const handleArchive = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/projectsintro/archive/${projectsIntroId}`, null, {
+      .patch(`/api/donateintro/archive/${donateIntroId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -285,13 +274,13 @@ const ProjectsIntroAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, projectsIntroId, refetch]);
+  }, [token, donateIntroId, refetch]);
 
   const handleDelete = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/projectsintro/${projectsIntroId}`, {
+      .delete(`/api/donateintro/${donateIntroId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -303,7 +292,7 @@ const ProjectsIntroAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, projectsIntroId, refetch]);
+  }, [token, donateIntroId, refetch]);
 
   return (
     <div>
@@ -316,8 +305,8 @@ const ProjectsIntroAuthor = () => {
         <CardTitle
           name={`${
             isUpdating
-              ? t('Update projects introduction')
-              : t('Add new projects introduction')
+              ? t('Update donate introduction')
+              : t('Add new donate introduction')
           }`}
           color="red"
         />
@@ -420,7 +409,7 @@ const ProjectsIntroAuthor = () => {
           outline="false"
           color="red"
           additional="mt-3"
-          clicked={isUpdating ? () => handleUpdate(projectsIntroId) : handleAdd}
+          clicked={isUpdating ? () => handleUpdate(donateIntroId) : handleAdd}
         />
       </Modal>
       <Modal
@@ -430,10 +419,10 @@ const ProjectsIntroAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive project introduction')} color="red" />
+        <CardTitle name={t('Archive partner introduction')} color="red" />
         <CardBody
           name={t(
-            'Are you sure you want to archive/unarchive this project introduction?'
+            'Are you sure you want to archive/unarchive this partner introduction?'
           )}
         />
         {loading && <Spinner />}
@@ -464,10 +453,10 @@ const ProjectsIntroAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete projects introduction')} color="red" />
+        <CardTitle name={t('Delete donate introduction')} color="red" />
         <CardBody
           name={`${t(
-            'Are you sure you want to delete this projects introduction?'
+            'Are you sure you want to delete this donate introduction?'
           )} ${t('Contents deleted can not be retrieved.')}`}
         />
         {loading && <Spinner />}
@@ -493,7 +482,7 @@ const ProjectsIntroAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all projects introduction')} />
+        <SectionTitle name={t('List of all donate introduction')} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -594,4 +583,4 @@ const ProjectsIntroAuthor = () => {
   );
 };
 
-export default ProjectsIntroAuthor;
+export default DonateIntroAuthor;

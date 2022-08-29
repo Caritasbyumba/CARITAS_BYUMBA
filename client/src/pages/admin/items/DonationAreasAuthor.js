@@ -22,9 +22,9 @@ import {
 } from 'react-icons/md';
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
-import { useFetchAllProjectsIntroQuery } from '../../../features/API/admin-api-slice';
+import { useFetchAllDonationAreasQuery } from '../../../features/API/admin-api-slice';
 
-const ProjectsIntroAuthor = () => {
+const DonationAreasAuthor = () => {
   const { t } = useTranslation();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -33,29 +33,29 @@ const ProjectsIntroAuthor = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { data, isFetching, refetch } = useFetchAllProjectsIntroQuery();
-  const [enTitle, setEnTitle] = useState('');
-  const [frTitle, setFrTitle] = useState('');
-  const [rwTitle, setRwTitle] = useState('');
+  const { data, isFetching, refetch } = useFetchAllDonationAreasQuery();
+  const [enName, setEnName] = useState('');
+  const [frName, setFrName] = useState('');
+  const [rwName, setRwName] = useState('');
   const [enDescription, setEnDescription] = useState('');
   const [frDescription, setFrDescription] = useState('');
   const [rwDescription, setRwDescription] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [projectsIntroId, setProjectsIntroId] = useState('');
+  const [donationAreasId, setDonateIntroId] = useState('');
 
   const updateForm = useCallback(
-    (projectsIntroId) => {
+    (donationAreasId) => {
       setLoading(true);
       axios
-        .get(`/api/projectsintro/${projectsIntroId}`, {
+        .get(`/api/donationareas/${donationAreasId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
-          setEnTitle(res.data.results.title.en);
-          setFrTitle(res.data.results.title.fr);
-          setRwTitle(res.data.results.title.rw);
+          setEnName(res.data.results.name.en);
+          setFrName(res.data.results.name.fr);
+          setRwName(res.data.results.name.rw);
           setEnDescription(res.data.results.description.en);
           setFrDescription(res.data.results.description.fr);
           setRwDescription(res.data.results.description.rw);
@@ -72,14 +72,14 @@ const ProjectsIntroAuthor = () => {
   const myData = useMemo(
     () =>
       data?.results
-        ? data.results.map((projectsIntro, index) => {
+        ? data.results.map((donationAreas, index) => {
             return {
               id: index + 1,
-              description: projectsIntro.description[selectedLanguage],
-              updatedBy: projectsIntro.updatedBy.name,
-              updatedAt: projectsIntro.updatedAt,
-              status: projectsIntro.isActive,
-              _id: projectsIntro._id,
+              name: donationAreas.name[selectedLanguage],
+              updatedBy: donationAreas.updatedBy.name,
+              updatedAt: donationAreas.updatedAt,
+              status: donationAreas.isActive,
+              _id: donationAreas._id,
             };
           })
         : [],
@@ -88,7 +88,7 @@ const ProjectsIntroAuthor = () => {
   const columns = useMemo(
     () => [
       { Header: 'N0', accessor: 'id' },
-      { Header: 'Description', accessor: 'description' },
+      { Header: 'Name', accessor: 'name' },
       { Header: 'UpdatedBy', accessor: 'updatedBy' },
       {
         Header: 'UpdatedAt',
@@ -117,7 +117,7 @@ const ProjectsIntroAuthor = () => {
               <button
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
-                  setProjectsIntroId(value);
+                  setDonateIntroId(value);
                   setError(null);
                   setIsUpdating(true);
                   setShowEditModal(true);
@@ -130,7 +130,7 @@ const ProjectsIntroAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowArchiveModal(true);
-                  setProjectsIntroId(value);
+                  setDonateIntroId(value);
                   setError(null);
                 }}
               >
@@ -140,7 +140,7 @@ const ProjectsIntroAuthor = () => {
                 className="border border-gray-500 rounded-md p-0.5 cursor-pointer hover:bg-gray-200"
                 onClick={() => {
                   setShowDeleteModal(true);
-                  setProjectsIntroId(value);
+                  setDonateIntroId(value);
                   setError(null);
                 }}
               >
@@ -176,9 +176,9 @@ const ProjectsIntroAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
+      enName !== '' &&
+      frName !== '' &&
+      rwName !== '' &&
       enDescription !== '' &&
       frDescription !== '' &&
       rwDescription !== ''
@@ -186,15 +186,15 @@ const ProjectsIntroAuthor = () => {
       setLoading(true);
       setError(null);
       const formData = {
-        enTitle,
-        frTitle,
-        rwTitle,
+        enName,
+        frName,
+        rwName,
         enDescription,
         frDescription,
         rwDescription,
       };
       axios
-        .post('/api/projectsintro/add', formData, {
+        .post('/api/donationareas/add', formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -210,9 +210,9 @@ const ProjectsIntroAuthor = () => {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
+    enName,
+    frName,
+    rwName,
     enDescription,
     frDescription,
     rwDescription,
@@ -223,9 +223,9 @@ const ProjectsIntroAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
+      enName !== '' &&
+      frName !== '' &&
+      rwName !== '' &&
       enDescription !== '' &&
       frDescription !== '' &&
       rwDescription !== ''
@@ -233,15 +233,15 @@ const ProjectsIntroAuthor = () => {
       setLoading(true);
       setError(null);
       const formData = {
-        enTitle,
-        frTitle,
-        rwTitle,
+        enName,
+        frName,
+        rwName,
         enDescription,
         frDescription,
         rwDescription,
       };
       axios
-        .patch(`/api/projectsintro/${projectsIntroId}`, formData, {
+        .patch(`/api/donationareas/${donationAreasId}`, formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -257,23 +257,23 @@ const ProjectsIntroAuthor = () => {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enTitle,
-    frTitle,
-    rwTitle,
+    enName,
+    frName,
+    rwName,
     enDescription,
     frDescription,
     rwDescription,
     token,
     t,
     refetch,
-    projectsIntroId,
+    donationAreasId,
   ]);
 
   const handleArchive = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/projectsintro/archive/${projectsIntroId}`, null, {
+      .patch(`/api/donationareas/archive/${donationAreasId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -285,13 +285,13 @@ const ProjectsIntroAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, projectsIntroId, refetch]);
+  }, [token, donationAreasId, refetch]);
 
   const handleDelete = useCallback(() => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/projectsintro/${projectsIntroId}`, {
+      .delete(`/api/donationareas/${donationAreasId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -303,7 +303,7 @@ const ProjectsIntroAuthor = () => {
         setLoading(false);
         setError(err.response.data);
       });
-  }, [token, projectsIntroId, refetch]);
+  }, [token, donationAreasId, refetch]);
 
   return (
     <div>
@@ -316,56 +316,56 @@ const ProjectsIntroAuthor = () => {
         <CardTitle
           name={`${
             isUpdating
-              ? t('Update projects introduction')
-              : t('Add new projects introduction')
+              ? t('Update donate introduction')
+              : t('Add new donate introduction')
           }`}
           color="red"
         />
 
         <div className="flex space-x-2">
           <Input
-            label={t('English title')}
+            label={t('English name')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('English title'),
+              placeholder: t('English name'),
             }}
-            value={enTitle}
-            changed={setEnTitle}
+            value={enName}
+            changed={setEnName}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 50 characters'
+              'English name is required and should be less than 50 characters'
             )}
           />
           <Input
-            label={t('French title')}
+            label={t('French name')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('French title'),
+              placeholder: t('French name'),
             }}
-            value={frTitle}
-            changed={setFrTitle}
+            value={frName}
+            changed={setFrName}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 50 characters'
+              'French name is required and should be less than 50 characters'
             )}
           />
           <Input
-            label={t('Kinyarwanda title')}
+            label={t('Kinyarwanda name')}
             elementType="input"
             elementConfig={{
               type: 'text',
-              placeholder: t('Kinyarwanda title'),
+              placeholder: t('Kinyarwanda name'),
             }}
-            value={rwTitle}
-            changed={setRwTitle}
+            value={rwName}
+            changed={setRwName}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 50 characters'
+              'Kinyarwanda name is required and should be less than 50 characters'
             )}
           />
         </div>
@@ -420,7 +420,7 @@ const ProjectsIntroAuthor = () => {
           outline="false"
           color="red"
           additional="mt-3"
-          clicked={isUpdating ? () => handleUpdate(projectsIntroId) : handleAdd}
+          clicked={isUpdating ? () => handleUpdate(donationAreasId) : handleAdd}
         />
       </Modal>
       <Modal
@@ -430,10 +430,10 @@ const ProjectsIntroAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive project introduction')} color="red" />
+        <CardTitle name={t('Archive partner introduction')} color="red" />
         <CardBody
           name={t(
-            'Are you sure you want to archive/unarchive this project introduction?'
+            'Are you sure you want to archive/unarchive this partner introduction?'
           )}
         />
         {loading && <Spinner />}
@@ -464,10 +464,10 @@ const ProjectsIntroAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete projects introduction')} color="red" />
+        <CardTitle name={t('Delete donate introduction')} color="red" />
         <CardBody
           name={`${t(
-            'Are you sure you want to delete this projects introduction?'
+            'Are you sure you want to delete this donate introduction?'
           )} ${t('Contents deleted can not be retrieved.')}`}
         />
         {loading && <Spinner />}
@@ -493,7 +493,7 @@ const ProjectsIntroAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all projects introduction')} />
+        <SectionTitle name={t('List of all donate introduction')} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -519,9 +519,9 @@ const ProjectsIntroAuthor = () => {
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnTitle('');
-                  setFrTitle('');
-                  setRwTitle('');
+                  setEnName('');
+                  setFrName('');
+                  setRwName('');
                   setEnDescription('');
                   setFrDescription('');
                   setRwDescription('');
@@ -594,4 +594,4 @@ const ProjectsIntroAuthor = () => {
   );
 };
 
-export default ProjectsIntroAuthor;
+export default DonationAreasAuthor;

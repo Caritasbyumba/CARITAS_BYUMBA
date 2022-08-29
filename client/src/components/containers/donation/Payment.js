@@ -52,7 +52,7 @@ const Payment = (props) => {
       name: name,
     },
     customizations: {
-      title: 'CARITAS BYUMBA Donation',
+      title: 'CARITAS BYUMBA DONATION',
       description: t('Donation description'),
       logo: `${process.env.REACT_APP_BACKEND_URL}/images/logo.png`,
     },

@@ -9,15 +9,16 @@ import {
   getSpecificFaq,
   updateFaq,
 } from '../controllers/faqController.js';
+import checkFaq from '../middlewares/checkFaq.js';
 import checkToken from '../middlewares/checkToken.js';
 
 const router = express.Router();
 
-router.post('/add', checkToken, createFaq);
+router.post('/add', checkToken, checkFaq, createFaq);
 router.get('', getAllFaqs);
 router.get('/active', getActiveFaqs);
 router.get('/:itemId', getSpecificFaq);
-router.patch('/:itemId', checkToken, updateFaq);
+router.patch('/:itemId', checkToken, checkFaq, updateFaq);
 router.delete('/:itemId', checkToken, deleteFaq);
 router.patch('/activate/:itemId', checkToken, activateFaq);
 router.patch('/archive/:itemId', checkToken, archiveFaq);

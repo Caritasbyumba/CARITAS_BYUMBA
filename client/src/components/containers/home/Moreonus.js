@@ -45,7 +45,7 @@ const Moreonus = () => {
             color="red"
             additional="font-bold"
             onClick={() => {
-              history.push(moreonus.callToActionLink);
+              history.push('/aboutus');
             }}
           />
         </div>

@@ -67,6 +67,16 @@ export const adminApiSlice = createApi({
           return '/faqs';
         },
       }),
+      fetchAllDonateIntros: builder.query({
+        query: () => {
+          return '/donateintro';
+        },
+      }),
+      fetchAllDonationAreas: builder.query({
+        query: () => {
+          return '/donationareas';
+        },
+      }),
     };
   },
 });
@@ -83,4 +93,6 @@ export const {
   useFetchAllProjectsIntroQuery,
   useFetchAllPublicationsIntroQuery,
   useFetchAllPublicationsQuery,
+  useFetchAllDonateIntrosQuery,
+  useFetchAllDonationAreasQuery,
 } = adminApiSlice;
