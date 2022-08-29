@@ -62,8 +62,8 @@ const Payment = (props) => {
 
   return (
     <div>
-      <div className="w-70% m-auto">
-        <div className="flex space-x-2">
+      <div className="w-90% md:w-70% m-auto">
+        <div className="md:flex md:space-x-2">
           <Input
             label={t('Name')}
             elementType="input"
@@ -91,7 +91,7 @@ const Payment = (props) => {
             error={t('Email should be valid email')}
           />
         </div>
-        <div className="flex space-x-2">
+        <div className="md:flex md:space-x-2">
           <Input
             label={t('Choose amount')}
             elementType="select"

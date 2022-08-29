@@ -21,9 +21,9 @@ const Checkout = () => {
       <CustomHelmet name="DONATE" />
       <Header />
       <div className="my-40">
-        <div className="w-70% m-auto">
+        <div className="w-90% md:w-70% m-auto shadow">
           <div role="alert">
-            <div class="flex space-x-2 bg-red text-white font-bold rounded-t px-4 py-2 shadow">
+            <div class="md:flex md:space-x-2 bg-red text-white font-bold rounded-t px-4 py-2">
               <CardBody
                 name={`${t('Thank you')} ${name} ${t('for donating to')} `}
               />
