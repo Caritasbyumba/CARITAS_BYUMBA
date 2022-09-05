@@ -1,11 +1,15 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { CardBody, CardTitle } from '../../text';
+import { TextButton } from '../../UI/button';
 
 const DonationArea = (props) => {
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
+  const { t } = useTranslation();
+  console.log(props);
 
   return (
     <div
@@ -16,6 +20,17 @@ const DonationArea = (props) => {
     >
       <CardTitle name={props.name[selectedLanguage]} />
       <CardBody name={props.description[selectedLanguage]} />
+      {props.projects.length > 0 && (
+        <CardBody name={t('Related projects')} color="red" />
+      )}
+      {props.projects.map((project) => (
+        <TextButton
+          name={project.name}
+          color="red"
+          additional="hover:underline h-fit text-left"
+          onClick={() => props.history.push(`/projects/${project._id}`)}
+        />
+      ))}
     </div>
   );
 };

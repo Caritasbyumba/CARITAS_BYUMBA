@@ -218,6 +218,7 @@ export const createDonationArea = async (req, res) => {
       enDescription,
       frDescription,
       rwDescription,
+      projects,
     } = req.body;
     const userId = req.tokenData._id;
     const newDonationArea = new DonationArea({
@@ -231,6 +232,7 @@ export const createDonationArea = async (req, res) => {
         fr: frDescription,
         rw: rwDescription,
       },
+      projects: projects,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -249,7 +251,7 @@ export const createDonationArea = async (req, res) => {
 export const getAllDonationAreas = async (req, res) => {
   try {
     const donationAreas = await DonationArea.find({})
-      .populate(['createdBy', 'updatedBy'])
+      .populate(['projects', 'createdBy', 'updatedBy'])
       .sort({ updatedAt: 'desc' });
     return successResponse(
       res,
@@ -266,7 +268,7 @@ export const getActiveDonationAreas = async (req, res) => {
   try {
     const donationAreas = await DonationArea.find({
       isActive: true,
-    });
+    }).populate(['projects']);
     return successResponse(
       res,
       200,
@@ -283,7 +285,7 @@ export const getSpecificDonationArea = async (req, res) => {
     const { itemId } = req.params;
     const donationAreaFound = await DonationArea.findOne({
       _id: itemId,
-    }).populate(['createdBy', 'updatedBy']);
+    }).populate(['projects', 'createdBy', 'updatedBy']);
     if (!donationAreaFound) {
       return errorResponse(res, 404, 'DonationArea not found');
     }
@@ -312,6 +314,7 @@ export const updateDonationArea = async (req, res) => {
       enDescription,
       frDescription,
       rwDescription,
+      projects,
     } = req.body;
     const userId = req.tokenData._id;
     const donationArea = await DonationArea.findOneAndUpdate(
@@ -328,6 +331,7 @@ export const updateDonationArea = async (req, res) => {
             fr: frDescription,
             rw: rwDescription,
           },
+          projects: projects,
           updatedBy: userId,
         },
       },

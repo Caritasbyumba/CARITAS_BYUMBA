@@ -12,6 +12,7 @@ const checkDonationAreas = (req, res, next) => {
       .trim()
       .required()
       .label('Kinyarwanda description'),
+    projects: Joi.array(),
   });
   const schemasValidation = Joi.validate(req.body, donationAreasSchemas);
   validationHelper(req, res, schemasValidation, next);

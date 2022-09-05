@@ -58,6 +58,7 @@ const Donation = (props) => {
             {donationAreas.map((area, index) => (
               <DonationArea
                 key={index}
+                {...props}
                 {...area}
                 isChosen={chosenArea === index}
                 onClick={() => setChosenArea(index)}

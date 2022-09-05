@@ -12,7 +12,6 @@ const Dashboard = (props) => {
     { name: 'About us', path: '/dashboard/aboutus' },
     { name: 'Donate', path: '/dashboard/donate' },
     { name: 'Projects', path: '/dashboard/projects' },
-    { name: 'Partners', path: '/dashboard/partners' },
     { name: 'Publications', path: '/dashboard/publications' },
     { name: 'Contact us', path: '/dashboard/contactus' },
   ];
@@ -20,13 +19,13 @@ const Dashboard = (props) => {
   return (
     <div>
       <Header />
-      <div className="w-70% m-auto">
+      <div className="w-90% lg:w-70% m-auto">
         <SectionTitle
           name={`${t('Welcome back')}, ${name}`}
           additional="py-10"
         />
         <SectionTitle name={t('To edit content, choose a page')} color="red" />
-        <div className="grid grid-cols-3 gap-2 pt-5 pb-10">
+        <div className="grid lg:grid-cols-3 gap-2 pt-5 pb-10">
           {pages.map((page, index) => (
             <div
               key={index}

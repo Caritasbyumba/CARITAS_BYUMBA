@@ -4,6 +4,10 @@ import { MdWarning } from 'react-icons/md';
 import { CardSubText } from '../text';
 import { useState } from 'react';
 import { checkValidity } from '../../utils/checkValidity';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+
+const animatedComponents = makeAnimated();
 
 const Input = (props) => {
   const [valid, setValid] = useState(true);
@@ -138,7 +142,22 @@ const Input = (props) => {
         />
       );
       break;
-
+    case 'multiselect':
+      inputElement = (
+        <Select
+          closeMenuOnSelect={false}
+          components={animatedComponents}
+          isMulti
+          isSearchable 
+          placeholder={props?.elementConfig?.placeholder}
+          isDisabled={props?.elementConfig?.disabled}
+          className={inputClasses}
+          value={props.value}
+          onChange={onChangeHandler}
+          options={props?.elementConfig?.options || []}
+        />
+      );
+      break;
     default:
       inputElement = (
         <input
@@ -153,7 +172,11 @@ const Input = (props) => {
     <div
       className={`w-full box-border mt-2 flex flex-col justify-center align-start`}
     >
-      <CardSubText name={props.label} color="black" additional="font-semibold" />
+      <CardSubText
+        name={props.label}
+        color="black"
+        additional="font-semibold"
+      />
       {inputElement}
       <span className={errorClasses}>
         <MdWarning size="14" color="#BE1E2D" />

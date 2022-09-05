@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import Aboutus from './pages/Aboutus';
 import Donation from './pages/donation/Donation';
 import Projects from './pages/projects/Projects';
-import Partners from './pages/Partners';
 import Publications from './pages/publications/Publications';
 import Contactus from './pages/Contactus';
 import Project from './pages/projects/Project';
@@ -21,11 +20,9 @@ import AdminAboutus from './pages/admin/AdminAboutus';
 import AboutusAuthor from './pages/admin/items/AboutusAuthor';
 import QuotesAuthor from './pages/admin/items/QuotesAuthor';
 import AdminProjects from './pages/admin/AdminProjects';
-import AdminPartners from './pages/admin/AdminPartners';
 import AdminPublications from './pages/admin/AdminPublications';
 import AdminContactus from './pages/admin/AdminContactus';
 import ProjectsIntroAuthor from './pages/admin/items/ProjectsIntroAuthor';
-import PartnersIntroAuthor from './pages/admin/items/PartnersIntroAuthor';
 import PublicationsIntroAuthor from './pages/admin/items/PublicationsIntroAuthor';
 import PublicationsAuthor from './pages/admin/items/PublicationAuthor';
 import FaqAuthor from './pages/admin/items/FaqAuthor';
@@ -44,7 +41,6 @@ function App() {
         <Route exact path="/donate/checkout" component={Checkout} />
         <Route exact path="/projects" component={Projects} />
         <Route exact path="/projects/:projectId" component={Project} />
-        <Route exact path="/partners" component={Partners} />
         <Route exact path="/publications" component={Publications} />
         <Route
           exact
@@ -101,17 +97,6 @@ function App() {
           exact
           path="/dashboard/item/projectsintro"
           component={ProjectsIntroAuthor}
-        />
-
-        <ProtectedRoute
-          exact
-          path="/dashboard/partners"
-          component={AdminPartners}
-        />
-        <ProtectedRoute
-          exact
-          path="/dashboard/item/partnersintro"
-          component={PartnersIntroAuthor}
         />
 
         <ProtectedRoute

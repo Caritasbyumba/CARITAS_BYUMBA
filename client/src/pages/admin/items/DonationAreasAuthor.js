@@ -22,7 +22,10 @@ import {
 } from 'react-icons/md';
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
-import { useFetchAllDonationAreasQuery } from '../../../features/API/admin-api-slice';
+import {
+  useFetchAllDonationAreasQuery,
+  useFetchAllProjectsQuery,
+} from '../../../features/API/admin-api-slice';
 
 const DonationAreasAuthor = () => {
   const { t } = useTranslation();
@@ -34,12 +37,14 @@ const DonationAreasAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllDonationAreasQuery();
+  const { data: allProjects } = useFetchAllProjectsQuery();
   const [enName, setEnName] = useState('');
   const [frName, setFrName] = useState('');
   const [rwName, setRwName] = useState('');
   const [enDescription, setEnDescription] = useState('');
   const [frDescription, setFrDescription] = useState('');
   const [rwDescription, setRwDescription] = useState('');
+  const [projects, setProjects] = useState([]);
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -59,6 +64,11 @@ const DonationAreasAuthor = () => {
           setEnDescription(res.data.results.description.en);
           setFrDescription(res.data.results.description.fr);
           setRwDescription(res.data.results.description.rw);
+          setProjects(
+            res.data.results.projects.map((project) => {
+              return { value: project._id, label: project.name };
+            })
+          );
           setLoading(false);
         })
         .catch((err) => {
@@ -192,6 +202,7 @@ const DonationAreasAuthor = () => {
         enDescription,
         frDescription,
         rwDescription,
+        projects: projects.map((project) => project.value),
       };
       axios
         .post('/api/donationareas/add', formData, {
@@ -216,6 +227,7 @@ const DonationAreasAuthor = () => {
     enDescription,
     frDescription,
     rwDescription,
+    projects,
     token,
     t,
     refetch,
@@ -239,6 +251,7 @@ const DonationAreasAuthor = () => {
         enDescription,
         frDescription,
         rwDescription,
+        projects: projects.map((project) => project.value),
       };
       axios
         .patch(`/api/donationareas/${donationAreasId}`, formData, {
@@ -263,6 +276,7 @@ const DonationAreasAuthor = () => {
     enDescription,
     frDescription,
     rwDescription,
+    projects,
     token,
     t,
     refetch,
@@ -410,6 +424,19 @@ const DonationAreasAuthor = () => {
             error={t('Kinyarwanda Description is required')}
           />
         </div>
+        <Input
+          label={t('Related projects')}
+          elementType="multiselect"
+          elementConfig={{
+            type: 'text',
+            placeholder: t('Related projects'),
+            options: allProjects?.results?.map((project) => {
+              return { value: project._id, label: project.name };
+            }),
+          }}
+          value={projects}
+          changed={setProjects}
+        />
         {loading && <Spinner />}
         {error && (
           <CardBody name={error.error} color="red" additional="font-semibold" />
@@ -493,7 +520,7 @@ const DonationAreasAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all donate introduction')} />
+        <SectionTitle name={t('List of all donate area')} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -525,6 +552,7 @@ const DonationAreasAuthor = () => {
                   setEnDescription('');
                   setFrDescription('');
                   setRwDescription('');
+                  setProjects([]);
                   setError(null);
                 }}
               />

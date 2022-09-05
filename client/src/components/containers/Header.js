@@ -48,7 +48,6 @@ const Header = (props) => {
                 />
                 <CustomLink page="/donate" name={t('Donation')} />
                 <CustomLink page="/projects" name={t('Projects')} />
-                <CustomLink page="/partners" name={t('Partners')} />
                 <CustomLink page="/publications" name={t('Publications')} />
                 <CustomLink page="/contactus" name={t('Contact Us')} />
                 {isAuthenticated && (
@@ -149,6 +148,19 @@ const Header = (props) => {
           <CustomLink page="/partners" name={t('Partners')} />
           <CustomLink page="/publications" name={t('Publications')} />
           <CustomLink page="/contactus" name={t('Contact Us')} />
+          {isAuthenticated && (
+            <CustomLink page="/dashboard" name={t('Dashboard')} />
+          )}
+          {isAuthenticated && (
+            <TextButton
+              name={t('Log out')}
+              color="red"
+              additional="hover:font-bold"
+              onClick={() => {
+                dispatch(logout());
+              }}
+            />
+          )}
           <div className="m-auto flex space-x-2">
             {languages.map((lang, index) => (
               <NormalText
