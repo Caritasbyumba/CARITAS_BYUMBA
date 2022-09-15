@@ -8,7 +8,9 @@ import CustomHelmet from '../components/UI/Helmet';
 import Spinner from '../components/UI/spinner';
 import {
   useFetchActiveAboutusQuery,
+  useFetchActiveDepartmentsQuery,
   useFetchActiveQuotesQuery,
+  useFetchActiveServicesQuery,
 } from '../features/API/user-api-slice';
 
 const Aboutus = () => {
@@ -16,6 +18,10 @@ const Aboutus = () => {
   const { data = [], isFetching } = useFetchActiveAboutusQuery();
   const { data: quotesData = [], isFetching: isQuotesFetching } =
     useFetchActiveQuotesQuery();
+  const { data: departmentsData = [], isFetching: isDepartmentsFetching } =
+    useFetchActiveDepartmentsQuery();
+  const { data: servicesData = [], isFetching: isServicesFetching } =
+    useFetchActiveServicesQuery();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );

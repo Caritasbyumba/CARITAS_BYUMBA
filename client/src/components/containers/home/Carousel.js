@@ -6,11 +6,13 @@ import Slider from 'react-slick';
 import { CardBody, NormalText } from '../../text';
 import { useSelector } from 'react-redux';
 import Spinner from '../../UI/spinner';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Carousel = () => {
   const { data = [], isFetching } = useFetchActiveCarouselQuery();
   const [currentSlide, setCurrentSlide] = useState(1);
-  var settings = {
+  let settings = {
     dots: true,
     arrows: false,
     infinite: true,
@@ -30,6 +32,10 @@ const Carousel = () => {
       ></div>
     ),
   };
+  const [imageConfiguration, setImageConfiguration] = useState({
+    height: '100%',
+    width: '100%',
+  });
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
@@ -39,8 +45,14 @@ const Carousel = () => {
     <Slider {...settings}>
       {data.results.map((slide, index) => (
         <div key={index} className="relative h-30vh md:h-50vh lg:h-70vh">
-          <img
+          <LazyLoadImage
             className="w-full h-full object-cover object-center"
+            effect="blur"
+            placeholderSrc="/images/logo.png"
+            afterLoad={() => {
+              setImageConfiguration({ height: '', width: '' });
+            }}
+            {...imageConfiguration}
             src={`${process.env.REACT_APP_BACKEND_URL}/images/${slide.image}`}
             alt={slide.title[selectedLanguage]}
           />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchActiveMainProjectsQuery } from '../../../features/API/user-api-slice';
 import { NormalText } from '../../text';
@@ -6,6 +6,8 @@ import { useSelector } from 'react-redux';
 import { Button } from '../../UI/button';
 import Spinner from '../../UI/spinner';
 import { useHistory } from 'react-router-dom';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const MainProjects = () => {
   const { data = [], isFetching } = useFetchActiveMainProjectsQuery();
@@ -13,6 +15,10 @@ const MainProjects = () => {
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
+  const [imageConfiguration, setImageConfiguration] = useState({
+    height: '100%',
+    width: '100%',
+  });
   const history = useHistory();
   return isFetching ? (
     <Spinner />
@@ -20,8 +26,14 @@ const MainProjects = () => {
     <div className="flex">
       {data.results.map((project, index) => (
         <div key={index} className="w-50% h-25vh md:h-40vh lg:h-50vh relative">
-          <img
+          <LazyLoadImage
             className="w-full h-full object-cover"
+            effect="blur"
+            placeholderSrc="/images/logo.png"
+            afterLoad={() => {
+              setImageConfiguration({ height: '', width: '' });
+            }}
+            {...imageConfiguration}
             src={`${process.env.REACT_APP_BACKEND_URL}/images/${project.gallery[0]}`}
             alt={project.name}
           />

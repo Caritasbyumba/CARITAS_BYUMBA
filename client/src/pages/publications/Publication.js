@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
@@ -9,6 +9,8 @@ import CustomHelmet from '../../components/UI/Helmet';
 import Spinner from '../../components/UI/spinner';
 import { useFetchSpecificPublicationQuery } from '../../features/API/user-api-slice';
 import parse from 'html-react-parser';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Publication = () => {
   const { publicationId } = useParams();
@@ -28,6 +30,10 @@ const Publication = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+  const [imageConfiguration, setImageConfiguration] = useState({
+    height: '100%',
+    width: '100%',
+  });
 
   return (
     <div>
@@ -67,8 +73,14 @@ const Publication = () => {
             <Slider {...settings}>
               {publication.gallery.map((image, index) => (
                 <div key={index} className="w-full h-30vh md:h-50vh lg:h-70vh">
-                  <img
+                  <LazyLoadImage
                     className="w-full h-full object-cover object-center"
+                    effect="blur"
+                    placeholderSrc="/images/logo.png"
+                    afterLoad={() => {
+                      setImageConfiguration({ height: '', width: '' });
+                    }}
+                    {...imageConfiguration}
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}
                     alt={image}
                   />

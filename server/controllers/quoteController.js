@@ -85,7 +85,7 @@ export const updateQuote = async (req, res) => {
     const userId = req.tokenData._id;
     let updatedQuote;
     if (req.file?.filename) {
-      fs.unlinkSync(`public/images/${quoteFound.image}`);
+      fs.unlinkSync(`public/images/${quoteFound.profile}`);
       updatedQuote = await Quote.findOneAndUpdate(
         { _id: itemId },
         {
@@ -129,7 +129,7 @@ export const deleteQuote = async (req, res) => {
       return errorResponse(res, 404, 'Quote not found');
     }
     await Quote.deleteOne({ _id: itemId });
-    fs.unlinkSync(`public/images/${quoteFound.image}`);
+    fs.unlinkSync(`public/images/${quoteFound.profile}`);
     return successResponse(res, 204);
   } catch (error) {
     return errorResponse(res, 500, error.message);

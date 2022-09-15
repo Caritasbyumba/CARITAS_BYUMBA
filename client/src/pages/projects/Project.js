@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Footer from '../../components/containers/Footer';
 import Header from '../../components/containers/Header';
 import { useFetchSpecificProjectQuery } from '../../features/API/user-api-slice';
@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import CustomHelmet from '../../components/UI/Helmet';
 import parse from 'html-react-parser';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Project = () => {
   const { t } = useTranslation();
@@ -29,6 +31,10 @@ const Project = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+  const [imageConfiguration, setImageConfiguration] = useState({
+    height: '100%',
+    width: '100%',
+  });
 
   return (
     <div>
@@ -72,8 +78,14 @@ const Project = () => {
             <Slider {...settings}>
               {project.gallery.map((image, index) => (
                 <div key={index} className="w-full h-30vh md:h-50vh lg:h-70vh">
-                  <img
+                  <LazyLoadImage
                     className="w-full h-full object-cover object-center"
+                    effect="blur"
+                    placeholderSrc="/images/logo.png"
+                    afterLoad={() => {
+                      setImageConfiguration({ height: '', width: '' });
+                    }}
+                    {...imageConfiguration}
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}
                     alt={image}
                   />
