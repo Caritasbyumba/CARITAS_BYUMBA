@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Images = (props) => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -21,6 +23,10 @@ const Images = (props) => {
       setCurrentImage(currentImage + 1);
     }
   };
+  const [imageConfiguration, setImageConfiguration] = useState({
+    height: '100%',
+    width: '100%',
+  });
 
   return (
     <div
@@ -28,11 +34,17 @@ const Images = (props) => {
       onMouseEnter={mouseEnteredHandler}
     >
       {images.map((image, index) => (
-        <img
+        <LazyLoadImage
           key={index}
           className={`absolute w-full h-full ${
             currentImage === index ? 'inset-0 z-10' : 'top-2 left-2 blur-sm'
           } object-cover object-center rounded-sm transition-all`}
+          effect="blur"
+          placeholderSrc="/images/logo.png"
+          afterLoad={() => {
+            setImageConfiguration({ height: '', width: '' });
+          }}
+          {...imageConfiguration}
           src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}
           alt={image}
         />

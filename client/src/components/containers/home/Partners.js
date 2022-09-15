@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Slider from 'react-slick';
 import { useFetchActivePartnersQuery } from '../../../features/API/user-api-slice';
 import { CardTitle, PageTitle } from '../../text';
 import Spinner from '../../UI/spinner';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Partners = () => {
   const { t } = useTranslation();
   const { data = [], isFetching } = useFetchActivePartnersQuery();
+  const [imageConfiguration, setImageConfiguration] = useState({
+    height: '100%',
+    width: '100%',
+  });
   var settings = {
     arrows: false,
     dots: false,
@@ -48,8 +54,14 @@ const Partners = () => {
       <Slider {...settings}>
         {data.results.map((slide, index) => (
           <div key={index} className="py-5">
-            <img
+            <LazyLoadImage
               className="h-40 object-fit object-center m-auto"
+              effect="blur"
+              placeholderSrc="/images/logo.png"
+              afterLoad={() => {
+                setImageConfiguration({ height: '', width: '' });
+              }}
+              {...imageConfiguration}
               src={`${process.env.REACT_APP_BACKEND_URL}/images/${slide.image}`}
               alt=""
             />

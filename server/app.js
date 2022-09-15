@@ -24,6 +24,8 @@ import publicationsIntroRoutes from './routes/publicationsIntroRoutes.js';
 import donateIntroRoutes from './routes/donateIntroRoutes.js';
 import donationAreasRoutes from './routes/donationAreasRoutes.js';
 import donationRoutes from './routes/donationRoutes.js';
+import departmentRoutes from './routes/departmentRoutes.js';
+import serviceRoutes from './routes/serviceRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -76,6 +78,8 @@ app.use('/api/publicationsintro/', publicationsIntroRoutes);
 app.use('/api/donateintro/', donateIntroRoutes);
 app.use('/api/donationareas/', donationAreasRoutes);
 app.use('/api/donation/', donationRoutes);
+app.use('/api/departments/', departmentRoutes);
+app.use('/api/services/', serviceRoutes);
 
 app.use((req, res) => errorResponse(res, 400, 'The route was not found'));
 
