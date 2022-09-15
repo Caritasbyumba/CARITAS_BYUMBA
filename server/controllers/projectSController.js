@@ -123,6 +123,7 @@ export const getSpecificProject = async (req, res) => {
 };
 
 export const updateProject = async (req, res) => {
+	console.log("WE ARE HERE");
   try {
     const { itemId } = req.params;
     const projectFound = await Project.findOne({ _id: itemId });
