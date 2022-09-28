@@ -32,9 +32,9 @@ const app = express();
 
 // CORS Middleware
 app.use(cors({
-    // credentials: true,
-    // origin: ['https://caritasbyumba.org', 'https://www.caritasbyumba.org'],
-    // optionsSuccessStatus: 200
+    credentials: true,
+    origin: ['https://caritasbyumba.org', 'https://www.caritasbyumba.org'],
+    optionsSuccessStatus: 200
 }));
 // Logger Middleware
 app.use(morgan('dev'));
