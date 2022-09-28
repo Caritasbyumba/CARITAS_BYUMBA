@@ -34,19 +34,14 @@ const Images = (props) => {
       onMouseEnter={mouseEnteredHandler}
     >
       {images.map((image, index) => (
-        <LazyLoadImage
+        <img
           key={index}
           className={`absolute w-full h-full ${
             currentImage === index ? 'inset-0 z-10' : 'top-2 left-2 blur-sm'
           } object-cover object-center rounded-sm transition-all`}
-          effect="blur"
-          placeholderSrc="/images/logo.png"
-          afterLoad={() => {
-            setImageConfiguration({ height: '', width: '' });
-          }}
-          {...imageConfiguration}
           src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}
           alt={image}
+          loading='lazy'
         />
       ))}
     </div>

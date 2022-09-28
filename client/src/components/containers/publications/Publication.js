@@ -40,7 +40,10 @@ const Publication = (props) => {
           additional="font-bold text-xl mb-2"
         />
         <CardBody
-          name={props.description[selectedLanguage]}
+          name={props.description[selectedLanguage].replace(
+            /(<([^>]+)>)/gi,
+            ''
+          )}
           additional="text-gray-500 text-base truncate"
         />
         <TextButton
@@ -56,7 +59,7 @@ const Publication = (props) => {
             key={index}
             className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-500 mr-2 mb-2"
           >
-            #${tag}
+            #{tag}
           </span>
         ))}
       </div>

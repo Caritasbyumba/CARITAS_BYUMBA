@@ -32,12 +32,18 @@ export const ButtonWithIcon = function (props) {
   return (
     <button
       type="button"
-      className={`${props.additional} ${classes} ${props.isSquare ? 'rounded' : 'rounded-full'}`}
+      className={`${props.additional} ${classes} ${
+        props.isSquare ? 'rounded' : 'rounded-full'
+      }`}
       onClick={props.onClick}
     >
       {props.name}
       &nbsp;
-      {props.src ? <img src={props.src} alt={props.name} /> : props.children}
+      {props.src ? (
+        <img src={props.src} alt={props.name} loading="lazy" />
+      ) : (
+        props.children
+      )}
     </button>
   );
 };

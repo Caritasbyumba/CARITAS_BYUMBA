@@ -11,6 +11,7 @@ const Spinner = (props) => {
         <img
           className="w-full h-full object-cover object-center text-gray-100"
           src="/images/CARITAS_LOGO.png"
+          loading='lazy'
           alt=""
         />
       </div>

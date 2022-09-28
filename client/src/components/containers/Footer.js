@@ -20,6 +20,7 @@ const Footer = () => {
               className="w-1/2 w-full object-cover object-center"
               src="/images/logo.png"
               alt=""
+              loading='lazy'
             />
           </Link>
         </div>

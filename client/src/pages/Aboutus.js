@@ -90,6 +90,7 @@ const Aboutus = () => {
                     className="w-full h-full object-cover object-center rounded-full"
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${quote.profile}`}
                     alt=""
+                    loading='lazy'
                   />
                 </div>
                 <div>

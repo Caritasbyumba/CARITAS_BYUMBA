@@ -34,7 +34,7 @@ const Header = (props) => {
           <div className="w-full justify-between flex items-center">
             <Link className="flex-shrink-0" to="/">
               <img
-                className="h-20 w-auto"
+                className="h-16 w-auto"
                 src="/images/logo.png"
                 alt="O'Genius Panda"
               />
@@ -116,6 +116,13 @@ const Header = (props) => {
                 </Link>
               </div>
             </div>
+            <Link className="flex-shrink-0" to="/">
+              <img
+                className="h-16 w-auto"
+                src="/images/diocese.jpg"
+                alt="O'Genius Panda"
+              />
+            </Link>
           </div>
           <div className="-mr-2 flex lg:hidden">
             <button

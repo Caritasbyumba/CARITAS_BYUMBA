@@ -27,8 +27,9 @@ const MainProjects = () => {
       {data.results.map((project, index) => (
         <div key={index} className="w-50% h-25vh md:h-40vh lg:h-50vh relative">
           <LazyLoadImage
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover absolute inset-0 z-10"
             effect="blur"
+            wrapperClassName='relative h-full w-full'
             placeholderSrc="/images/logo.png"
             afterLoad={() => {
               setImageConfiguration({ height: '', width: '' });
