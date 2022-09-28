@@ -53,7 +53,7 @@ const DepartmentAuthor = () => {
     (departmentId) => {
       setLoading(true);
       axios
-        .get(`/api/department/${departmentId}`, {
+        .get(`/api/departments/${departmentId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -207,7 +207,7 @@ const DepartmentAuthor = () => {
         rwObjectives,
       };
       axios
-        .post('/api/department/add', formData, {
+        .post('/api/departments/add', formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -263,7 +263,7 @@ const DepartmentAuthor = () => {
         rwObjectives,
       };
       axios
-        .patch(`/api/department/${departmentId}`, formData, {
+        .patch(`/api/departments/${departmentId}`, formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -298,7 +298,7 @@ const DepartmentAuthor = () => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/department/archive/${departmentId}`, null, {
+      .patch(`/api/departments/archive/${departmentId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -316,7 +316,7 @@ const DepartmentAuthor = () => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/department/${departmentId}`, {
+      .delete(`/api/departments/${departmentId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -354,10 +354,10 @@ const DepartmentAuthor = () => {
             }}
             value={enName}
             changed={setEnName}
-            validation={{ required: true, maxLength: 50 }}
+            validation={{ required: true, maxLength: 100 }}
             shouldValidate
             error={t(
-              'English name is required and should be less than 50 characters'
+              'English name is required and should be less than 100 characters'
             )}
           />
           <Input
@@ -369,10 +369,10 @@ const DepartmentAuthor = () => {
             }}
             value={frName}
             changed={setFrName}
-            validation={{ required: true, maxLength: 50 }}
+            validation={{ required: true, maxLength: 100 }}
             shouldValidate
             error={t(
-              'French name is required and should be less than 50 characters'
+              'French name is required and should be less than 100 characters'
             )}
           />
           <Input
@@ -384,10 +384,10 @@ const DepartmentAuthor = () => {
             }}
             value={rwName}
             changed={setRwName}
-            validation={{ required: true, maxLength: 50 }}
+            validation={{ required: true, maxLength: 100 }}
             shouldValidate
             error={t(
-              'Kinyarwanda name is required and should be less than 50 characters'
+              'Kinyarwanda name is required and should be less than 100 characters'
             )}
           />
         </div>

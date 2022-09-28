@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import Departments from '../../components/containers/aboutus/Departments';
 import Wrapper from '../../components/containers/admin/Wrapper';
 import Footer from '../../components/containers/Footer';
 import Header from '../../components/containers/Header';
@@ -111,6 +112,9 @@ const AdminAboutus = (props) => {
           </div>
         </Wrapper>
       )}
+      <Wrapper {...props} item="departments">
+        <Departments />
+      </Wrapper>
       <Footer />
     </div>
   );

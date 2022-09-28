@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import Departments from '../components/containers/aboutus/Departments';
 import Footer from '../components/containers/Footer';
 import Header from '../components/containers/Header';
 import { CardBody, CardTitle, PageTitle, Quotes } from '../components/text';
@@ -8,9 +9,7 @@ import CustomHelmet from '../components/UI/Helmet';
 import Spinner from '../components/UI/spinner';
 import {
   useFetchActiveAboutusQuery,
-  useFetchActiveDepartmentsQuery,
   useFetchActiveQuotesQuery,
-  useFetchActiveServicesQuery,
 } from '../features/API/user-api-slice';
 
 const Aboutus = () => {
@@ -18,10 +17,6 @@ const Aboutus = () => {
   const { data = [], isFetching } = useFetchActiveAboutusQuery();
   const { data: quotesData = [], isFetching: isQuotesFetching } =
     useFetchActiveQuotesQuery();
-  const { data: departmentsData = [], isFetching: isDepartmentsFetching } =
-    useFetchActiveDepartmentsQuery();
-  const { data: servicesData = [], isFetching: isServicesFetching } =
-    useFetchActiveServicesQuery();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
@@ -114,6 +109,7 @@ const Aboutus = () => {
           ))}
         </div>
       )}
+      <Departments />
       <Footer />
     </div>
   );

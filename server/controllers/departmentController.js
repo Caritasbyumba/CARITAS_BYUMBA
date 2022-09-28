@@ -27,7 +27,12 @@ export const createDepartment = async (req, res) => {
       updatedBy: userId,
     });
     const department = await newDepartment.save();
-    return successResponse(res, 201, 'Department created successfully', department);
+    return successResponse(
+      res,
+      201,
+      'Department created successfully',
+      department
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -38,7 +43,12 @@ export const getAllDepartment = async (req, res) => {
     const department = await Department.find({})
       .populate(['createdBy', 'updatedBy'])
       .sort({ updatedAt: 'desc' });
-    return successResponse(res, 200, 'Department retrieved successfully', department);
+    return successResponse(
+      res,
+      200,
+      'Department retrieved successfully',
+      department
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -53,7 +63,7 @@ export const getActiveDepartment = async (req, res) => {
       res,
       200,
       'Department retrieved successfully',
-      department[0]
+      department
     );
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -116,7 +126,12 @@ export const updateDepartment = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'Department edited successfully', department);
+    return successResponse(
+      res,
+      200,
+      'Department edited successfully',
+      department
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -154,7 +169,12 @@ export const activateDepartment = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'Department edited successfully', department);
+    return successResponse(
+      res,
+      200,
+      'Department edited successfully',
+      department
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -178,7 +198,12 @@ export const archiveDepartment = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'Department edited successfully', department);
+    return successResponse(
+      res,
+      200,
+      'Department edited successfully',
+      department
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }

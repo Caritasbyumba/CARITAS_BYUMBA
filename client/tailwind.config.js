@@ -56,6 +56,11 @@ module.exports = {
         '75vh': '75vh',
         '80vh': '80vh',
         '90vh': '90vh',
+        'depart-big': 'calc(100% - 300px)',
+        'depart-small': '150px',
+        'depart-height': '500px',
+        'depart-height-second': 'calc(100% - 1px)',
+        'depart': '350px'
       },
     },
   },
