@@ -91,7 +91,7 @@ const Departments = () => {
         mobileAlignment="center"
         additional="py-5"
       />
-      <div className="flex w-full">
+      <div className="flex w-full p-5 space-x-2">
         {data.results.map((department, index) =>
           selectedDepartment === undefined ? (
             <Department

@@ -36,12 +36,6 @@ const ServiceAuthor = () => {
   const [enSmallDescription, setEnSmallDescription] = useState('');
   const [frSmallDescription, setFrSmallDescription] = useState('');
   const [rwSmallDescription, setRwSmallDescription] = useState('');
-  const [enBackground, setEnBackground] = useState('');
-  const [frBackground, setFrBackground] = useState('');
-  const [rwBackground, setRwBackground] = useState('');
-  const [enBeneficiaries, setEnBeneficiaries] = useState('');
-  const [frBeneficiaries, setFrBeneficiaries] = useState('');
-  const [rwBeneficiaries, setRwBeneficiaries] = useState('');
   const [enChallenges, setEnChallenges] = useState('');
   const [frChallenges, setFrChallenges] = useState('');
   const [rwChallenges, setRwChallenges] = useState('');
@@ -54,20 +48,14 @@ const ServiceAuthor = () => {
     (serviceId) => {
       setLoading(true);
       axios
-        .get(`/api/service/${serviceId}`, {
+        .get(`/api/services/${serviceId}`, {
           headers: { Authorization: token },
         })
         .then((res) => {
-          setName(res.data.results.name.en);
-          setEnSmallDescription(res.data.results.description.en);
-          setFrSmallDescription(res.data.results.description.fr);
-          setRwSmallDescription(res.data.results.description.rw);
-          setEnBackground(res.data.results.objectives.en);
-          setFrBackground(res.data.results.objectives.fr);
-          setRwBackground(res.data.results.objectives.rw);
-          setEnBeneficiaries(res.data.results.beneficiaries.en);
-          setFrBeneficiaries(res.data.results.beneficiaries.fr);
-          setRwBeneficiaries(res.data.results.beneficiaries.rw);
+          setName(res.data.results.name);
+          setEnSmallDescription(res.data.results.smallDescription.en);
+          setFrSmallDescription(res.data.results.smallDescription.fr);
+          setRwSmallDescription(res.data.results.smallDescription.rw);
           setEnChallenges(res.data.results.challenges.en);
           setFrChallenges(res.data.results.challenges.fr);
           setRwChallenges(res.data.results.challenges.rw);
@@ -192,12 +180,6 @@ const ServiceAuthor = () => {
       enSmallDescription !== '' &&
       frSmallDescription !== '' &&
       rwSmallDescription !== '' &&
-      enBackground !== '' &&
-      frBackground !== '' &&
-      rwBackground !== '' &&
-      enBeneficiaries !== '' &&
-      frBeneficiaries !== '' &&
-      rwBeneficiaries !== '' &&
       enChallenges !== '' &&
       frChallenges !== '' &&
       rwChallenges !== ''
@@ -205,22 +187,16 @@ const ServiceAuthor = () => {
       setLoading(true);
       setError(null);
       const formData = {
-        enName: name,
+        name: name,
         enSmallDescription: enSmallDescription,
         frSmallDescription: frSmallDescription,
         rwSmallDescription: rwSmallDescription,
-        enBackground: enBackground,
-        frBackground: frBackground,
-        rwBackground: rwBackground,
-        enBeneficiaries: enBeneficiaries,
-        frBeneficiaries: frBeneficiaries,
-        rwBeneficiaries: rwBeneficiaries,
         enChallenges: enChallenges,
         frChallenges: frChallenges,
         rwChallenges: rwChallenges,
       };
       axios
-        .post('/api/service/add', formData, {
+        .post('/api/services/add', formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -240,12 +216,6 @@ const ServiceAuthor = () => {
     enSmallDescription,
     frSmallDescription,
     rwSmallDescription,
-    enBackground,
-    frBackground,
-    rwBackground,
-    enBeneficiaries,
-    frBeneficiaries,
-    rwBeneficiaries,
     enChallenges,
     frChallenges,
     rwChallenges,
@@ -260,12 +230,6 @@ const ServiceAuthor = () => {
       enSmallDescription !== '' &&
       frSmallDescription !== '' &&
       rwSmallDescription !== '' &&
-      enBackground !== '' &&
-      frBackground !== '' &&
-      rwBackground !== '' &&
-      enBeneficiaries !== '' &&
-      frBeneficiaries !== '' &&
-      rwBeneficiaries !== '' &&
       enChallenges !== '' &&
       frChallenges !== '' &&
       rwChallenges !== ''
@@ -273,22 +237,16 @@ const ServiceAuthor = () => {
       setLoading(true);
       setError(null);
       const formData = {
-        enName: name,
-        enDescription: enSmallDescription,
-        frDescription: frSmallDescription,
-        rwDescription: rwSmallDescription,
-        enObjectives: enBackground,
-        frObjectives: frBackground,
-        rwObjectives: rwBackground,
-        enBeneficiaries: enBeneficiaries,
-        frBeneficiaries: frBeneficiaries,
-        rwBeneficiaries: rwBeneficiaries,
+        name: name,
+        enSmallDescription: enSmallDescription,
+        frSmallDescription: frSmallDescription,
+        rwSmallDescription: rwSmallDescription,
         enChallenges: enChallenges,
         frChallenges: frChallenges,
         rwChallenges: rwChallenges,
       };
       axios
-        .patch(`/api/service/${serviceId}`, formData, {
+        .patch(`/api/services/${serviceId}`, formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -308,12 +266,6 @@ const ServiceAuthor = () => {
     enSmallDescription,
     frSmallDescription,
     rwSmallDescription,
-    enBackground,
-    frBackground,
-    rwBackground,
-    enBeneficiaries,
-    frBeneficiaries,
-    rwBeneficiaries,
     enChallenges,
     frChallenges,
     rwChallenges,
@@ -327,7 +279,7 @@ const ServiceAuthor = () => {
     setLoading(true);
     setError(null);
     axios
-      .patch(`/api/service/archive/${serviceId}`, null, {
+      .patch(`/api/services/archive/${serviceId}`, null, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -345,7 +297,7 @@ const ServiceAuthor = () => {
     setLoading(true);
     setError(null);
     axios
-      .delete(`/api/service/${serviceId}`, {
+      .delete(`/api/services/${serviceId}`, {
         headers: { Authorization: token },
       })
       .then((res) => {
@@ -401,42 +353,6 @@ const ServiceAuthor = () => {
           value={rwSmallDescription}
           onChange={(text) => setRwSmallDescription(text)}
           placeholder={t('Kinyarwanda Small Description')}
-        />
-        <RichTextEditor
-          label={t('English background')}
-          value={enBackground}
-          onChange={(text) => setEnBackground(text)}
-          placeholder={t('English background')}
-        />
-        <RichTextEditor
-          label={t('French background')}
-          value={frBackground}
-          onChange={(text) => setFrBackground(text)}
-          placeholder={t('French background')}
-        />
-        <RichTextEditor
-          label={t('Kinyarwanda background')}
-          value={rwBackground}
-          onChange={(text) => setRwBackground(text)}
-          placeholder={t('Kinyarwanda background')}
-        />
-        <RichTextEditor
-          label={t('English Beneficiaries')}
-          value={enBeneficiaries}
-          onChange={(text) => setEnBeneficiaries(text)}
-          placeholder={t('English Beneficiaries')}
-        />
-        <RichTextEditor
-          label={t('French Beneficiaries')}
-          value={frBeneficiaries}
-          onChange={(text) => setFrBeneficiaries(text)}
-          placeholder={t('French Beneficiaries')}
-        />
-        <RichTextEditor
-          label={t('Kinyarwanda Beneficiaries')}
-          value={rwBeneficiaries}
-          onChange={(text) => setRwBeneficiaries(text)}
-          placeholder={t('Kinyarwanda Beneficiaries')}
         />
         <RichTextEditor
           label={t('English Challenges')}
@@ -567,12 +483,6 @@ const ServiceAuthor = () => {
                   setEnSmallDescription('');
                   setFrSmallDescription('');
                   setRwSmallDescription('');
-                  setEnBackground('');
-                  setFrBackground('');
-                  setRwBackground('');
-                  setEnBeneficiaries('');
-                  setFrBeneficiaries('');
-                  setRwBeneficiaries('');
                   setEnChallenges('');
                   setFrChallenges('');
                   setRwChallenges('');

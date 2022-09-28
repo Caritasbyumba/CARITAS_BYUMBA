@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Departments from '../components/containers/aboutus/Departments';
+import Services from '../components/containers/aboutus/Services';
 import Footer from '../components/containers/Footer';
 import Header from '../components/containers/Header';
 import { CardBody, CardTitle, PageTitle, Quotes } from '../components/text';
@@ -90,7 +91,7 @@ const Aboutus = () => {
                     className="w-full h-full object-cover object-center rounded-full"
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${quote.profile}`}
                     alt=""
-                    loading='lazy'
+                    loading="lazy"
                   />
                 </div>
                 <div>
@@ -111,6 +112,7 @@ const Aboutus = () => {
         </div>
       )}
       <Departments />
+      <Services />
       <Footer />
     </div>
   );

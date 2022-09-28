@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Images = (props) => {
@@ -23,10 +22,6 @@ const Images = (props) => {
       setCurrentImage(currentImage + 1);
     }
   };
-  const [imageConfiguration, setImageConfiguration] = useState({
-    height: '100%',
-    width: '100%',
-  });
 
   return (
     <div

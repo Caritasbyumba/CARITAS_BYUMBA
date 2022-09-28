@@ -8,12 +8,6 @@ export const createService = async (req, res) => {
       enSmallDescription,
       frSmallDescription,
       rwSmallDescription,
-      enBackground,
-      frBackground,
-      rwBackground,
-      enBeneficiaries,
-      frBeneficiaries,
-      rwBeneficiaries,
       enChallenges,
       frChallenges,
       rwChallenges,
@@ -25,12 +19,6 @@ export const createService = async (req, res) => {
         en: enSmallDescription,
         fr: frSmallDescription,
         rw: rwSmallDescription,
-      },
-      background: { en: enBackground, fr: frBackground, rw: rwBackground },
-      beneficiaries: {
-        en: enBeneficiaries,
-        fr: frBeneficiaries,
-        rw: rwBeneficiaries,
       },
       challenges: { en: enChallenges, fr: frChallenges, rw: rwChallenges },
       createdBy: userId,
@@ -56,15 +44,10 @@ export const getAllService = async (req, res) => {
 
 export const getActiveService = async (req, res) => {
   try {
-    const service = await Service.find({
+    const services = await Service.find({
       isActive: true,
     }).sort({ updatedAt: 'desc' });
-    return successResponse(
-      res,
-      200,
-      'Service retrieved successfully',
-      service[0]
-    );
+    return successResponse(res, 200, 'Service retrieved successfully', services);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -103,12 +86,6 @@ export const updateService = async (req, res) => {
       enSmallDescription,
       frSmallDescription,
       rwSmallDescription,
-      enBackground,
-      frBackground,
-      rwBackground,
-      enBeneficiaries,
-      frBeneficiaries,
-      rwBeneficiaries,
       enChallenges,
       frChallenges,
       rwChallenges,
@@ -123,12 +100,6 @@ export const updateService = async (req, res) => {
             en: enSmallDescription,
             fr: frSmallDescription,
             rw: rwSmallDescription,
-          },
-          background: { en: enBackground, fr: frBackground, rw: rwBackground },
-          beneficiaries: {
-            en: enBeneficiaries,
-            fr: frBeneficiaries,
-            rw: rwBeneficiaries,
           },
           challenges: { en: enChallenges, fr: frChallenges, rw: rwChallenges },
           updatedBy: userId,

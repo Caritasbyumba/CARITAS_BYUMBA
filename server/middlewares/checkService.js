@@ -16,24 +16,6 @@ const checkService = (req, res, next) => {
       .trim()
       .required()
       .label('Kinyarwanda small description'),
-    enBackground: Joi.string().trim().required().label('English background'),
-    frBackground: Joi.string().trim().required().label('French background'),
-    rwBackground: Joi.string()
-      .trim()
-      .required()
-      .label('Kinyarwanda background'),
-    enBeneficiaries: Joi.string()
-      .trim()
-      .required()
-      .label('English beneficiaries'),
-    frBeneficiaries: Joi.string()
-      .trim()
-      .required()
-      .label('French beneficiaries'),
-    rwBeneficiaries: Joi.string()
-      .trim()
-      .required()
-      .label('Kinyarwanda beneficiaries'),
     enChallenges: Joi.string().trim().required().label('English challenges'),
     frChallenges: Joi.string().trim().required().label('French challenges'),
     rwChallenges: Joi.string()
