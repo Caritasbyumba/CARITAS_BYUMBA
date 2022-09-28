@@ -16,8 +16,8 @@ const Department = (props) => {
   return (
     <div
       className={`${
-        props.isSelected ? 'w-70% m-auto' : 'w-1/3'
-      }  p-6 relative overflow-auto bg-white rounded-2xl border border-gray-200 shadow-md box-border transition-all`}
+        props.isSelected ? 'md:w-70% m-auto' : 'md:w-1/3'
+      } p-6 relative overflow-auto bg-white rounded-2xl border border-gray-200 shadow-md box-border transition-all`}
     >
       <div className="flex items-center justify-between">
         <CardTitle
@@ -91,7 +91,7 @@ const Departments = () => {
         mobileAlignment="center"
         additional="py-5"
       />
-      <div className="flex w-full p-5 space-x-2">
+      <div className="md:flex w-full p-5 space-y-2 md:space-y-0 md:space-x-2">
         {data.results.map((department, index) =>
           selectedDepartment === undefined ? (
             <Department
