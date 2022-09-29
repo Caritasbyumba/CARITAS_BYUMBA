@@ -43,7 +43,7 @@ const Payment = (props) => {
           console.log(err);
         });
     },
-    [chosenArea, history]
+    [chosenArea, history, selectedLanguage]
   );
 
   const config = {
