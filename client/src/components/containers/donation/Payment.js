@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Input from '../../UI/input';
 import { Button } from '../../UI/button';
 import axios from '../../../axios-base';
+import { useSelector } from 'react-redux';
 
 const Payment = (props) => {
   const [name, setName] = useState('');
@@ -12,6 +13,9 @@ const Payment = (props) => {
   const [amounts] = useState([5000, 10000, 25000, 50000, 100000]);
   const { t } = useTranslation();
   const { chosenArea, history } = props;
+  const selectedLanguage = useSelector(
+    (state) => state.global.selectedLanguage
+  );
 
   const makeDonation = useCallback(
     (payment) => {
@@ -23,6 +27,7 @@ const Payment = (props) => {
           transactionReference: payment.flw_ref,
           amount: payment.amount,
           currency: payment.currency,
+          language: selectedLanguage,
         })
         .then((res) => {
           history.push({
