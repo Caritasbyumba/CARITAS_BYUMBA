@@ -22,6 +22,7 @@ const checkService = (req, res, next) => {
       .trim()
       .required()
       .label('Kinyarwanda challenges'),
+    image: Joi.optional(),
   });
   const schemasValidation = Joi.validate(req.body, serviceSchemas);
   validationHelper(req, res, schemasValidation, next);

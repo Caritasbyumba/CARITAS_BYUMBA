@@ -93,18 +93,18 @@ const Header = (props) => {
                   <Link
                     to={{ pathname: 'https://twitter.com/CByumba' }}
                     target="_blank"
-                    className="p-1 border border-black rounded-full"
+                    className="p-1 border border-twitter rounded-full"
                   >
-                    <FaTwitter />
+                    <FaTwitter color="#00acee" />
                   </Link>
                   <Link
                     to={{
                       pathname: 'https://www.instagram.com/caritas_byumba/',
                     }}
                     target="_blank"
-                    className="p-1 border border-black rounded-full"
+                    className="p-1 box-border rounded-full bg-gradient-to-tr from-instagram-yellow via-instagram-pink to-instagram-purple"
                   >
-                    <FaInstagram />
+                    <FaInstagram color="white" />
                   </Link>
                   <Link
                     to={{
@@ -112,9 +112,9 @@ const Header = (props) => {
                         'https://www.youtube.com/watch?v=fBKN6ZuzCN4https://www.youtube.com/watch?v=fBKN6ZuzCN4',
                     }}
                     target="_blank"
-                    className="p-1 border border-black rounded-full"
+                    className="p-1 border border-youtube-red rounded-full"
                   >
-                    <FaYoutube />
+                    <FaYoutube color="#FF0000" />
                   </Link>
                   <Link
                     to={{
@@ -122,9 +122,9 @@ const Header = (props) => {
                         'https://www.facebook.com/profile.php?id=100081838735786&_rdc=2&_rdr',
                     }}
                     target="_blank"
-                    className="p-1 border border-black rounded-full"
+                    className="p-1 border border-facebook-blue rounded-full"
                   >
-                    <FaFacebookF />
+                    <FaFacebookF color="#4267B2" />
                   </Link>
                 </div>
               </div>

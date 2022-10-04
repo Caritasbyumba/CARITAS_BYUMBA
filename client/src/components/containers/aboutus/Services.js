@@ -28,22 +28,31 @@ const Services = () => {
         {data.results.map((service, index) => (
           <div
             key={index}
-            className="bg-gray-100 p-5 m-5 rounded-2xl shadow-md"
+            className=" m-5 bg-gray-100 rounded-2xl shadow-md md:flex w-full h-35vh"
           >
-            <CardTitle
-              name={service.name}
-              color="red"
-              additional="text-center"
-            />
-            <div className="mb-3 font-normal text-gray-700 list">
-              {parse(service.smallDescription[selectedLanguage])}
+            <div className="w-full md:w-1/3 h-full rounded-l-2xl">
+              <img
+                className="w-full h-full object-cover object-center rounded-l-2xl"
+                src={`${process.env.REACT_APP_BACKEND_URL}/images/${service.image}`}
+                alt={service.image}
+              />
             </div>
-            {service.challenges[selectedLanguage].replace(
-              /(<([^>]+)>)/gi,
-              ''
-            ) !== '' && <CardTitle name={t('Challenges')} color="red" />}
-            <div className="mb-3 font-normal text-gray-700 list">
-              {parse(service.challenges[selectedLanguage])}
+            <div className="md:w-2/3 p-5 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100">
+              <CardTitle
+                name={service.name}
+                color="red"
+                additional="text-center"
+              />
+              <div className="mb-3 font-normal text-gray-700 list">
+                {parse(service.smallDescription[selectedLanguage])}
+              </div>
+              {service.challenges[selectedLanguage].replace(
+                /(<([^>]+)>)/gi,
+                ''
+              ) !== '' && <CardTitle name={t('Challenges')} color="red" />}
+              <div className="mb-3 font-normal text-gray-700 list">
+                {parse(service.challenges[selectedLanguage])}
+              </div>
             </div>
           </div>
         ))}

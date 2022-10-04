@@ -17,10 +17,10 @@ const Footer = () => {
         <div className="lg:w-1/3 grid place-items-center">
           <Link to="/" className="p-5 grid place-items-center">
             <img
-              className="w-1/2 w-full object-cover object-center"
+              className="w-1/2 md:w-full object-cover object-center"
               src="/images/logo.png"
               alt=""
-              loading='lazy'
+              loading="lazy"
             />
           </Link>
         </div>
@@ -97,16 +97,18 @@ const Footer = () => {
             <Link
               to={{ pathname: 'https://twitter.com/CByumba' }}
               target="_blank"
-              className="p-1 border border-black rounded-full"
+              className="p-1 border border-twitter rounded-full"
             >
-              <FaTwitter />
+              <FaTwitter color="#00acee" />
             </Link>
             <Link
-              to={{ pathname: 'https://www.instagram.com/caritas_byumba/' }}
+              to={{
+                pathname: 'https://www.instagram.com/caritas_byumba/',
+              }}
               target="_blank"
-              className="p-1 border border-black rounded-full"
+              className="p-1 box-border rounded-full bg-gradient-to-tr from-instagram-yellow via-instagram-pink to-instagram-purple"
             >
-              <FaInstagram />
+              <FaInstagram color="white" />
             </Link>
             <Link
               to={{
@@ -114,9 +116,9 @@ const Footer = () => {
                   'https://www.youtube.com/watch?v=fBKN6ZuzCN4https://www.youtube.com/watch?v=fBKN6ZuzCN4',
               }}
               target="_blank"
-              className="p-1 border border-black rounded-full"
+              className="p-1 border border-youtube-red rounded-full"
             >
-              <FaYoutube />
+              <FaYoutube color="#FF0000" />
             </Link>
             <Link
               to={{
@@ -124,9 +126,9 @@ const Footer = () => {
                   'https://www.facebook.com/profile.php?id=100081838735786&_rdc=2&_rdr',
               }}
               target="_blank"
-              className="p-1 border border-black rounded-full"
+              className="p-1 border border-facebook-blue rounded-full"
             >
-              <FaFacebookF />
+              <FaFacebookF color="#4267B2" />
             </Link>
           </div>
         </div>

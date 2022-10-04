@@ -16,6 +16,14 @@ module.exports = {
       brown: '#BC6450',
       green: '#198754',
       blue: '#0275d8',
+      twitter: '#00acee',
+      'instagram-yellow': '#feda75',
+      'instagram-orange': '#fa7e1e',
+      'instagram-pink': '#d62976',
+      'instagram-purple': '#962fbf',
+      'instagram-blue': '#4f5bd5',
+      'youtube-red': '#FF0000',
+      'facebook-blue': '#4267B2',
     },
     fontFamily: {
       poppins: ['Poppins'],
@@ -60,7 +68,7 @@ module.exports = {
         'depart-small': '150px',
         'depart-height': '500px',
         'depart-height-second': 'calc(100% - 1px)',
-        'depart': '350px'
+        depart: '350px',
       },
     },
   },

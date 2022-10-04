@@ -21,6 +21,7 @@ export const createService = async (req, res) => {
         rw: rwSmallDescription,
       },
       challenges: { en: enChallenges, fr: frChallenges, rw: rwChallenges },
+      image: req.file.filename,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -47,7 +48,12 @@ export const getActiveService = async (req, res) => {
     const services = await Service.find({
       isActive: true,
     }).sort({ updatedAt: 'desc' });
-    return successResponse(res, 200, 'Service retrieved successfully', services);
+    return successResponse(
+      res,
+      200,
+      'Service retrieved successfully',
+      services
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -102,6 +108,7 @@ export const updateService = async (req, res) => {
             rw: rwSmallDescription,
           },
           challenges: { en: enChallenges, fr: frChallenges, rw: rwChallenges },
+          image: req.file.filename,
           updatedBy: userId,
         },
       },

@@ -24,6 +24,7 @@ import {
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
 import RichTextEditor from '../../../components/UI/RichTextEditor';
+import FileUpload from '../../../components/UI/FileUpload';
 
 const ServiceAuthor = () => {
   const { t } = useTranslation();
@@ -43,6 +44,9 @@ const ServiceAuthor = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [serviceId, setServiceId] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [showProgressBar, setShowProgressBar] = useState(false);
 
   const updateForm = useCallback(
     (serviceId) => {
@@ -182,30 +186,40 @@ const ServiceAuthor = () => {
       rwSmallDescription !== '' &&
       enChallenges !== '' &&
       frChallenges !== '' &&
-      rwChallenges !== ''
+      rwChallenges !== '' &&
+      selectedFiles != null
     ) {
       setLoading(true);
       setError(null);
-      const formData = {
-        name: name,
-        enSmallDescription: enSmallDescription,
-        frSmallDescription: frSmallDescription,
-        rwSmallDescription: rwSmallDescription,
-        enChallenges: enChallenges,
-        frChallenges: frChallenges,
-        rwChallenges: rwChallenges,
-      };
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('enSmallDescription', enSmallDescription);
+      formData.append('frSmallDescription', frSmallDescription);
+      formData.append('rwSmallDescription', rwSmallDescription);
+      formData.append('enChallenges', enChallenges);
+      formData.append('frChallenges', frChallenges);
+      formData.append('rwChallenges', rwChallenges);
+      if (selectedFiles) {
+        formData.append('image', selectedFiles[0]);
+      }
       axios
         .post('/api/services/add', formData, {
           headers: { Authorization: token },
+          onUploadProgress: (progressEvent) => {
+            setUploadProgress(
+              Math.round(progressEvent.loaded / progressEvent.total) * 100
+            );
+          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
+          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
+          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
@@ -219,6 +233,7 @@ const ServiceAuthor = () => {
     enChallenges,
     frChallenges,
     rwChallenges,
+    selectedFiles,
     token,
     t,
     refetch,
@@ -236,26 +251,35 @@ const ServiceAuthor = () => {
     ) {
       setLoading(true);
       setError(null);
-      const formData = {
-        name: name,
-        enSmallDescription: enSmallDescription,
-        frSmallDescription: frSmallDescription,
-        rwSmallDescription: rwSmallDescription,
-        enChallenges: enChallenges,
-        frChallenges: frChallenges,
-        rwChallenges: rwChallenges,
-      };
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('enSmallDescription', enSmallDescription);
+      formData.append('frSmallDescription', frSmallDescription);
+      formData.append('rwSmallDescription', rwSmallDescription);
+      formData.append('enChallenges', enChallenges);
+      formData.append('frChallenges', frChallenges);
+      formData.append('rwChallenges', rwChallenges);
+      if (selectedFiles) {
+        formData.append('image', selectedFiles[0]);
+      }
       axios
         .patch(`/api/services/${serviceId}`, formData, {
           headers: { Authorization: token },
+          onUploadProgress: (progressEvent) => {
+            setUploadProgress(
+              Math.round(progressEvent.loaded / progressEvent.total) * 100
+            );
+          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
+          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
+          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
@@ -269,6 +293,7 @@ const ServiceAuthor = () => {
     enChallenges,
     frChallenges,
     rwChallenges,
+    selectedFiles,
     token,
     t,
     refetch,
@@ -371,6 +396,15 @@ const ServiceAuthor = () => {
           value={rwChallenges}
           onChange={(text) => setRwChallenges(text)}
           placeholder={t('Kinyarwanda Challenges')}
+        />
+        <FileUpload
+          elementConfig={{
+            accept: 'image/*',
+          }}
+          btnName="Upload image"
+          uploadProgress={uploadProgress}
+          showProgressBar={showProgressBar}
+          setSelectedFiles={setSelectedFiles}
         />
         {loading && <Spinner />}
         {error && (
