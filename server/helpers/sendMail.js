@@ -5,9 +5,10 @@ export const sendEmail = async (email, subject, body) => {
   let user = process.env.EMAIL;
   let pass = process.env.PASSWORD;
   let transporter = nodemailer.createTransport({
+    name: 'www:caritasbyumba.org',
     host: process.env.MAIL_HOST,
     port: 587,
-    secure: false, // upgrade later with STARTTLS
+    secure: true, // upgrade later with STARTTLS
     auth: {
       user: user,
       pass: pass,

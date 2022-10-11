@@ -41,7 +41,11 @@ const Header = (props) => {
                     alt="O'Genius Panda"
                   />
                 </Link>
-                <Link className="flex-shrink-0" to="/">
+                <Link
+                  className="flex-shrink-0"
+                  to={{ pathname: 'http://diocesebyumba.org/' }}
+                  target="_blank"
+                >
                   <img
                     className="h-16 w-auto"
                     src="/images/diocese.jpg"
