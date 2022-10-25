@@ -87,6 +87,11 @@ export const adminApiSlice = createApi({
           return '/services';
         },
       }),
+      fetchAllCharts: builder.query({
+        query: () => {
+          return '/charts';
+        },
+      }),
     };
   },
 });
@@ -107,4 +112,5 @@ export const {
   useFetchAllDonationAreasQuery,
   useFetchAllDepartmentsQuery,
   useFetchAllServicesQuery,
+  useFetchAllChartsQuery,
 } = adminApiSlice;

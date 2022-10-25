@@ -18,7 +18,7 @@ const Moreonus = () => {
   return isFetching ? (
     <Spinner />
   ) : (
-    <div className="bg-gray-100">
+    <div>
       <PageTitle
         name={t('About us')}
         color="red"
@@ -40,14 +40,14 @@ const Moreonus = () => {
             color="red"
             clicked={() => {}}
           /> */}
-          <TextButton
+          {/* <TextButton
             name={moreonus.callToActionBtn[selectedLanguage]}
             color="red"
             additional="font-bold"
             onClick={() => {
               history.push('/aboutus');
             }}
-          />
+          /> */}
         </div>
       </div>
     </div>

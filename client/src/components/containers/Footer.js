@@ -6,6 +6,7 @@ import { TextButton } from '../UI/button';
 import { MdPlace, MdEmail, MdLocalPhone } from 'react-icons/md';
 import { BsMailbox2 } from 'react-icons/bs';
 import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
+import { IoEarth } from 'react-icons/io5';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -78,12 +79,12 @@ const Footer = () => {
             <CardBody name="PO Box: 05 Byumba - Rwanda" />
           </div>
           <Link
-            to={{ pathname: 'tel:+250788476714' }}
+            to={{ pathname: 'tel:+250787605413' }}
             target="_blank"
             className="flex space-x-2 items-center hover:underline"
           >
             <MdLocalPhone />
-            <CardBody name="Tel: +250788476714" />
+            <CardBody name="Tel: +250787605413" />
           </Link>
           <Link
             to={{ pathname: 'mailto:caritasbyumba81@gmail.com' }}
@@ -92,6 +93,14 @@ const Footer = () => {
           >
             <MdEmail />
             <CardBody name="caritasbyumba81@gmail.com" />
+          </Link>
+          <Link
+            to={{ pathname: 'https://caritasbyumba.org/aboutus' }}
+            target="_blank"
+            className="flex space-x-2 items-center hover:underline"
+          >
+            <IoEarth />
+            <CardBody name="www.caritasbyumba.org" />
           </Link>
           <div className="flex space-x-2 mt-3">
             <Link
