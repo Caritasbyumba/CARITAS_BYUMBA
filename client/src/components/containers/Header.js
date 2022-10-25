@@ -56,14 +56,19 @@ const Header = (props) => {
               <div className="hidden lg:flex items-center">
                 <div className="flex items-center space-x-2">
                   <CustomLink
+                    page="/"
+                    indicator={props.pageLink}
+                    name={t('Home')}
+                  />
+                  <CustomLink
                     page="/aboutus"
                     indicator={props.pageLink}
                     name={t('Who we are')}
                   />
-                  <CustomLink page="/donate" name={t('Donation')} />
                   <CustomLink page="/projects" name={t('Projects')} />
                   <CustomLink page="/publications" name={t('Publications')} />
                   <CustomLink page="/contactus" name={t('Contact Us')} />
+                  <CustomLink page="/donate" name={t('Donation')} />
                   {isAuthenticated && (
                     <CustomLink page="/dashboard" name={t('Dashboard')} />
                   )}
@@ -155,15 +160,20 @@ const Header = (props) => {
         <div className={`${showMobileNavBar ? 'lg:hidden' : 'hidden'}`}>
           <div className="flex flex-col mx-auto space-y-2 py-3">
             <CustomLink
+              page="/"
+              indicator={props.pageLink}
+              name={t('Home')}
+            />
+            <CustomLink
               page="/aboutus"
               indicator={props.pageLink}
               name={t('Who we are')}
             />
-            <CustomLink page="/donate" name={t('Donation')} />
             <CustomLink page="/projects" name={t('Projects')} />
             <CustomLink page="/partners" name={t('Partners')} />
             <CustomLink page="/publications" name={t('Publications')} />
             <CustomLink page="/contactus" name={t('Contact Us')} />
+            <CustomLink page="/donate" name={t('Donation')} />
             {isAuthenticated && (
               <CustomLink page="/dashboard" name={t('Dashboard')} />
             )}

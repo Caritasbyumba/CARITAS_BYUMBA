@@ -97,6 +97,11 @@ export const userApiSlice = createApi({
           return '/services/active';
         },
       }),
+      fetchActiveCharts: builder.query({
+        query: () => {
+          return '/charts/active';
+        },
+      }),
     };
   },
 });
@@ -120,4 +125,5 @@ export const {
   useFetchActiveDonationAreaIntroQuery,
   useFetchActiveDepartmentsQuery,
   useFetchActiveServicesQuery,
+  useFetchActiveChartsQuery,
 } = userApiSlice;

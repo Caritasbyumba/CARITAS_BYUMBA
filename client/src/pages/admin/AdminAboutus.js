@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import Chart from '../../components/containers/aboutus/Chart';
 import Departments from '../../components/containers/aboutus/Departments';
 import Services from '../../components/containers/aboutus/Services';
 import Wrapper from '../../components/containers/admin/Wrapper';
@@ -114,6 +115,9 @@ const AdminAboutus = (props) => {
           </div>
         </Wrapper>
       )}
+      <Wrapper {...props} item="chart">
+        <Chart />
+      </Wrapper>
       <Wrapper {...props} item="departments">
         <Departments />
       </Wrapper>

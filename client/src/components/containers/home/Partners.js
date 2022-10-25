@@ -65,7 +65,7 @@ const Partners = () => {
               src={`${process.env.REACT_APP_BACKEND_URL}/images/${slide.image}`}
               alt=""
             />
-            <CardTitle name={slide.name} alignment="center" additional="py-5" />
+            {/* <CardTitle name={slide.name} alignment="center" additional="py-5" /> */}
           </div>
         ))}
       </Slider>
