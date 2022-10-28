@@ -4,7 +4,10 @@ import Footer from '../../../components/containers/Footer';
 import Header from '../../../components/containers/Header';
 import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
 import Spinner from '../../../components/UI/spinner';
-import { useFetchAllServicesQuery } from '../../../features/API/admin-api-slice';
+import {
+  useFetchAllDepartmentsQuery,
+  useFetchAllServicesQuery,
+} from '../../../features/API/admin-api-slice';
 import { useSelector } from 'react-redux';
 import {
   useTable,
@@ -28,11 +31,15 @@ import FileUpload from '../../../components/UI/FileUpload';
 
 const ServiceAuthor = () => {
   const { t } = useTranslation();
+  const selectedLanguage = useSelector(
+    (state) => state.global.selectedLanguage
+  );
   const token = useSelector((state) => state.global.token);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllServicesQuery();
+  const { data: allDepartments } = useFetchAllDepartmentsQuery();
   const [name, setName] = useState('');
   const [enSmallDescription, setEnSmallDescription] = useState('');
   const [frSmallDescription, setFrSmallDescription] = useState('');
@@ -47,6 +54,7 @@ const ServiceAuthor = () => {
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
+  const [department, setDepartment] = useState('');
 
   const updateForm = useCallback(
     (serviceId) => {
@@ -63,6 +71,7 @@ const ServiceAuthor = () => {
           setEnChallenges(res.data.results.challenges.en);
           setFrChallenges(res.data.results.challenges.fr);
           setRwChallenges(res.data.results.challenges.rw);
+          setDepartment(res.data.results.department?._id);
           setLoading(false);
         })
         .catch((err) => {
@@ -199,6 +208,7 @@ const ServiceAuthor = () => {
       formData.append('enChallenges', enChallenges);
       formData.append('frChallenges', frChallenges);
       formData.append('rwChallenges', rwChallenges);
+      formData.append('department', department);
       if (selectedFiles) {
         formData.append('image', selectedFiles[0]);
       }
@@ -234,6 +244,7 @@ const ServiceAuthor = () => {
     frChallenges,
     rwChallenges,
     selectedFiles,
+    department,
     token,
     t,
     refetch,
@@ -259,6 +270,7 @@ const ServiceAuthor = () => {
       formData.append('enChallenges', enChallenges);
       formData.append('frChallenges', frChallenges);
       formData.append('rwChallenges', rwChallenges);
+      formData.append('department', department);
       if (selectedFiles) {
         formData.append('image', selectedFiles[0]);
       }
@@ -294,6 +306,7 @@ const ServiceAuthor = () => {
     frChallenges,
     rwChallenges,
     selectedFiles,
+    department,
     token,
     t,
     refetch,
@@ -397,6 +410,24 @@ const ServiceAuthor = () => {
           onChange={(text) => setRwChallenges(text)}
           placeholder={t('Kinyarwanda Challenges')}
         />
+        {allDepartments && (
+          <Input
+            label={t('Related department')}
+            elementType="select"
+            elementConfig={{
+              type: 'text',
+              startingValue: t('SELECT'),
+              options: allDepartments?.results?.map((department) => {
+                return {
+                  value: department._id,
+                  displayValue: department.name[selectedLanguage],
+                };
+              }),
+            }}
+            value={department}
+            changed={setDepartment}
+          />
+        )}
         <FileUpload
           elementConfig={{
             accept: 'image/*',

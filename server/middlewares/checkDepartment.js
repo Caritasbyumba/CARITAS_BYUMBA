@@ -12,12 +12,19 @@ const checkDepartment = (req, res, next) => {
       .trim()
       .required()
       .label('Kinyarwanda description'),
-    enObjectives: Joi.string().trim().required().label('English objectives'),
-    frObjectives: Joi.string().trim().required().label('French objectives'),
-    rwObjectives: Joi.string()
+    enSmallDescription: Joi.string()
       .trim()
       .required()
-      .label('Kinyarwanda objectives'),
+      .label('English small description'),
+    frSmallDescription: Joi.string()
+      .trim()
+      .required()
+      .label('French small description'),
+    rwSmallDescription: Joi.string()
+      .trim()
+      .required()
+      .label('Kinyarwanda small description'),
+    image: Joi.optional(),
   });
   const schemasValidation = Joi.validate(req.body, departmentSchemas);
   validationHelper(req, res, schemasValidation, next);

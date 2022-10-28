@@ -97,9 +97,24 @@ export const userApiSlice = createApi({
           return '/services/active';
         },
       }),
+      fetchActiveAdverts: builder.query({
+        query: () => {
+          return '/adverts/active';
+        },
+      }),
+      fetchActiveAdvertsIntro: builder.query({
+        query: () => {
+          return '/advertsintro/active';
+        },
+      }),
       fetchActiveCharts: builder.query({
         query: () => {
           return '/charts/active';
+        },
+      }),
+      fetchDepartmentServices: builder.query({
+        query: (departmentId) => {
+          return `/departments/${departmentId}/services`;
         },
       }),
     };
@@ -126,4 +141,7 @@ export const {
   useFetchActiveDepartmentsQuery,
   useFetchActiveServicesQuery,
   useFetchActiveChartsQuery,
+  useFetchActiveAdvertsQuery,
+  useFetchActiveAdvertsIntroQuery,
+  useFetchDepartmentServicesQuery,
 } = userApiSlice;

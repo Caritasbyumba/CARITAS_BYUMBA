@@ -11,6 +11,7 @@ export const createService = async (req, res) => {
       enChallenges,
       frChallenges,
       rwChallenges,
+      department,
     } = req.body;
     const userId = req.tokenData._id;
     const newService = new Service({
@@ -22,6 +23,7 @@ export const createService = async (req, res) => {
       },
       challenges: { en: enChallenges, fr: frChallenges, rw: rwChallenges },
       image: req.file.filename,
+      department: department,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -35,7 +37,7 @@ export const createService = async (req, res) => {
 export const getAllService = async (req, res) => {
   try {
     const service = await Service.find({})
-      .populate(['createdBy', 'updatedBy'])
+      .populate(['createdBy', 'updatedBy', 'department'])
       .sort({ updatedAt: 'desc' });
     return successResponse(res, 200, 'Service retrieved successfully', service);
   } catch (error) {
@@ -47,7 +49,9 @@ export const getActiveService = async (req, res) => {
   try {
     const services = await Service.find({
       isActive: true,
-    }).sort({ updatedAt: 'desc' });
+    })
+      .sort({ updatedAt: 'desc' })
+      .populate(['createdBy', 'updatedBy', 'department']);
     return successResponse(
       res,
       200,
@@ -65,6 +69,7 @@ export const getSpecificService = async (req, res) => {
     const serviceFound = await Service.findOne({ _id: itemId }).populate([
       'createdBy',
       'updatedBy',
+      'department',
     ]);
     if (!serviceFound) {
       return errorResponse(res, 404, 'Service not found');
@@ -95,25 +100,56 @@ export const updateService = async (req, res) => {
       enChallenges,
       frChallenges,
       rwChallenges,
+      department,
     } = req.body;
     const userId = req.tokenData._id;
-    const service = await Service.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          name: name,
-          smallDescription: {
-            en: enSmallDescription,
-            fr: frSmallDescription,
-            rw: rwSmallDescription,
+    let service;
+    if (req.file?.filename) {
+      service = await Service.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            smallDescription: {
+              en: enSmallDescription,
+              fr: frSmallDescription,
+              rw: rwSmallDescription,
+            },
+            challenges: {
+              en: enChallenges,
+              fr: frChallenges,
+              rw: rwChallenges,
+            },
+            image: req.file.filename,
+            department: department,
+            updatedBy: userId,
           },
-          challenges: { en: enChallenges, fr: frChallenges, rw: rwChallenges },
-          image: req.file.filename,
-          updatedBy: userId,
         },
-      },
-      { new: true }
-    ).populate(['createdBy', 'updatedBy']);
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    } else {
+      service = await Service.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: name,
+            smallDescription: {
+              en: enSmallDescription,
+              fr: frSmallDescription,
+              rw: rwSmallDescription,
+            },
+            challenges: {
+              en: enChallenges,
+              fr: frChallenges,
+              rw: rwChallenges,
+            },
+            department: department,
+            updatedBy: userId,
+          },
+        },
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    }
     return successResponse(res, 200, 'Service edited successfully', service);
   } catch (error) {
     return errorResponse(res, 500, error.message);
