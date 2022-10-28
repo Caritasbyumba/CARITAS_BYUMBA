@@ -67,10 +67,10 @@ const Donation = (props) => {
           </div>
         </>
       )}
-      <Payment
+      {/* <Payment
         {...props}
         chosenArea={donationAreas ? donationAreas[chosenArea]._id : ''}
-      />
+      /> */}
       <Footer />
     </div>
   );

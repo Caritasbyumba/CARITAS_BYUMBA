@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useFetchActiveDepartmentsQuery } from '../../../features/API/user-api-slice';
-import { CardTitle, PageTitle } from '../../text';
+import {
+  useFetchActiveDepartmentsQuery,
+  useFetchDepartmentServicesQuery,
+} from '../../../features/API/user-api-slice';
+import { CardTitle, PageTitle, SectionTitle } from '../../text';
 import Spinner from '../../UI/spinner';
 import parse from 'html-react-parser';
 import { ButtonWithIcon } from '../../UI/button';
@@ -13,6 +16,8 @@ const Department = (props) => {
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
+  const { data = [], isFetching } = useFetchDepartmentServicesQuery(props._id);
+
   return (
     <div
       className={`${
@@ -34,18 +39,66 @@ const Department = (props) => {
           />
         )}
       </div>
-      <div className="mb-3 font-normal text-gray-700 list">
-        {parse(props.description[selectedLanguage])}
-      </div>
-      {props.isSelected && (
-        <>
-          {props.objectives[selectedLanguage].replace(/(<([^>]+)>)/gi, '') !==
-            '' && <CardTitle name={t('Objectives')} color="red" />}
-          <div className="mb-3 font-normal text-gray-700 list">
-            {parse(props.objectives[selectedLanguage])}
-          </div>
-        </>
+      {props.isSelected ? (
+        <div className="mb-3 font-normal text-gray-700 list">
+          {parse(props.description[selectedLanguage])}
+        </div>
+      ) : (
+        <div className="mb-3 font-normal text-gray-700 list">
+          {parse(props.smallDescription[selectedLanguage])}
+        </div>
       )}
+      {props.isSelected && (
+        <img
+          className="m-auto"
+          src={`${process.env.REACT_APP_BACKEND_URL}/images/${props.image}`}
+          alt={props.name[selectedLanguage]}
+        />
+      )}
+      {props.isSelected && isFetching ? (
+        <Spinner />
+      ) : props.isSelected && data.results.length > 0 ? (
+        <>
+          <SectionTitle
+            name={t('Services')}
+            color="red"
+            alignment="center"
+            mobileAlignment="center"
+            additional="py-5"
+          />
+          {data.results.map((service, index) => (
+            <div
+              key={index}
+              className=" my-5 bg-gray-100 rounded-2xl shadow-md md:flex w-full h-35vh"
+            >
+              <div className="w-full md:w-1/3 h-full rounded-l-2xl">
+                <img
+                  className="w-full h-full object-cover object-center rounded-l-2xl"
+                  src={`${process.env.REACT_APP_BACKEND_URL}/images/${service.image}`}
+                  alt={service.image}
+                />
+              </div>
+              <div className="md:w-2/3 p-5 h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-100">
+                <CardTitle
+                  name={service.name}
+                  color="red"
+                  additional="text-center"
+                />
+                <div className="mb-3 font-normal text-gray-700 list">
+                  {parse(service.smallDescription[selectedLanguage])}
+                </div>
+                {service.challenges[selectedLanguage].replace(
+                  /(<([^>]+)>)/gi,
+                  ''
+                ) !== '' && <CardTitle name={t('Challenges')} color="red" />}
+                <div className="mb-3 font-normal text-gray-700 list">
+                  {parse(service.challenges[selectedLanguage])}
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      ) : null}
       <ButtonWithIcon
         name={t(props.isSelected ? 'Read less' : 'Read more')}
         color="red"

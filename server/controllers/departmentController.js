@@ -1,5 +1,6 @@
 import { errorResponse, successResponse } from '../helpers/responses.js';
 import Department from '../models/Department.js';
+import Service from '../models/Service.js';
 
 export const createDepartment = async (req, res) => {
   try {
@@ -10,9 +11,9 @@ export const createDepartment = async (req, res) => {
       enDescription,
       frDescription,
       rwDescription,
-      enObjectives,
-      frObjectives,
-      rwObjectives,
+      enSmallDescription,
+      frSmallDescription,
+      rwSmallDescription,
     } = req.body;
     const userId = req.tokenData._id;
     const newDepartment = new Department({
@@ -22,7 +23,12 @@ export const createDepartment = async (req, res) => {
         fr: frDescription,
         rw: rwDescription,
       },
-      objectives: { en: enObjectives, fr: frObjectives, rw: rwObjectives },
+      smallDescription: {
+        en: enSmallDescription,
+        fr: frSmallDescription,
+        rw: rwSmallDescription,
+      },
+      image: req.file.filename,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -34,6 +40,7 @@ export const createDepartment = async (req, res) => {
       department
     );
   } catch (error) {
+    fs.unlinkSync(`public/images/${req.file.filename}`);
     return errorResponse(res, 500, error.message);
   }
 };
@@ -105,27 +112,57 @@ export const updateDepartment = async (req, res) => {
       enDescription,
       frDescription,
       rwDescription,
-      enObjectives,
-      frObjectives,
-      rwObjectives,
+      enSmallDescription,
+      frSmallDescription,
+      rwSmallDescription,
     } = req.body;
     const userId = req.tokenData._id;
-    const department = await Department.findOneAndUpdate(
-      { _id: itemId },
-      {
-        $set: {
-          name: { en: enName, fr: frName, rw: rwName },
-          description: {
-            en: enDescription,
-            fr: frDescription,
-            rw: rwDescription,
+    let department;
+    if (req.file?.filename) {
+      // fs.unlinkSync(`public/images/${departmentFound.image}`);
+      department = await Department.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: { en: enName, fr: frName, rw: rwName },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            smallDescription: {
+              en: enSmallDescription,
+              fr: frSmallDescription,
+              rw: rwSmallDescription,
+            },
+            image: req.file.filename,
+            updatedBy: userId,
           },
-          objectives: { en: enObjectives, fr: frObjectives, rw: rwObjectives },
-          updatedBy: userId,
         },
-      },
-      { new: true }
-    ).populate(['createdBy', 'updatedBy']);
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    } else {
+      department = await Department.findOneAndUpdate(
+        { _id: itemId },
+        {
+          $set: {
+            name: { en: enName, fr: frName, rw: rwName },
+            description: {
+              en: enDescription,
+              fr: frDescription,
+              rw: rwDescription,
+            },
+            smallDescription: {
+              en: enSmallDescription,
+              fr: frSmallDescription,
+              rw: rwSmallDescription,
+            },
+            updatedBy: userId,
+          },
+        },
+        { new: true }
+      ).populate(['createdBy', 'updatedBy']);
+    }
     return successResponse(
       res,
       200,
@@ -145,6 +182,7 @@ export const deleteDepartment = async (req, res) => {
       return errorResponse(res, 404, 'Department not found');
     }
     await Department.deleteOne({ _id: itemId });
+    fs.unlinkSync(`public/images/${departmentFound.image}`);
     return successResponse(res, 204);
   } catch (error) {
     return errorResponse(res, 500, error.message);
@@ -203,6 +241,25 @@ export const archiveDepartment = async (req, res) => {
       200,
       'Department edited successfully',
       department
+    );
+  } catch (error) {
+    return errorResponse(res, 500, error.message);
+  }
+};
+
+export const getDepartmentServices = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const departmentFound = await Department.findOne({ _id: itemId });
+    if (!departmentFound) {
+      return errorResponse(res, 404, 'Department not found');
+    }
+    const services = await Service.find({ department: itemId });
+    return successResponse(
+      res,
+      200,
+      'Services retrieved successfully',
+      services
     );
   } catch (error) {
     return errorResponse(res, 500, error.message);

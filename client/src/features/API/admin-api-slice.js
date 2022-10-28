@@ -92,6 +92,16 @@ export const adminApiSlice = createApi({
           return '/charts';
         },
       }),
+      fetchAllAdverts: builder.query({
+        query: () => {
+          return '/adverts';
+        },
+      }),
+      fetchAllAdvertsIntro: builder.query({
+        query: () => {
+          return '/advertsintro';
+        },
+      }),
     };
   },
 });
@@ -113,4 +123,6 @@ export const {
   useFetchAllDepartmentsQuery,
   useFetchAllServicesQuery,
   useFetchAllChartsQuery,
+  useFetchAllAdvertsIntroQuery,
+  useFetchAllAdvertsQuery,
 } = adminApiSlice;

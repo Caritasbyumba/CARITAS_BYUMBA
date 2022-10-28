@@ -24,6 +24,7 @@ import {
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
 import RichTextEditor from '../../../components/UI/RichTextEditor';
+import FileUpload from '../../../components/UI/FileUpload';
 
 const DepartmentAuthor = () => {
   const { t } = useTranslation();
@@ -41,12 +42,15 @@ const DepartmentAuthor = () => {
   const [enDescription, setEnDescription] = useState('');
   const [frDescription, setFrDescription] = useState('');
   const [rwDescription, setRwDescription] = useState('');
-  const [enObjectives, setEnObjectives] = useState('');
-  const [frObjectives, setFrObjectives] = useState('');
-  const [rwObjectives, setRwObjectives] = useState('');
+  const [enSmallDescription, setEnSmallDescription] = useState('');
+  const [frSmallDescription, setFrSmallDescription] = useState('');
+  const [rwSmallDescription, setRwSmallDescription] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [showProgressBar, setShowProgressBar] = useState(false);
   const [departmentId, setDepartmentId] = useState('');
 
   const updateForm = useCallback(
@@ -63,9 +67,9 @@ const DepartmentAuthor = () => {
           setEnDescription(res.data.results.description.en);
           setFrDescription(res.data.results.description.fr);
           setRwDescription(res.data.results.description.rw);
-          setEnObjectives(res.data.results.objectives.en);
-          setFrObjectives(res.data.results.objectives.fr);
-          setRwObjectives(res.data.results.objectives.rw);
+          setEnSmallDescription(res.data.results.smallDescription.en);
+          setFrSmallDescription(res.data.results.smallDescription.fr);
+          setRwSmallDescription(res.data.results.smallDescription.rw);
           setLoading(false);
         })
         .catch((err) => {
@@ -189,34 +193,43 @@ const DepartmentAuthor = () => {
       enDescription !== '' &&
       frDescription !== '' &&
       rwDescription !== '' &&
-      enObjectives !== '' &&
-      frObjectives !== '' &&
-      rwObjectives !== ''
+      enSmallDescription !== '' &&
+      frSmallDescription !== '' &&
+      rwSmallDescription !== '' &&
+      selectedFiles != null
     ) {
       setLoading(true);
+      setShowProgressBar(true);
       setError(null);
-      const formData = {
-        enName,
-        frName,
-        rwName,
-        enDescription,
-        frDescription,
-        rwDescription,
-        enObjectives,
-        frObjectives,
-        rwObjectives,
-      };
+      const formData = new FormData();
+      formData.append('enName', enName);
+      formData.append('frName', frName);
+      formData.append('rwName', rwName);
+      formData.append('enSmallDescription', enSmallDescription);
+      formData.append('frSmallDescription', frSmallDescription);
+      formData.append('rwSmallDescription', rwSmallDescription);
+      formData.append('enDescription', enDescription);
+      formData.append('frDescription', frDescription);
+      formData.append('rwDescription', rwDescription);
+      formData.append('images', selectedFiles[0]);
       axios
         .post('/api/departments/add', formData, {
           headers: { Authorization: token },
+          onUploadProgress: (progressEvent) => {
+            setUploadProgress(
+              Math.round(progressEvent.loaded / progressEvent.total) * 100
+            );
+          },
         })
         .then((res) => {
           setLoading(false);
           setShowEditModal(false);
+          setShowProgressBar(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
+          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
@@ -229,9 +242,10 @@ const DepartmentAuthor = () => {
     enDescription,
     frDescription,
     rwDescription,
-    enObjectives,
-    frObjectives,
-    rwObjectives,
+    enSmallDescription,
+    frSmallDescription,
+    rwSmallDescription,
+    selectedFiles,
     token,
     t,
     refetch,
@@ -245,34 +259,44 @@ const DepartmentAuthor = () => {
       enDescription !== '' &&
       frDescription !== '' &&
       rwDescription !== '' &&
-      enObjectives !== '' &&
-      frObjectives !== '' &&
-      rwObjectives !== ''
+      enSmallDescription !== '' &&
+      frSmallDescription !== '' &&
+      rwSmallDescription !== ''
     ) {
       setLoading(true);
+      setShowProgressBar(true);
       setError(null);
-      const formData = {
-        enName,
-        frName,
-        rwName,
-        enDescription,
-        frDescription,
-        rwDescription,
-        enObjectives,
-        frObjectives,
-        rwObjectives,
-      };
+      const formData = new FormData();
+      formData.append('enName', enName);
+      formData.append('frName', frName);
+      formData.append('rwName', rwName);
+      formData.append('enSmallDescription', enSmallDescription);
+      formData.append('frSmallDescription', frSmallDescription);
+      formData.append('rwSmallDescription', rwSmallDescription);
+      formData.append('enDescription', enDescription);
+      formData.append('frDescription', frDescription);
+      formData.append('rwDescription', rwDescription);
+      if (selectedFiles) {
+        formData.append('image', selectedFiles[0]);
+      }
       axios
         .patch(`/api/departments/${departmentId}`, formData, {
           headers: { Authorization: token },
+          onUploadProgress: (progressEvent) => {
+            setUploadProgress(
+              Math.round(progressEvent.loaded / progressEvent.total) * 100
+            );
+          },
         })
         .then((res) => {
           setLoading(false);
+          setShowProgressBar(false);
           setShowEditModal(false);
           refetch();
         })
         .catch((err) => {
           setLoading(false);
+          setShowProgressBar(false);
           setError(err.response.data);
         });
     } else {
@@ -285,9 +309,10 @@ const DepartmentAuthor = () => {
     enDescription,
     frDescription,
     rwDescription,
-    enObjectives,
-    frObjectives,
-    rwObjectives,
+    enSmallDescription,
+    frSmallDescription,
+    rwSmallDescription,
+    selectedFiles,
     token,
     t,
     refetch,
@@ -410,22 +435,31 @@ const DepartmentAuthor = () => {
           placeholder={t('Kinyarwanda Description')}
         />
         <RichTextEditor
-          label={t('English Objectives')}
-          value={enObjectives}
-          onChange={(text) => setEnObjectives(text)}
-          placeholder={t('English Objectives')}
+          label={t('English Small Description')}
+          value={enSmallDescription}
+          onChange={(text) => setEnSmallDescription(text)}
+          placeholder={t('English Small Description')}
         />
         <RichTextEditor
-          label={t('French Objectives')}
-          value={frObjectives}
-          onChange={(text) => setFrObjectives(text)}
-          placeholder={t('French Objectives')}
+          label={t('French Small Description')}
+          value={frSmallDescription}
+          onChange={(text) => setFrSmallDescription(text)}
+          placeholder={t('French Small Description')}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Objectives')}
-          value={rwObjectives}
-          onChange={(text) => setRwObjectives(text)}
-          placeholder={t('Kinyarwanda Objectives')}
+          label={t('Kinyarwanda Small Description')}
+          value={rwSmallDescription}
+          onChange={(text) => setRwSmallDescription(text)}
+          placeholder={t('Kinyarwanda Small Description')}
+        />
+        <FileUpload
+          elementConfig={{
+            accept: 'image/*',
+          }}
+          btnName="Upload image"
+          uploadProgress={uploadProgress}
+          showProgressBar={showProgressBar}
+          setSelectedFiles={setSelectedFiles}
         />
         {loading && <Spinner />}
         {error && (
@@ -449,7 +483,9 @@ const DepartmentAuthor = () => {
       >
         <CardTitle name={t('Archive department')} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this department?')}
+          name={t(
+            'Are you sure you want to archive/unarchive this department?'
+          )}
         />
         {loading && <Spinner />}
         {error && (
