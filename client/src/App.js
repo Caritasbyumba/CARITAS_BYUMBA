@@ -33,6 +33,11 @@ import AdminDonation from './pages/admin/AdminDonation';
 import DepartmentAuthor from './pages/admin/items/DepartmentsAuthor';
 import ServiceAuthor from './pages/admin/items/ServicesAuthor';
 import ChartAuthor from './pages/admin/items/ChartAuthor';
+import Adverts from './pages/adverts/Adverts';
+import Advert from './pages/adverts/Advert';
+import AdminAdverts from './pages/admin/AdminAdverts';
+import AdvertsAuthor from './pages/admin/items/AdvertAuthor';
+import AdvertsIntroAuthor from './pages/admin/items/AdvertsIntroAuthor';
 
 function App() {
   return (
@@ -44,6 +49,8 @@ function App() {
         <Route exact path="/donate/checkout" component={Checkout} />
         <Route exact path="/projects" component={Projects} />
         <Route exact path="/projects/:projectId" component={Project} />
+        <Route exact path="/adverts" component={Adverts} />
+        <Route exact path="/adverts/:advertId" component={Advert} />
         <Route exact path="/publications" component={Publications} />
         <Route
           exact
@@ -131,6 +138,22 @@ function App() {
           exact
           path="/dashboard/item/publicationsintro"
           component={PublicationsIntroAuthor}
+        />
+
+        <ProtectedRoute
+          exact
+          path="/dashboard/adverts"
+          component={AdminAdverts}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/adverts"
+          component={AdvertsAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/advertsintro"
+          component={AdvertsIntroAuthor}
         />
 
         <ProtectedRoute

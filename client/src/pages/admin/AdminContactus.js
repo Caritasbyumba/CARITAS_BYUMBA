@@ -16,6 +16,18 @@ const AdminContactus = (props) => {
     <div>
       <CustomHelmet name="CONTACT US" />
       <Header />
+      {/* <div className="w-90% lg:w-70% m-auto">
+        <SectionTitle
+          name={t('Messages')}
+          color="red"
+          additional="text-center pt-5 pb-10"
+        />
+        {isFetching ? (
+          <Spinner />
+        ) : (
+          data.results.map((faq, index) => <Faq key={index} {...faq} />)
+        )}
+      </div> */}
       <Wrapper {...props} item="faqs">
         <div className="w-90% lg:w-70% m-auto">
           <SectionTitle

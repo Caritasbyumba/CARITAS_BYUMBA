@@ -23,7 +23,7 @@ const Adverts = () => {
 
   return (
     <div>
-      <CustomHelmet name="PUBLICATIONS" />
+      <CustomHelmet name="ADVERTISEMENT" />
       <Header />
       {isFetchingAdvertsIntro ? (
         <Spinner />

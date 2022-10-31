@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { CardBody, CardTitle } from '../../text';
-import { TextButton } from '../../UI/button';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Advert = (props) => {
-  const { t } = useTranslation();
   const history = useHistory();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -36,7 +33,7 @@ const Advert = (props) => {
       />
       <div className="px-6 py-4">
         <CardTitle
-          name={props.title[selectedLanguage]}
+          name={props.name[selectedLanguage]}
           additional="font-bold text-xl mb-2"
         />
         <CardBody
@@ -45,12 +42,6 @@ const Advert = (props) => {
             ''
           )}
           additional="text-gray-500 text-base truncate"
-        />
-        <TextButton
-          name={t('Read more')}
-          color="red"
-          additional="font-bold"
-          onclick={() => history.push(`/adverts/${props._id}`)}
         />
       </div>
     </div>

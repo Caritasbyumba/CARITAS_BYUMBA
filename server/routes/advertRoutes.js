@@ -4,7 +4,6 @@ import {
   archiveAdvert,
   createAdvert,
   deleteAdvert,
-  getActiveMainAdverts,
   getActiveAdverts,
   getAllAdverts,
   getSpecificAdvert,
@@ -25,7 +24,6 @@ router.post(
 );
 router.get('', getAllAdverts);
 router.get('/active', getActiveAdverts);
-router.get('/main', getActiveMainAdverts);
 router.get('/:itemId', getSpecificAdvert);
 router.patch(
   '/:itemId',
