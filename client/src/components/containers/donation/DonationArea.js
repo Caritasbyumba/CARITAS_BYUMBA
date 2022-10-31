@@ -9,7 +9,6 @@ const DonationArea = (props) => {
     (state) => state.global.selectedLanguage
   );
   const { t } = useTranslation();
-  console.log(props);
 
   return (
     <div

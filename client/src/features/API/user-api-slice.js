@@ -117,6 +117,11 @@ export const userApiSlice = createApi({
           return `/departments/${departmentId}/services`;
         },
       }),
+      fetchSpecificAdvert: builder.query({
+        query: (advertId) => {
+          return `/adverts/${advertId}`;
+        },
+      }),
     };
   },
 });
@@ -144,4 +149,5 @@ export const {
   useFetchActiveAdvertsQuery,
   useFetchActiveAdvertsIntroQuery,
   useFetchDepartmentServicesQuery,
+  useFetchSpecificAdvertQuery,
 } = userApiSlice;

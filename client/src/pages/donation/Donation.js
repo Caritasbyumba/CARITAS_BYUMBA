@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import DonationArea from '../../components/containers/donation/DonationArea';
-import Payment from '../../components/containers/donation/Payment';
 import Footer from '../../components/containers/Footer';
 import Header from '../../components/containers/Header';
 import { CardBody, PageTitle, SectionTitle } from '../../components/text';

@@ -102,6 +102,11 @@ export const adminApiSlice = createApi({
           return '/advertsintro';
         },
       }),
+      fetchAllMessages: builder.query({
+        query: () => {
+          return '/messages';
+        },
+      }),
     };
   },
 });

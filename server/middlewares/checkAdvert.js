@@ -3,7 +3,9 @@ import validationHelper from '../helpers/ValidationHelper.js';
 
 const checkAdvert = (req, res, next) => {
   const advertSchemas = Joi.object().keys({
-    name: Joi.string().trim().max(50).required(),
+    enName: Joi.string().trim().max(50).required().label('English name'),
+    frName: Joi.string().trim().max(50).required().label('English name'),
+    rwName: Joi.string().trim().max(50).required().label('English name'),
     enDescription: Joi.string().trim().required().label('English description'),
     frDescription: Joi.string().trim().required().label('French description'),
     rwDescription: Joi.string()

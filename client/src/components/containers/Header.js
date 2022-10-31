@@ -67,6 +67,7 @@ const Header = (props) => {
                   />
                   <CustomLink page="/projects" name={t('Projects')} />
                   <CustomLink page="/publications" name={t('Publications')} />
+                  <CustomLink page="/adverts" name={t('Advertisement')} />
                   <CustomLink page="/contactus" name={t('Contact Us')} />
                   <CustomLink page="/donate" name={t('Donation')} />
                   {isAuthenticated && (

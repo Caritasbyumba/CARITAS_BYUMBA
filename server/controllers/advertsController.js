@@ -21,9 +21,11 @@ export const createAdvert = async (req, res) => {
       });
     }
     const newAdvert = new Advert({
-      enName: enName,
-      frName: frName,
-      rwName: rwName,
+      name: {
+        en: enName,
+        fr: frName,
+        rw: rwName,
+      },
       description: {
         en: enDescription,
         fr: frDescription,
@@ -45,12 +47,7 @@ export const getAllAdverts = async (req, res) => {
     const adverts = await Advert.find({})
       .populate(['createdBy', 'updatedBy'])
       .sort({ updatedAt: 'desc' });
-    return successResponse(
-      res,
-      200,
-      'Adverts retrieved successfully',
-      adverts
-    );
+    return successResponse(res, 200, 'Adverts retrieved successfully', adverts);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -61,31 +58,7 @@ export const getActiveAdverts = async (req, res) => {
     const adverts = await Advert.find({
       isActive: true,
     }).sort({ updatedAt: 'desc' });
-    return successResponse(
-      res,
-      200,
-      'Adverts retrieved successfully',
-      adverts
-    );
-  } catch (error) {
-    return errorResponse(res, 500, error.message);
-  }
-};
-
-export const getActiveMainAdverts = async (req, res) => {
-  try {
-    const adverts = await Advert.find({
-      isMain: true,
-      isActive: true,
-    })
-      .sort({ updatedAt: 'desc' })
-      .limit(2);
-    return successResponse(
-      res,
-      200,
-      'Adverts retrieved successfully',
-      adverts
-    );
+    return successResponse(res, 200, 'Adverts retrieved successfully', adverts);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -141,9 +114,11 @@ export const updateAdvert = async (req, res) => {
         { _id: itemId },
         {
           $set: {
-            enName: enName,
-            frName: frName,
-            rwName: rwName,
+            name: {
+              en: enName,
+              fr: frName,
+              rw: rwName,
+            },
             description: {
               en: enDescription,
               fr: frDescription,
@@ -160,9 +135,11 @@ export const updateAdvert = async (req, res) => {
         { _id: itemId },
         {
           $set: {
-            enName: enName,
-            frName: frName,
-            rwName: rwName,
+            name: {
+              en: enName,
+              fr: frName,
+              rw: rwName,
+            },
             description: {
               en: enDescription,
               fr: frDescription,
