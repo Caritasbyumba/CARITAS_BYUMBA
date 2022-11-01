@@ -23,6 +23,8 @@ import {
 } from 'react-icons/md';
 import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
+import RichTextEditor from '../../../components/UI/RichTextEditor';
+import parse from 'html-react-parser';
 
 const MoreonusAuthor = () => {
   const { t } = useTranslation();
@@ -75,7 +77,7 @@ const MoreonusAuthor = () => {
         ? data.results.map((moreonus, index) => {
             return {
               id: index + 1,
-              description: moreonus.description[selectedLanguage],
+              description: parse(moreonus.description[selectedLanguage]),
               updatedBy: moreonus.updatedBy.name,
               updatedAt: moreonus.updatedAt,
               status: moreonus.isActive,
@@ -317,48 +319,25 @@ const MoreonusAuthor = () => {
           name={`${isUpdating ? t('Update About us') : t('Add new About us')}`}
           color="red"
         />
-        <div className="flex space-x-2">
-          <Input
-            label={t('English Description')}
-            elementType="textarea"
-            elementConfig={{
-              type: 'text',
-              placeholder: t('English Description'),
-            }}
-            value={enDescription}
-            changed={setEnDescription}
-            validation={{ required: true }}
-            shouldValidate
-            error={t('English Description is required')}
-          />
-          <Input
-            label={t('French Description')}
-            elementType="textarea"
-            elementConfig={{
-              type: 'text',
-              placeholder: t('French Description'),
-            }}
-            value={frDescription}
-            changed={setFrDescription}
-            validation={{ required: true }}
-            shouldValidate
-            error={t('French Description is required')}
-          />
-          <Input
-            label={t('Kinyarwanda Description')}
-            elementType="textarea"
-            elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Description'),
-            }}
-            value={rwDescription}
-            changed={setRwDescription}
-            validation={{ required: true }}
-            shouldValidate
-            error={t('Kinyarwanda Description is required')}
-          />
-        </div>
-        <div className="flex space-x-2">
+        <RichTextEditor
+          label={t('English Description')}
+          value={enDescription}
+          onChange={(text) => setEnDescription(text)}
+          placeholder={t('English Description')}
+        />
+        <RichTextEditor
+          label={t('French Description')}
+          value={frDescription}
+          onChange={(text) => setFrDescription(text)}
+          placeholder={t('French Description')}
+        />
+        <RichTextEditor
+          label={t('Kinyarwanda Description')}
+          value={rwDescription}
+          onChange={(text) => setRwDescription(text)}
+          placeholder={t('Kinyarwanda Description')}
+        />
+        {/* <div className="flex space-x-2">
           <Input
             label={t('English button name')}
             elementType="input"
@@ -404,7 +383,7 @@ const MoreonusAuthor = () => {
               'Kinyarwanda button name is required and should be less than 15 characters'
             )}
           />
-        </div>
+        </div> */}
         {loading && <Spinner />}
         {error && (
           <CardBody name={error.error} color="red" additional="font-semibold" />

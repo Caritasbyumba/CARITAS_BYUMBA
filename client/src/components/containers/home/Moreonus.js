@@ -1,15 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import { useFetchActiveMoreOnUsQuery } from '../../../features/API/user-api-slice';
 import { CardBody, PageTitle } from '../../text';
-import { TextButton } from '../../UI/button';
 import Spinner from '../../UI/spinner';
+import parse from 'html-react-parser';
 
 const Moreonus = () => {
   const { t } = useTranslation();
-  const history = useHistory();
   const { data = [], isFetching } = useFetchActiveMoreOnUsQuery();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
@@ -30,8 +28,8 @@ const Moreonus = () => {
         <div className="w-4 bg-gray-200"></div>
         <div>
           <CardBody
-            name={moreonus.description[selectedLanguage]}
-            alignment="justify"
+            name={parse(moreonus.description[selectedLanguage])}
+            additional="text-justify"
           />
           {/* <Button
             name={t('Read More')}

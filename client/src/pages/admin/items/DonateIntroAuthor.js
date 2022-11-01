@@ -3,8 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useFetchAllDonateIntrosQuery } from '../../../features/API/admin-api-slice';
 import axios from '../../../axios-base';
-import { MdArchive, MdDelete, MdEdit, MdSkipNext, MdSkipPrevious } from 'react-icons/md';
-import { useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
+import {
+  MdArchive,
+  MdDelete,
+  MdEdit,
+  MdSkipNext,
+  MdSkipPrevious,
+} from 'react-icons/md';
+import {
+  useGlobalFilter,
+  usePagination,
+  useSortBy,
+  useTable,
+} from 'react-table';
 import Modal from '../../../components/UI/modal';
 import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
 import Input from '../../../components/UI/input';
@@ -12,6 +23,8 @@ import Spinner from '../../../components/UI/spinner';
 import { Button } from '../../../components/UI/button';
 import Header from '../../../components/containers/Header';
 import Footer from '../../../components/containers/Footer';
+import RichTextEditor from '../../../components/UI/RichTextEditor';
+import parse from 'html-react-parser';
 
 const DonateIntroAuthor = () => {
   const { t } = useTranslation();
@@ -64,7 +77,7 @@ const DonateIntroAuthor = () => {
         ? data.results.map((donateIntro, index) => {
             return {
               id: index + 1,
-              description: donateIntro.description[selectedLanguage],
+              description: parse(donateIntro.description[selectedLanguage]),
               updatedBy: donateIntro.updatedBy.name,
               updatedAt: donateIntro.updatedAt,
               status: donateIntro.isActive,
@@ -358,47 +371,24 @@ const DonateIntroAuthor = () => {
             )}
           />
         </div>
-        <div className="flex space-x-2">
-          <Input
-            label={t('English Description')}
-            elementType="textarea"
-            elementConfig={{
-              type: 'text',
-              placeholder: t('English Description'),
-            }}
-            value={enDescription}
-            changed={setEnDescription}
-            validation={{ required: true }}
-            shouldValidate
-            error={t('English Description is required')}
-          />
-          <Input
-            label={t('French Description')}
-            elementType="textarea"
-            elementConfig={{
-              type: 'text',
-              placeholder: t('French Description'),
-            }}
-            value={frDescription}
-            changed={setFrDescription}
-            validation={{ required: true }}
-            shouldValidate
-            error={t('French Description is required')}
-          />
-          <Input
-            label={t('Kinyarwanda Description')}
-            elementType="textarea"
-            elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Description'),
-            }}
-            value={rwDescription}
-            changed={setRwDescription}
-            validation={{ required: true }}
-            shouldValidate
-            error={t('Kinyarwanda Description is required')}
-          />
-        </div>
+        <RichTextEditor
+          label={t('English Description')}
+          value={enDescription}
+          onChange={(text) => setEnDescription(text)}
+          placeholder={t('English Description')}
+        />
+        <RichTextEditor
+          label={t('French Description')}
+          value={frDescription}
+          onChange={(text) => setFrDescription(text)}
+          placeholder={t('French Description')}
+        />
+        <RichTextEditor
+          label={t('Kinyarwanda Description')}
+          value={rwDescription}
+          onChange={(text) => setRwDescription(text)}
+          placeholder={t('Kinyarwanda Description')}
+        />
         {loading && <Spinner />}
         {error && (
           <CardBody name={error.error} color="red" additional="font-semibold" />

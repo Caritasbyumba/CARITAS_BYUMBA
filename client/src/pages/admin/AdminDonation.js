@@ -9,6 +9,7 @@ import { CardBody, PageTitle, SectionTitle } from '../../components/text';
 import CustomHelmet from '../../components/UI/Helmet';
 import Spinner from '../../components/UI/spinner';
 import Wrapper from '../../components/containers/admin/Wrapper';
+import parse from 'html-react-parser';
 import {
   useFetchActiveDonateIntroQuery,
   useFetchActiveDonationAreaIntroQuery,
@@ -41,7 +42,7 @@ const AdminDonation = (props) => {
                 additional="text-center py-5"
               />
               <CardBody
-                name={donateIntro.description[selectedLanguage]}
+                name={parse(donateIntro.description[selectedLanguage])}
                 additional="text-center"
               />
             </div>
