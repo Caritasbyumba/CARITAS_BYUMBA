@@ -142,9 +142,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="bg-gray-500 h-12 flex justify-center items-center">
+      <div className="bg-gray-500 h-12 flex justify-center items-center  space-x-2">
         <CardBody
-          name={`© Copyright ${new Date().getFullYear()}. `}
+          name={`© Copyright 2022. `}
           color="red"
           additional="font-bold"
         />
