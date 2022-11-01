@@ -24,7 +24,7 @@ const Moreonus = () => {
         mobileAlignment="center"
         additional="py-2"
       />
-      <div className="w-70% flex space-x-5 m-auto py-10">
+      <div className="w-90% md:w-70% flex md:space-x-5 m-auto py-10">
         <div className="w-4 bg-gray-200"></div>
         <div>
           <CardBody

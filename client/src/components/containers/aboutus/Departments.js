@@ -49,11 +49,12 @@ const Department = (props) => {
         </div>
       )}
       {props.isSelected && (
-        <img
-          className="m-auto"
-          src={`${process.env.REACT_APP_BACKEND_URL}/images/${props.image}`}
-          alt={props.name[selectedLanguage]}
-        />
+        <div className="m-auto md:w-40%">
+          <img
+            src={`${process.env.REACT_APP_BACKEND_URL}/images/${props.image}`}
+            alt={props.name[selectedLanguage]}
+          />
+        </div>
       )}
       {props.isSelected && isFetching ? (
         <Spinner />
@@ -69,11 +70,11 @@ const Department = (props) => {
           {data.results.map((service, index) => (
             <div
               key={index}
-              className=" my-5 bg-gray-100 rounded-2xl shadow-md md:flex w-full h-35vh"
+              className=" my-5 bg-gray-100 rounded-2xl shadow-md md:flex w-full md:h-35vh"
             >
-              <div className="w-full md:w-1/3 h-full rounded-l-2xl">
+              <div className="w-full md:w-1/3 h-full rounded-t-2xl md:rounded-tr-none md:rounded-l-2xl">
                 <img
-                  className="w-full h-full object-cover object-center rounded-l-2xl"
+                  className="w-full h-full object-cover object-center rounded-t-2xl md:rounded-tr-none md:rounded-l-2xl"
                   src={`${process.env.REACT_APP_BACKEND_URL}/images/${service.image}`}
                   alt={service.image}
                 />
