@@ -87,12 +87,12 @@ const Footer = () => {
             <CardBody name="Tel: +250787605413" />
           </Link>
           <Link
-            to={{ pathname: 'mailto:caritasbyumba81@gmail.com' }}
+            to={{ pathname: 'mailto:caritasbyumba@yahoo.fr' }}
             target="_blank"
             className="flex space-x-2 items-center hover:underline"
           >
             <MdEmail />
-            <CardBody name="caritasbyumba81@gmail.com" />
+            <CardBody name="caritasbyumba@yahoo.fr" />
           </Link>
           <Link
             to={{ pathname: 'https://caritasbyumba.org/aboutus' }}
@@ -142,9 +142,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="bg-gray-500 h-12 flex justify-center items-center">
+      <div className="bg-gray-500 h-12 flex justify-center items-center  space-x-2">
         <CardBody
-          name={`© Copyright ${new Date().getFullYear()}. `}
+          name={`© Copyright 2022. `}
           color="red"
           additional="font-bold"
         />

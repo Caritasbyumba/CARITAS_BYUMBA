@@ -1,8 +1,8 @@
 import Joi from 'joi';
 import validationHelper from '../helpers/ValidationHelper.js';
 
-const checkMoreonus = (req, res, next) => {
-  const moreonusSchemas = Joi.object().keys({
+const checkDonationMessage = (req, res, next) => {
+  const donationMessageSchemas = Joi.object().keys({
     enDescription: Joi.string().trim().required().label('English description'),
     frDescription: Joi.string().trim().required().label('French description'),
     rwDescription: Joi.string()
@@ -10,7 +10,7 @@ const checkMoreonus = (req, res, next) => {
       .required()
       .label('Kinyarwanda description'),
   });
-  const schemasValidation = Joi.validate(req.body, moreonusSchemas);
+  const schemasValidation = Joi.validate(req.body, donationMessageSchemas);
   validationHelper(req, res, schemasValidation, next);
 };
-export default checkMoreonus;
+export default checkDonationMessage;

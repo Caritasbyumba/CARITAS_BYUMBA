@@ -122,6 +122,11 @@ export const userApiSlice = createApi({
           return `/adverts/${advertId}`;
         },
       }),
+      fetchActiveDonationMessages: builder.query({
+        query: () => {
+          return '/donationmessages/active';
+        },
+      }),
     };
   },
 });
@@ -150,4 +155,5 @@ export const {
   useFetchActiveAdvertsIntroQuery,
   useFetchDepartmentServicesQuery,
   useFetchSpecificAdvertQuery,
+  useFetchActiveDonationMessagesQuery,
 } = userApiSlice;

@@ -1,7 +1,7 @@
 import { errorResponse, successResponse } from '../helpers/responses.js';
-import Moreonus from '../models/Moreonus.js';
+import DonationMessage from '../models/DonationMessage.js';
 
-export const createMoreonus = async (req, res) => {
+export const createDonationMessage = async (req, res) => {
   try {
     const {
       enDescription,
@@ -9,7 +9,7 @@ export const createMoreonus = async (req, res) => {
       rwDescription,
     } = req.body;
     const userId = req.tokenData._id;
-    const newMoreonus = new Moreonus({
+    const newDonationMessage = new DonationMessage({
       description: {
         en: enDescription,
         fr: frDescription,
@@ -18,8 +18,8 @@ export const createMoreonus = async (req, res) => {
       createdBy: userId,
       updatedBy: userId,
     });
-    const moreonus = await newMoreonus.save();
-    return successResponse(res, 201, 'Moreonus created successfully', moreonus);
+    const donationMessage = await newDonationMessage.save();
+    return successResponse(res, 201, 'DonationMessage created successfully', donationMessage);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -27,23 +27,23 @@ export const createMoreonus = async (req, res) => {
 
 export const getAllMoreOnUs = async (req, res) => {
   try {
-    const moreonus = await Moreonus.find({})
+    const donationMessage = await DonationMessage.find({})
       .populate(['createdBy', 'updatedBy'])
       .sort({ updatedAt: 'desc' });
     return successResponse(
       res,
       200,
-      'All moreonus retrieved successfully',
-      moreonus
+      'All donationMessage retrieved successfully',
+      donationMessage
     );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
 };
 
-export const getactiveMoreonus = async (req, res) => {
+export const getactiveDonationMessage = async (req, res) => {
   try {
-    const moreonus = await Moreonus.find({
+    const donationMessage = await DonationMessage.find({
       isActive: true,
     })
       .sort({ updatedAt: 'desc' })
@@ -51,41 +51,41 @@ export const getactiveMoreonus = async (req, res) => {
     return successResponse(
       res,
       200,
-      'Moreonus retrieved successfully',
-      moreonus[0]
+      'DonationMessage retrieved successfully',
+      donationMessage[0]
     );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
 };
 
-export const getSpecificMoreonus = async (req, res) => {
+export const getSpecificDonationMessage = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const moreonusFound = await Moreonus.findOne({ _id: itemId }).populate([
+    const donationMessageFound = await DonationMessage.findOne({ _id: itemId }).populate([
       'createdBy',
       'updatedBy',
     ]);
-    if (!moreonusFound) {
-      return errorResponse(res, 404, 'Moreonus not found');
+    if (!donationMessageFound) {
+      return errorResponse(res, 404, 'DonationMessage not found');
     }
     return successResponse(
       res,
       200,
-      'Moreonus retrieved successfully',
-      moreonusFound
+      'DonationMessage retrieved successfully',
+      donationMessageFound
     );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
 };
 
-export const updateMoreonus = async (req, res) => {
+export const updateDonationMessage = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const moreonusFound = await Moreonus.findOne({ _id: itemId });
-    if (!moreonusFound) {
-      return errorResponse(res, 404, 'Moreonus not found');
+    const donationMessageFound = await DonationMessage.findOne({ _id: itemId });
+    if (!donationMessageFound) {
+      return errorResponse(res, 404, 'DonationMessage not found');
     }
     const {
       enDescription,
@@ -93,7 +93,7 @@ export const updateMoreonus = async (req, res) => {
       rwDescription,
     } = req.body;
     const userId = req.tokenData._id;
-    const moreonus = await Moreonus.findOneAndUpdate(
+    const donationMessage = await DonationMessage.findOneAndUpdate(
       { _id: itemId },
       {
         $set: {
@@ -107,35 +107,35 @@ export const updateMoreonus = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'Moreonus edited successfully', moreonus);
+    return successResponse(res, 200, 'DonationMessage edited successfully', donationMessage);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
 };
 
-export const deleteMoreonus = async (req, res) => {
+export const deleteDonationMessage = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const moreonusFound = await Moreonus.findOne({ _id: itemId });
-    if (!moreonusFound) {
-      return errorResponse(res, 404, 'Moreonus not found');
+    const donationMessageFound = await DonationMessage.findOne({ _id: itemId });
+    if (!donationMessageFound) {
+      return errorResponse(res, 404, 'DonationMessage not found');
     }
-    await Moreonus.deleteOne({ _id: itemId });
+    await DonationMessage.deleteOne({ _id: itemId });
     return successResponse(res, 204);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
 };
 
-export const activateMoreonus = async (req, res) => {
+export const activateDonationMessage = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const moreonusFound = await Moreonus.findOne({ _id: itemId });
-    if (!moreonusFound) {
-      return errorResponse(res, 404, 'Moreonus not found');
+    const donationMessageFound = await DonationMessage.findOne({ _id: itemId });
+    if (!donationMessageFound) {
+      return errorResponse(res, 404, 'DonationMessage not found');
     }
     const userId = req.tokenData._id;
-    const moreonus = await Moreonus.findOneAndUpdate(
+    const donationMessage = await DonationMessage.findOneAndUpdate(
       { _id: itemId },
       {
         $set: {
@@ -145,31 +145,31 @@ export const activateMoreonus = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'Moreonus edited successfully', moreonus);
+    return successResponse(res, 200, 'DonationMessage edited successfully', donationMessage);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
 };
 
-export const archiveMoreonus = async (req, res) => {
+export const archiveDonationMessage = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const moreonusFound = await Moreonus.findOne({ _id: itemId });
-    if (!moreonusFound) {
-      return errorResponse(res, 404, 'Moreonus not found');
+    const donationMessageFound = await DonationMessage.findOne({ _id: itemId });
+    if (!donationMessageFound) {
+      return errorResponse(res, 404, 'DonationMessage not found');
     }
     const userId = req.tokenData._id;
-    const moreonus = await Moreonus.findOneAndUpdate(
+    const donationMessage = await DonationMessage.findOneAndUpdate(
       { _id: itemId },
       {
         $set: {
-          isActive: !moreonusFound.isActive,
+          isActive: !donationMessageFound.isActive,
           updatedBy: userId,
         },
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'Moreonus edited successfully', moreonus);
+    return successResponse(res, 200, 'DonationMessage edited successfully', donationMessage);
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }

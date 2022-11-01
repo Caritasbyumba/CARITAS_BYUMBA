@@ -14,3 +14,6 @@
   list-style-position: inside;
   list-style-type: decimal;
 }
+.donationMessage a {
+  color: #751E17;
+}

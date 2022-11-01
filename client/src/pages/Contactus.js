@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useFetchActiveFaqsQuery } from '../features/API/user-api-slice';
 import Spinner from '../components/UI/spinner';
 import Faq from '../components/containers/contactus/Faq';
+import { IoEarth } from 'react-icons/io5';
 
 const Contactus = () => {
   const { t } = useTranslation();
@@ -45,7 +46,11 @@ const Contactus = () => {
       <div className="bg-red py-4 md:p-10">
         <div className="w-90% lg:w-70% m-auto flex flex-col md:flex-row md:space-x-2 bg-white rounded">
           <div className="w-full md:w-50% flex flex-col md:space-y-2 p-2 md:p-5">
-            <SectionTitle name={t('Get in touch with us')} color="red" additional="text-center md:text-left" />
+            <SectionTitle
+              name={t('Get in touch with us')}
+              color="red"
+              additional="text-center md:text-left"
+            />
             <div>
               <Link
                 to={{ pathname: 'https://goo.gl/maps/LGcs8U8Znr9UG4mr9' }}
@@ -60,20 +65,28 @@ const Contactus = () => {
                 <CardBody name="PO Box: 05 Byumba - Rwanda" />
               </div>
               <Link
-                to={{ pathname: 'tel:+250788476714' }}
+                to={{ pathname: 'tel:+250787605413' }}
                 target="_blank"
                 className="flex space-x-2 items-center hover:underline"
               >
                 <MdLocalPhone />
-                <CardBody name="Tel: +250788476714" />
+                <CardBody name="Tel: +250787605413" />
               </Link>
               <Link
-                to={{ pathname: 'mailto:caritasbyumba81@gmail.com' }}
+                to={{ pathname: 'mailto:caritasbyumba@yahoo.fr' }}
                 target="_blank"
                 className="flex space-x-2 items-center hover:underline"
               >
                 <MdEmail />
-                <CardBody name="caritasbyumba81@gmail.com" />
+                <CardBody name="caritasbyumba@yahoo.fr" />
+              </Link>
+              <Link
+                to={{ pathname: 'https://caritasbyumba.org/aboutus' }}
+                target="_blank"
+                className="flex space-x-2 items-center hover:underline"
+              >
+                <IoEarth />
+                <CardBody name="www.caritasbyumba.org" />
               </Link>
             </div>
             <div className="flex flex-col lg:flex-row justify-between lg:space-x-1 w-full">

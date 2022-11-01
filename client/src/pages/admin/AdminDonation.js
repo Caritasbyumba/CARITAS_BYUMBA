@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import DonationArea from '../../components/containers/donation/DonationArea';
-import Payment from '../../components/containers/donation/Payment';
 import Footer from '../../components/containers/Footer';
 import Header from '../../components/containers/Header';
 import { CardBody, PageTitle, SectionTitle } from '../../components/text';
@@ -13,6 +12,7 @@ import parse from 'html-react-parser';
 import {
   useFetchActiveDonateIntroQuery,
   useFetchActiveDonationAreaIntroQuery,
+  useFetchActiveDonationMessagesQuery,
 } from '../../features/API/user-api-slice';
 
 const AdminDonation = (props) => {
@@ -20,12 +20,17 @@ const AdminDonation = (props) => {
   const { data = [], isFetching } = useFetchActiveDonateIntroQuery();
   const { data: donationAreasData = [], isFetching: isDonationAreasFetching } =
     useFetchActiveDonationAreaIntroQuery();
+  const {
+    data: donationMessageData = [],
+    isFetching: isDonationMessageFetching,
+  } = useFetchActiveDonationMessagesQuery();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
   const [chosenArea, setChosenArea] = useState(0);
   const donateIntro = data.results;
   const donationAreas = donationAreasData.results;
+  const donationMessage = donationMessageData.results;
   return (
     <div>
       <CustomHelmet name="DONATE" />
@@ -70,10 +75,27 @@ const AdminDonation = (props) => {
           </div>
         </Wrapper>
       )}
-      <Payment
+      {/* <Payment
         {...props}
         chosenArea={donationAreas ? donationAreas[chosenArea]._id : ''}
-      />
+      /> */}
+      <Wrapper {...props} item="donationmessage">
+        {isDonationMessageFetching ? (
+          <Spinner />
+        ) : (
+          <div className="donationMessage">
+            <div className="w-90% md:w-70% flex md:space-x-5 m-auto py-10">
+              <div className="w-4 bg-gray-200"></div>
+              <div>
+                <CardBody
+                  name={parse(donationMessage.description[selectedLanguage])}
+                  additional="text-justify"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </Wrapper>
       <Footer />
     </div>
   );
