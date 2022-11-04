@@ -82,7 +82,7 @@ const Donation = (props) => {
       ) : (
         <div className="donationMessage">
           <div className="w-90% md:w-70% flex md:space-x-5 m-auto py-10">
-            <div className="w-1 bg-red"></div>
+            <div className="w-none md:w-1 bg-red"></div>
             <div>
               <CardBody
                 name={parse(donationMessage.description[selectedLanguage])}
