@@ -11,6 +11,7 @@ import parse from 'html-react-parser';
 import {
   useFetchActiveDonateIntroQuery,
   useFetchActiveDonationAreaIntroQuery,
+  useFetchActiveDonationMessagesQuery,
 } from '../../features/API/user-api-slice';
 
 const Donation = (props) => {
@@ -18,12 +19,17 @@ const Donation = (props) => {
   const { data = [], isFetching } = useFetchActiveDonateIntroQuery();
   const { data: donationAreasData = [], isFetching: isDonationAreasFetching } =
     useFetchActiveDonationAreaIntroQuery();
+  const {
+    data: donationMessageData = [],
+    isFetching: isDonationMessageFetching,
+  } = useFetchActiveDonationMessagesQuery();
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
   const [chosenArea, setChosenArea] = useState(0);
   const donateIntro = data.results;
   const donationAreas = donationAreasData.results;
+  const donationMessage = donationMessageData.results;
   return (
     <div>
       <CustomHelmet name="DONATE" />
@@ -71,6 +77,21 @@ const Donation = (props) => {
         {...props}
         chosenArea={donationAreas ? donationAreas[chosenArea]._id : ''}
       /> */}
+      {isDonationMessageFetching ? (
+        <Spinner />
+      ) : (
+        <div className="donationMessage">
+          <div className="w-90% md:w-70% flex md:space-x-5 m-auto py-10">
+            <div className="w-1 bg-red"></div>
+            <div>
+              <CardBody
+                name={parse(donationMessage.description[selectedLanguage])}
+                additional="text-justify"
+              />
+            </div>
+          </div>
+        </div>
+      )}
       <Footer />
     </div>
   );

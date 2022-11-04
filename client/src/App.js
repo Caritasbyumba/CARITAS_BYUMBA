@@ -38,6 +38,7 @@ import Advert from './pages/adverts/Advert';
 import AdminAdverts from './pages/admin/AdminAdverts';
 import AdvertsAuthor from './pages/admin/items/AdvertAuthor';
 import AdvertsIntroAuthor from './pages/admin/items/AdvertsIntroAuthor';
+import DonationMessageAuthor from './pages/admin/items/DonationMessageAuthor';
 
 function App() {
   return (
@@ -181,6 +182,11 @@ function App() {
           exact
           path="/dashboard/item/donationareas"
           component={DonationAreasAuthor}
+        />
+        <ProtectedRoute
+          exact
+          path="/dashboard/item/donationmessage"
+          component={DonationMessageAuthor}
         />
       </Switch>
     </Router>

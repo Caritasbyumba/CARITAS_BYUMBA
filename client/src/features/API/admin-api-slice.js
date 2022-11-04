@@ -107,6 +107,11 @@ export const adminApiSlice = createApi({
           return '/messages';
         },
       }),
+      fetchAllDonationMessages: builder.query({
+        query: () => {
+          return '/donationmessages';
+        },
+      }),
     };
   },
 });
@@ -130,4 +135,5 @@ export const {
   useFetchAllChartsQuery,
   useFetchAllAdvertsIntroQuery,
   useFetchAllAdvertsQuery,
+  useFetchAllDonationMessagesQuery,
 } = adminApiSlice;

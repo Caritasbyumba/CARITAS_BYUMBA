@@ -87,12 +87,12 @@ const Footer = () => {
             <CardBody name="Tel: +250787605413" />
           </Link>
           <Link
-            to={{ pathname: 'mailto:caritasbyumba81@gmail.com' }}
+            to={{ pathname: 'mailto:caritasbyumba@yahoo.fr' }}
             target="_blank"
             className="flex space-x-2 items-center hover:underline"
           >
             <MdEmail />
-            <CardBody name="caritasbyumba81@gmail.com" />
+            <CardBody name="caritasbyumba@yahoo.fr" />
           </Link>
           <Link
             to={{ pathname: 'https://caritasbyumba.org/aboutus' }}
