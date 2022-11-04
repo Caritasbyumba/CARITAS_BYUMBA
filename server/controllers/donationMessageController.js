@@ -3,11 +3,7 @@ import DonationMessage from '../models/DonationMessage.js';
 
 export const createDonationMessage = async (req, res) => {
   try {
-    const {
-      enDescription,
-      frDescription,
-      rwDescription,
-    } = req.body;
+    const { enDescription, frDescription, rwDescription } = req.body;
     const userId = req.tokenData._id;
     const newDonationMessage = new DonationMessage({
       description: {
@@ -19,7 +15,12 @@ export const createDonationMessage = async (req, res) => {
       updatedBy: userId,
     });
     const donationMessage = await newDonationMessage.save();
-    return successResponse(res, 201, 'DonationMessage created successfully', donationMessage);
+    return successResponse(
+      res,
+      201,
+      'DonationMessage created successfully',
+      donationMessage
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -62,10 +63,9 @@ export const getactiveDonationMessage = async (req, res) => {
 export const getSpecificDonationMessage = async (req, res) => {
   try {
     const { itemId } = req.params;
-    const donationMessageFound = await DonationMessage.findOne({ _id: itemId }).populate([
-      'createdBy',
-      'updatedBy',
-    ]);
+    const donationMessageFound = await DonationMessage.findOne({
+      _id: itemId,
+    }).populate(['createdBy', 'updatedBy']);
     if (!donationMessageFound) {
       return errorResponse(res, 404, 'DonationMessage not found');
     }
@@ -87,11 +87,7 @@ export const updateDonationMessage = async (req, res) => {
     if (!donationMessageFound) {
       return errorResponse(res, 404, 'DonationMessage not found');
     }
-    const {
-      enDescription,
-      frDescription,
-      rwDescription,
-    } = req.body;
+    const { enDescription, frDescription, rwDescription } = req.body;
     const userId = req.tokenData._id;
     const donationMessage = await DonationMessage.findOneAndUpdate(
       { _id: itemId },
@@ -107,7 +103,12 @@ export const updateDonationMessage = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'DonationMessage edited successfully', donationMessage);
+    return successResponse(
+      res,
+      200,
+      'DonationMessage edited successfully',
+      donationMessage
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -145,7 +146,12 @@ export const activateDonationMessage = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'DonationMessage edited successfully', donationMessage);
+    return successResponse(
+      res,
+      200,
+      'DonationMessage edited successfully',
+      donationMessage
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
@@ -169,7 +175,12 @@ export const archiveDonationMessage = async (req, res) => {
       },
       { new: true }
     ).populate(['createdBy', 'updatedBy']);
-    return successResponse(res, 200, 'DonationMessage edited successfully', donationMessage);
+    return successResponse(
+      res,
+      200,
+      'DonationMessage edited successfully',
+      donationMessage
+    );
   } catch (error) {
     return errorResponse(res, 500, error.message);
   }
