@@ -25,7 +25,7 @@ const Moreonus = () => {
         additional="py-2"
       />
       <div className="w-90% md:w-70% flex md:space-x-5 m-auto py-10">
-        <div className="w-4 bg-gray-200"></div>
+        <div className="w-none md:w-4 bg-gray-200"></div>
         <div>
           <CardBody
             name={parse(moreonus.description[selectedLanguage])}
