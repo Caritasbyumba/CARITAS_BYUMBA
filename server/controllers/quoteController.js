@@ -81,7 +81,6 @@ export const updateQuote = async (req, res) => {
     }
     const { name, enRole, frRole, rwRole, enQuote, frQuote, rwQuote, order } =
       req.body;
-    console.log(req.body);
     const userId = req.tokenData._id;
     let updatedQuote;
     if (req.file?.filename) {
