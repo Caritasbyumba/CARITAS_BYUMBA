@@ -62,7 +62,6 @@ const AdvertsIntroAuthor = () => {
           setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           setLoading(false);
           setError(err.response.data);
         });

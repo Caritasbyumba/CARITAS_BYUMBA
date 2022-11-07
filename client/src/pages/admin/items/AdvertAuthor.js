@@ -58,16 +58,15 @@ const AdvertsAuthor = () => {
           headers: { Authorization: token },
         })
         .then((res) => {
-          setEnName(res.data.results.title.en);
-          setFrName(res.data.results.title.fr);
-          setRwName(res.data.results.title.rw);
+          setEnName(res.data.results.name.en);
+          setFrName(res.data.results.name.fr);
+          setRwName(res.data.results.name.rw);
           setEnDescription(res.data.results.description.en);
           setFrDescription(res.data.results.description.fr);
           setRwDescription(res.data.results.description.rw);
           setLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           setLoading(false);
           setError(err.response.data);
         });
