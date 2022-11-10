@@ -48,7 +48,7 @@ const Department = (props) => {
           {parse(props.smallDescription[selectedLanguage])}
         </div>
       )}
-      {props.isSelected && (
+      {props.isSelected && props.image && props.image !== '' && (
         <div className="m-auto md:w-40%">
           <img
             src={`${process.env.REACT_APP_BACKEND_URL}/images/${props.image}`}

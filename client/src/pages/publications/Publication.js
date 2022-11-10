@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import Footer from '../../components/containers/Footer';
 import Header from '../../components/containers/Header';
-import { CardBody, CardSubText, SectionTitle } from '../../components/text';
+import { CardBody, SectionTitle } from '../../components/text';
 import CustomHelmet from '../../components/UI/Helmet';
 import Spinner from '../../components/UI/spinner';
 import { useFetchSpecificPublicationQuery } from '../../features/API/user-api-slice';
@@ -21,7 +21,7 @@ const Publication = () => {
   );
   const publication = data.results;
 
-  var settings = {
+  const settings = {
     dots: true,
     arrows: false,
     infinite: true,
@@ -51,7 +51,7 @@ const Publication = () => {
               color="red"
               additional="text-center w-90% lg:w-70% m-auto"
             />
-            <CardSubText
+            {/* <CardSubText
               name={`Posted by ${publication.updatedBy.name} on  ${new Date(
                 publication.updatedAt
               ).toLocaleDateString(selectedLanguage, {
@@ -61,20 +61,20 @@ const Publication = () => {
               })}`}
               color="red"
               additional="text-center mx-10"
-            />
+            /> */}
           </div>
           <div className="w-90% lg:w-70% m-auto py-5">
             <CardBody
               name={parse(publication.description[selectedLanguage])}
-              additional="text-center"
+              additional="text-justify"
             />
           </div>
           <div className="w-90% lg:w-70% m-auto mb-10">
             <Slider {...settings}>
               {publication.gallery.map((image, index) => (
-                <div key={index} className="w-full h-30vh md:h-50vh lg:h-70vh">
+                <div key={index} className="">
                   <LazyLoadImage
-                    className="w-full h-full object-cover object-center"
+                    className="h-30vh md:h-50vh lg:h-70vh w-auto m-auto"
                     effect="blur"
                     placeholderSrc="/images/logo.png"
                     afterLoad={() => {

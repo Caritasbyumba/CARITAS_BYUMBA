@@ -72,9 +72,9 @@ const Advert = () => {
           <div className="w-90% lg:w-70% m-auto mb-10">
             <Slider {...settings}>
               {advert.gallery.map((image, index) => (
-                <div key={index} className="w-full h-30vh md:h-50vh lg:h-70vh">
+                <div key={index} className="">
                   <LazyLoadImage
-                    className="w-full h-full object-cover object-center"
+                    className="h-30vh md:h-50vh lg:h-70vh w-auto m-auto"
                     effect="blur"
                     placeholderSrc="/images/logo.png"
                     afterLoad={() => {

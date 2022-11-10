@@ -194,8 +194,7 @@ const DepartmentAuthor = () => {
       rwDescription !== '' &&
       enSmallDescription !== '' &&
       frSmallDescription !== '' &&
-      rwSmallDescription !== '' &&
-      selectedFiles != null
+      rwSmallDescription !== ''
     ) {
       setLoading(true);
       setShowProgressBar(true);
@@ -210,7 +209,9 @@ const DepartmentAuthor = () => {
       formData.append('enDescription', enDescription);
       formData.append('frDescription', frDescription);
       formData.append('rwDescription', rwDescription);
-      formData.append('images', selectedFiles[0]);
+      if (selectedFiles) {
+        formData.append('images', selectedFiles[0]);
+      }
       axios
         .post('/api/departments/add', formData, {
           headers: { Authorization: token },
