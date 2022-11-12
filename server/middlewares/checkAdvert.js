@@ -13,6 +13,7 @@ const checkAdvert = (req, res, next) => {
       .required()
       .label('Kinyarwanda description'),
     images: Joi.optional(),
+    imageDescriptions: Joi.optional(),
   });
   const schemasValidation = Joi.validate(req.body, advertSchemas);
   validationHelper(req, res, schemasValidation, next);

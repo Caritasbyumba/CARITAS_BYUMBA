@@ -26,6 +26,7 @@ import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
 import RichTextEditor from '../../../components/UI/RichTextEditor';
 import { useFetchAllPublicationsQuery } from '../../../features/API/admin-api-slice';
+import ImageDescriptions from '../../../components/containers/admin/ImageDescriptions';
 
 const PublicationsAuthor = () => {
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ const PublicationsAuthor = () => {
   const [frDescription, setFrDescription] = useState('');
   const [rwDescription, setRwDescription] = useState('');
   const [tags, setTags] = useState([]);
-  const [tag, setTag] = useState(null);
+  const [tag, setTag] = useState('');
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -52,6 +53,7 @@ const PublicationsAuthor = () => {
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [publicationId, setPublicationId] = useState('');
+  const [imageDescriptions, setImageDescriptions] = useState([]);
 
   const updateForm = useCallback(
     (publicationId) => {
@@ -203,6 +205,7 @@ const PublicationsAuthor = () => {
       formData.append('frDescription', frDescription);
       formData.append('rwDescription', rwDescription);
       formData.append('tags', JSON.stringify(tags));
+      formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
       for (let file in selectedFiles) {
         formData.append('images', selectedFiles[file]);
       }
@@ -238,6 +241,7 @@ const PublicationsAuthor = () => {
     rwDescription,
     tags,
     selectedFiles,
+    imageDescriptions,
     token,
     t,
     refetch,
@@ -267,6 +271,7 @@ const PublicationsAuthor = () => {
         for (let file in selectedFiles) {
           formData.append('images', selectedFiles[file]);
         }
+        formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
       }
       axios
         .patch(`/api/publications/${publicationId}`, formData, {
@@ -300,6 +305,7 @@ const PublicationsAuthor = () => {
     rwDescription,
     tags,
     selectedFiles,
+    imageDescriptions,
     token,
     t,
     refetch,
@@ -349,6 +355,34 @@ const PublicationsAuthor = () => {
       setTags(newTags);
     }
     setTag('');
+  };
+
+  const changeSelectedFilesHandler = (files) => {
+    setSelectedFiles(files);
+    const descriptions = [];
+    Array.from(files).forEach((file) => {
+      descriptions.push({
+        name: file.name,
+        description: { en: '', fr: '', rw: '' },
+      });
+    });
+    setImageDescriptions(descriptions);
+  };
+
+  const changeImageDescription = (value, index, language) => {
+    setImageDescriptions([
+      ...imageDescriptions.map((image, idx) =>
+        idx === index
+          ? {
+              ...image,
+              description: {
+                ...image.description,
+                [language]: value,
+              },
+            }
+          : image
+      ),
+    ]);
   };
 
   return (
@@ -477,7 +511,11 @@ const PublicationsAuthor = () => {
           btnName="Upload images"
           uploadProgress={uploadProgress}
           showProgressBar={showProgressBar}
-          setSelectedFiles={setSelectedFiles}
+          setSelectedFiles={changeSelectedFilesHandler}
+        />
+        <ImageDescriptions
+          imageDescriptions={imageDescriptions}
+          changeImageDescription={changeImageDescription}
         />
         {loading && <Spinner />}
         {error && (

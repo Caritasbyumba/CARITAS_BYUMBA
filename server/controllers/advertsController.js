@@ -1,4 +1,5 @@
 import fs from 'fs';
+import findBestMatch from '../helpers/findBestMatch.js';
 import { errorResponse, successResponse } from '../helpers/responses.js';
 import Advert from '../models/Advert.js';
 import AdvertsIntro from '../models/AdvertsIntro.js';
@@ -12,13 +13,22 @@ export const createAdvert = async (req, res) => {
       enDescription,
       frDescription,
       rwDescription,
+      imageDescriptions,
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let updatedImageDescriptions = [];
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
         images.push(image.filename);
       });
+    }
+    if (JSON.parse(imageDescriptions).length > 0) {
+      updatedImageDescriptions = JSON.parse(imageDescriptions).map(
+        (imageDesc) => {
+          return { ...imageDesc, name: findBestMatch(imageDesc.name, images) };
+        }
+      );
     }
     const newAdvert = new Advert({
       name: {
@@ -32,6 +42,7 @@ export const createAdvert = async (req, res) => {
         rw: rwDescription,
       },
       gallery: images,
+      imageDescriptions: updatedImageDescriptions,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -99,9 +110,11 @@ export const updateAdvert = async (req, res) => {
       enDescription,
       frDescription,
       rwDescription,
+      imageDescriptions,
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let updatedImageDescriptions = [];
     let advert;
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
@@ -110,6 +123,16 @@ export const updateAdvert = async (req, res) => {
       advertFound.gallery.forEach((image) => {
         fs.unlinkSync(`public/images/${image}`);
       });
+      if (JSON.parse(imageDescriptions).length > 0) {
+        updatedImageDescriptions = JSON.parse(imageDescriptions).map(
+          (imageDesc) => {
+            return {
+              ...imageDesc,
+              name: findBestMatch(imageDesc.name, images),
+            };
+          }
+        );
+      }
       advert = await Advert.findOneAndUpdate(
         { _id: itemId },
         {
@@ -125,6 +148,7 @@ export const updateAdvert = async (req, res) => {
               rw: rwDescription,
             },
             gallery: images,
+            imageDescriptions: updatedImageDescriptions,
             updatedBy: userId,
           },
         },

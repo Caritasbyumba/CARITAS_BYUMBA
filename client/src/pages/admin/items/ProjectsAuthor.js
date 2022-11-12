@@ -25,6 +25,7 @@ import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
 import { useFetchAllProjectsQuery } from '../../../features/API/admin-api-slice';
 import RichTextEditor from '../../../components/UI/RichTextEditor';
+import ImageDescriptions from '../../../components/containers/admin/ImageDescriptions';
 
 const ProjectsAuthor = () => {
   const { t } = useTranslation();
@@ -50,6 +51,7 @@ const ProjectsAuthor = () => {
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [projectId, setProjectId] = useState('');
+  const [imageDescriptions, setImageDescriptions] = useState([]);
 
   const updateForm = useCallback(
     (projectId) => {
@@ -216,6 +218,7 @@ const ProjectsAuthor = () => {
       formData.append('startDate', startDate);
       formData.append('endDate', endDate);
       formData.append('isMain', isMain);
+      formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
       for (let file in selectedFiles) {
         formData.append('images', selectedFiles[file]);
       }
@@ -254,6 +257,7 @@ const ProjectsAuthor = () => {
     endDate,
     isMain,
     selectedFiles,
+    imageDescriptions,
     token,
     t,
     refetch,
@@ -287,6 +291,7 @@ const ProjectsAuthor = () => {
         for (let file in selectedFiles) {
           formData.append('images', selectedFiles[file]);
         }
+        formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
       }
       axios
         .patch(`/api/projects/${projectId}`, formData, {
@@ -323,6 +328,7 @@ const ProjectsAuthor = () => {
     endDate,
     isMain,
     selectedFiles,
+    imageDescriptions,
     token,
     t,
     refetch,
@@ -365,6 +371,33 @@ const ProjectsAuthor = () => {
       });
   }, [token, projectId, refetch]);
 
+  const changeSelectedFilesHandler = (files) => {
+    setSelectedFiles(files);
+    const descriptions = [];
+    Array.from(files).forEach((file) => {
+      descriptions.push({
+        name: file.name,
+        description: { en: '', fr: '', rw: '' },
+      });
+    });
+    setImageDescriptions(descriptions);
+  };
+
+  const changeImageDescription = (value, index, language) => {
+    setImageDescriptions([
+      ...imageDescriptions.map((image, idx) =>
+        idx === index
+          ? {
+              ...image,
+              description: {
+                ...image.description,
+                [language]: value,
+              },
+            }
+          : image
+      ),
+    ]);
+  };
   return (
     <div>
       <Modal
@@ -501,7 +534,11 @@ const ProjectsAuthor = () => {
           btnName="Upload images"
           uploadProgress={uploadProgress}
           showProgressBar={showProgressBar}
-          setSelectedFiles={setSelectedFiles}
+          setSelectedFiles={changeSelectedFilesHandler}
+        />
+        <ImageDescriptions
+          imageDescriptions={imageDescriptions}
+          changeImageDescription={changeImageDescription}
         />
         {loading && <Spinner />}
         {error && (

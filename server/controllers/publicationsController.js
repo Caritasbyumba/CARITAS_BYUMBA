@@ -1,4 +1,5 @@
 import fs from 'fs';
+import findBestMatch from '../helpers/findBestMatch.js';
 import { errorResponse, successResponse } from '../helpers/responses.js';
 import Publication from '../models/Publication.js';
 import PublicationsIntro from '../models/PublicationsIntro.js';
@@ -13,13 +14,22 @@ export const createPublication = async (req, res) => {
       frDescription,
       rwDescription,
       tags,
+      imageDescriptions,
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let updatedImageDescriptions = [];
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
         images.push(image.filename);
       });
+    }
+    if (JSON.parse(imageDescriptions).length > 0) {
+      updatedImageDescriptions = JSON.parse(imageDescriptions).map(
+        (imageDesc) => {
+          return { ...imageDesc, name: findBestMatch(imageDesc.name, images) };
+        }
+      );
     }
     const newPublication = new Publication({
       title: {
@@ -34,6 +44,7 @@ export const createPublication = async (req, res) => {
       },
       tags: JSON.parse(tags),
       gallery: images,
+      imageDescriptions: updatedImageDescriptions,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -116,9 +127,11 @@ export const updatePublication = async (req, res) => {
       frDescription,
       rwDescription,
       tags,
+      imageDescriptions,
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let updatedImageDescriptions = [];
     let publication;
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
@@ -127,6 +140,16 @@ export const updatePublication = async (req, res) => {
       publicationFound.gallery.forEach((image) => {
         fs.unlinkSync(`public/images/${image}`);
       });
+      if (JSON.parse(imageDescriptions).length > 0) {
+        updatedImageDescriptions = JSON.parse(imageDescriptions).map(
+          (imageDesc) => {
+            return {
+              ...imageDesc,
+              name: findBestMatch(imageDesc.name, images),
+            };
+          }
+        );
+      }
 
       publication = await Publication.findOneAndUpdate(
         { _id: itemId },
@@ -144,6 +167,7 @@ export const updatePublication = async (req, res) => {
             },
             tags: JSON.parse(tags),
             gallery: images,
+            imageDescriptions: updatedImageDescriptions,
             updatedBy: userId,
           },
         },

@@ -14,6 +14,7 @@ const checkPublication = (req, res, next) => {
       .label('Kinyarwanda description'),
     images: Joi.optional(),
     tags: Joi.array().required(),
+    imageDescriptions: Joi.optional(),
   });
   const schemasValidation = Joi.validate(req.body, publicationSchemas);
   validationHelper(req, res, schemasValidation, next);

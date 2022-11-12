@@ -25,6 +25,7 @@ import axios from '../../../axios-base';
 import { Button } from '../../../components/UI/button';
 import RichTextEditor from '../../../components/UI/RichTextEditor';
 import { useFetchAllAdvertsQuery } from '../../../features/API/admin-api-slice';
+import ImageDescriptions from '../../../components/containers/admin/ImageDescriptions';
 
 const AdvertsAuthor = () => {
   const { t } = useTranslation();
@@ -49,6 +50,7 @@ const AdvertsAuthor = () => {
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
   const [advertId, setAdvertId] = useState('');
+  const [imageDescriptions, setImageDescriptions] = useState([]);
 
   const updateForm = useCallback(
     (advertId) => {
@@ -198,6 +200,7 @@ const AdvertsAuthor = () => {
       formData.append('enDescription', enDescription);
       formData.append('frDescription', frDescription);
       formData.append('rwDescription', rwDescription);
+      formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
       for (let file in selectedFiles) {
         formData.append('images', selectedFiles[file]);
       }
@@ -232,6 +235,7 @@ const AdvertsAuthor = () => {
     frDescription,
     rwDescription,
     selectedFiles,
+    imageDescriptions,
     token,
     t,
     refetch,
@@ -260,6 +264,7 @@ const AdvertsAuthor = () => {
         for (let file in selectedFiles) {
           formData.append('images', selectedFiles[file]);
         }
+        formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
       }
       axios
         .patch(`/api/adverts/${advertId}`, formData, {
@@ -292,6 +297,7 @@ const AdvertsAuthor = () => {
     frDescription,
     rwDescription,
     selectedFiles,
+    imageDescriptions,
     token,
     t,
     refetch,
@@ -334,6 +340,33 @@ const AdvertsAuthor = () => {
       });
   }, [token, advertId, refetch]);
 
+  const changeSelectedFilesHandler = (files) => {
+    setSelectedFiles(files);
+    const descriptions = [];
+    Array.from(files).forEach((file) => {
+      descriptions.push({
+        name: file.name,
+        description: { en: '', fr: '', rw: '' },
+      });
+    });
+    setImageDescriptions(descriptions);
+  };
+
+  const changeImageDescription = (value, index, language) => {
+    setImageDescriptions([
+      ...imageDescriptions.map((image, idx) =>
+        idx === index
+          ? {
+              ...image,
+              description: {
+                ...image.description,
+                [language]: value,
+              },
+            }
+          : image
+      ),
+    ]);
+  };
   return (
     <div>
       <Modal
@@ -343,9 +376,7 @@ const AdvertsAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${
-            isUpdating ? t('Update adverts') : t('Add new adverts')
-          }`}
+          name={`${isUpdating ? t('Update adverts') : t('Add new adverts')}`}
           color="red"
         />
         <div className="flex space-x-2">
@@ -421,7 +452,11 @@ const AdvertsAuthor = () => {
           btnName="Upload images"
           uploadProgress={uploadProgress}
           showProgressBar={showProgressBar}
-          setSelectedFiles={setSelectedFiles}
+          setSelectedFiles={changeSelectedFilesHandler}
+        />
+        <ImageDescriptions
+          imageDescriptions={imageDescriptions}
+          changeImageDescription={changeImageDescription}
         />
         {loading && <Spinner />}
         {error && (
@@ -444,9 +479,7 @@ const AdvertsAuthor = () => {
       >
         <CardTitle name={t('Archive adverts')} color="red" />
         <CardBody
-          name={t(
-            'Are you sure you want to archive/unarchive this adverts?'
-          )}
+          name={t('Are you sure you want to archive/unarchive this adverts?')}
         />
         {loading && <Spinner />}
         {error && (

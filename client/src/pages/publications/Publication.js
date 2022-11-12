@@ -84,6 +84,17 @@ const Publication = () => {
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}
                     alt={image}
                   />
+                  {publication?.imageDescriptions.length > 0 ? (
+                    <CardBody
+                      name={
+                        publication.imageDescriptions.find(
+                          (imageDesc) => imageDesc.name === image
+                        ).description[selectedLanguage]
+                      }
+                      color="gray-500"
+                      additional="text-xs text-center"
+                    />
+                  ) : null}
                 </div>
               ))}
             </Slider>

@@ -8,6 +8,9 @@ const schema = mongoose.Schema(
     startDate: Date,
     endDate: Date,
     gallery: [String],
+    imageDescriptions: [
+      { name: String, description: { en: String, fr: String, rw: String } },
+    ],
     isMain: { type: Boolean, default: false },
     isActive: { type: Boolean, default: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

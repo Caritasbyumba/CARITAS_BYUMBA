@@ -14,14 +14,13 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const Advert = () => {
   const { advertId } = useParams();
-  const { data = [], isFetching } =
-    useFetchSpecificAdvertQuery(advertId);
+  const { data = [], isFetching } = useFetchSpecificAdvertQuery(advertId);
   const selectedLanguage = useSelector(
     (state) => state.global.selectedLanguage
   );
   const advert = data.results;
 
-  var settings = {
+  const settings = {
     dots: true,
     arrows: false,
     infinite: true,
@@ -37,9 +36,7 @@ const Advert = () => {
 
   return (
     <div>
-      <CustomHelmet
-        name={advert?.name[selectedLanguage] || 'ADVERTISEMENT'}
-      />
+      <CustomHelmet name={advert?.name[selectedLanguage] || 'ADVERTISEMENT'} />
       <Header />
       {isFetching ? (
         <Spinner />
@@ -84,6 +81,17 @@ const Advert = () => {
                     src={`${process.env.REACT_APP_BACKEND_URL}/images/${image}`}
                     alt={image}
                   />
+                  {advert?.imageDescriptions.length > 0 ? (
+                    <CardBody
+                      name={
+                        advert.imageDescriptions.find(
+                          (imageDesc) => imageDesc.name === image
+                        ).description[selectedLanguage]
+                      }
+                      color="gray-500"
+                      additional="text-xs text-center"
+                    />
+                  ) : null}
                 </div>
               ))}
             </Slider>

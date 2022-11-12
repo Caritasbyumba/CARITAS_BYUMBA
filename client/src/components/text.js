@@ -77,12 +77,11 @@ export const CardTitle = function (props) {
 
 export const CardBody = function (props) {
   let classes =
-    'block text-md text-' +
+    props.additional +
+    ' block text-md text-' +
     props.alignment +
     ' text-' +
-    props.color +
-    ' ' +
-    props.additional;
+    props.color;
 
   return (
     <p onClick={props.onClick} className={classes}>

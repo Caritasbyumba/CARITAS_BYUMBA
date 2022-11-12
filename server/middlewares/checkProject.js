@@ -29,6 +29,7 @@ const checkProject = (req, res, next) => {
     startDate: Joi.date().required(),
     endDate: Joi.date().required(),
     isMain: Joi.boolean().required(),
+    imageDescriptions: Joi.optional(),
   });
   const schemasValidation = Joi.validate(req.body, projectSchemas);
   validationHelper(req, res, schemasValidation, next);

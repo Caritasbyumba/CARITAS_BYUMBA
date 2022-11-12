@@ -1,4 +1,5 @@
 import fs from 'fs';
+import findBestMatch from '../helpers/findBestMatch.js';
 import { errorResponse, successResponse } from '../helpers/responses.js';
 import Project from '../models/Project.js';
 import ProjectsIntro from '../models/ProjectsIntro.js';
@@ -16,13 +17,22 @@ export const createProject = async (req, res) => {
       startDate,
       endDate,
       isMain,
+      imageDescriptions,
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let updatedImageDescriptions = [];
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
         images.push(image.filename);
       });
+    }
+    if (JSON.parse(imageDescriptions).length > 0) {
+      updatedImageDescriptions = JSON.parse(imageDescriptions).map(
+        (imageDesc) => {
+          return { ...imageDesc, name: findBestMatch(imageDesc.name, images) };
+        }
+      );
     }
     const newProject = new Project({
       name: name,
@@ -39,6 +49,7 @@ export const createProject = async (req, res) => {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
       gallery: images,
+      imageDescriptions: updatedImageDescriptions,
       isMain: JSON.parse(isMain),
       createdBy: userId,
       updatedBy: userId,
@@ -140,9 +151,11 @@ export const updateProject = async (req, res) => {
       startDate,
       endDate,
       isMain,
+      imageDescriptions,
     } = req.body;
     const userId = req.tokenData._id;
     let images = [];
+    let updatedImageDescriptions = [];
     let project;
     if (req.files && req.files.length > 0) {
       req.files.forEach((image) => {
@@ -151,6 +164,16 @@ export const updateProject = async (req, res) => {
       projectFound.gallery.forEach((image) => {
         fs.unlinkSync(`public/images/${image}`);
       });
+      if (JSON.parse(imageDescriptions).length > 0) {
+        updatedImageDescriptions = JSON.parse(imageDescriptions).map(
+          (imageDesc) => {
+            return {
+              ...imageDesc,
+              name: findBestMatch(imageDesc.name, images),
+            };
+          }
+        );
+      }
       project = await Project.findOneAndUpdate(
         { _id: itemId },
         {
@@ -169,6 +192,7 @@ export const updateProject = async (req, res) => {
             startDate: new Date(startDate),
             endDate: new Date(endDate),
             gallery: images,
+            imageDescriptions: updatedImageDescriptions,
             isMain: JSON.parse(isMain),
             updatedBy: userId,
           },
