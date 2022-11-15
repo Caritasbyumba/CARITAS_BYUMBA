@@ -71,6 +71,7 @@ const ProjectsAuthor = () => {
           setStartDate(new Date(res.data.results.startDate));
           setEndDate(new Date(res.data.results.endDate));
           setIsMain(res.data.results.isMain);
+          setImageDescriptions(res.data.results.imageDescriptions);
           setLoading(false);
         })
         .catch((err) => {
