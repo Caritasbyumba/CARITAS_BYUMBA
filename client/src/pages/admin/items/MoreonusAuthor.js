@@ -36,9 +36,6 @@ const MoreonusAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllMoreonusQuery();
-  const [enCallToActionBtn, setEnCallToActionBtn] = useState('');
-  const [frCallToActionBtn, setFrCallToActionBtn] = useState('');
-  const [rwCallToActionBtn, setRwCallToActionBtn] = useState('');
   const [enDescription, setEnDescription] = useState('');
   const [frDescription, setFrDescription] = useState('');
   const [rwDescription, setRwDescription] = useState('');
@@ -55,9 +52,6 @@ const MoreonusAuthor = () => {
           headers: { Authorization: token },
         })
         .then((res) => {
-          setEnCallToActionBtn(res.data.results.callToActionBtn.en);
-          setFrCallToActionBtn(res.data.results.callToActionBtn.fr);
-          setRwCallToActionBtn(res.data.results.callToActionBtn.rw);
           setEnDescription(res.data.results.description.en);
           setFrDescription(res.data.results.description.fr);
           setRwDescription(res.data.results.description.rw);
@@ -177,9 +171,6 @@ const MoreonusAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enCallToActionBtn !== '' &&
-      frCallToActionBtn !== '' &&
-      rwCallToActionBtn !== '' &&
       enDescription !== '' &&
       frDescription !== '' &&
       rwDescription !== ''
@@ -187,9 +178,6 @@ const MoreonusAuthor = () => {
       setLoading(true);
       setError(null);
       const formData = {
-        enCallToActionBtn,
-        frCallToActionBtn,
-        rwCallToActionBtn,
         enDescription,
         frDescription,
         rwDescription,
@@ -211,9 +199,6 @@ const MoreonusAuthor = () => {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enCallToActionBtn,
-    frCallToActionBtn,
-    rwCallToActionBtn,
     enDescription,
     frDescription,
     rwDescription,
@@ -224,9 +209,6 @@ const MoreonusAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enCallToActionBtn !== '' &&
-      frCallToActionBtn !== '' &&
-      rwCallToActionBtn !== '' &&
       enDescription !== '' &&
       frDescription !== '' &&
       rwDescription !== ''
@@ -234,9 +216,6 @@ const MoreonusAuthor = () => {
       setLoading(true);
       setError(null);
       const formData = {
-        enCallToActionBtn,
-        frCallToActionBtn,
-        rwCallToActionBtn,
         enDescription,
         frDescription,
         rwDescription,
@@ -258,9 +237,6 @@ const MoreonusAuthor = () => {
       setError({ error: t('All fields must be filled') });
     }
   }, [
-    enCallToActionBtn,
-    frCallToActionBtn,
-    rwCallToActionBtn,
     enDescription,
     frDescription,
     rwDescription,
@@ -490,9 +466,6 @@ const MoreonusAuthor = () => {
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnCallToActionBtn('');
-                  setFrCallToActionBtn('');
-                  setRwCallToActionBtn('');
                   setEnDescription('');
                   setFrDescription('');
                   setRwDescription('');
