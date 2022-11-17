@@ -1,6 +1,7 @@
 import { errorResponse, successResponse } from '../helpers/responses.js';
 import Department from '../models/Department.js';
 import Service from '../models/Service.js';
+import fs from 'fs';
 
 export const createDepartment = async (req, res) => {
   try {
