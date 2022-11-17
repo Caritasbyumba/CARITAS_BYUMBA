@@ -17,6 +17,10 @@ export const createDepartment = async (req, res) => {
       rwSmallDescription,
     } = req.body;
     const userId = req.tokenData._id;
+    let fileName = '';
+    if (req.file) {
+      fileName = req.file.filename;
+    }
     const newDepartment = new Department({
       name: { en: enName, fr: frName, rw: rwName },
       description: {
@@ -29,7 +33,7 @@ export const createDepartment = async (req, res) => {
         fr: frSmallDescription,
         rw: rwSmallDescription,
       },
-      image: req.file.filename,
+      image: fileName,
       createdBy: userId,
       updatedBy: userId,
     });
@@ -41,7 +45,9 @@ export const createDepartment = async (req, res) => {
       department
     );
   } catch (error) {
-    fs.unlinkSync(`public/images/${req.file.filename}`);
+    if (req.file) {
+      fs.unlinkSync(`public/images/${req.file.filename}`);
+    }
     return errorResponse(res, 500, error.message);
   }
 };
@@ -120,7 +126,9 @@ export const updateDepartment = async (req, res) => {
     const userId = req.tokenData._id;
     let department;
     if (req.file?.filename) {
-      // fs.unlinkSync(`public/images/${departmentFound.image}`);
+      if(departmentFound.image){
+        fs.unlinkSync(`public/images/${departmentFound.image}`);
+      }
       department = await Department.findOneAndUpdate(
         { _id: itemId },
         {
@@ -183,7 +191,9 @@ export const deleteDepartment = async (req, res) => {
       return errorResponse(res, 404, 'Department not found');
     }
     await Department.deleteOne({ _id: itemId });
-    fs.unlinkSync(`public/images/${departmentFound.image}`);
+    if(departmentFound.image){
+      fs.unlinkSync(`public/images/${departmentFound.image}`);
+    }
     return successResponse(res, 204);
   } catch (error) {
     return errorResponse(res, 500, error.message);
