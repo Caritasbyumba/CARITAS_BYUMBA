@@ -1,33 +1,33 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
 import {
   useFetchAllDepartmentsQuery,
   useFetchAllServicesQuery,
-} from '../../../features/API/admin-api-slice';
-import { useSelector } from 'react-redux';
+} from "../../../features/API/admin-api-slice";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
-import RichTextEditor from '../../../components/UI/RichTextEditor';
-import FileUpload from '../../../components/UI/FileUpload';
+} from "react-icons/md";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
+import RichTextEditor from "../../../components/UI/RichTextEditor";
+import FileUpload from "../../../components/UI/FileUpload";
 
 const ServiceAuthor = () => {
   const { t } = useTranslation();
@@ -40,21 +40,21 @@ const ServiceAuthor = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllServicesQuery();
   const { data: allDepartments } = useFetchAllDepartmentsQuery();
-  const [name, setName] = useState('');
-  const [enSmallDescription, setEnSmallDescription] = useState('');
-  const [frSmallDescription, setFrSmallDescription] = useState('');
-  const [rwSmallDescription, setRwSmallDescription] = useState('');
-  const [enChallenges, setEnChallenges] = useState('');
-  const [frChallenges, setFrChallenges] = useState('');
-  const [rwChallenges, setRwChallenges] = useState('');
+  const [name, setName] = useState("");
+  const [enSmallDescription, setEnSmallDescription] = useState("");
+  const [frSmallDescription, setFrSmallDescription] = useState("");
+  const [rwSmallDescription, setRwSmallDescription] = useState("");
+  const [enChallenges, setEnChallenges] = useState("");
+  const [frChallenges, setFrChallenges] = useState("");
+  const [rwChallenges, setRwChallenges] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [serviceId, setServiceId] = useState('');
+  const [serviceId, setServiceId] = useState("");
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
-  const [department, setDepartment] = useState('');
+  const [department, setDepartment] = useState("");
 
   const updateForm = useCallback(
     (serviceId) => {
@@ -88,7 +88,9 @@ const ServiceAuthor = () => {
             return {
               id: index + 1,
               name: service.name,
-              updatedBy: service.updatedBy.name,
+              updatedBy: service.updatedBy
+                ? service.updatedBy.name
+                : service.createdBy.name,
               updatedAt: service.updatedAt,
               status: service.isActive,
               _id: service._id,
@@ -99,30 +101,30 @@ const ServiceAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Name', accessor: 'name' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Name", accessor: "name" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -188,31 +190,31 @@ const ServiceAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      name !== '' &&
-      enSmallDescription !== '' &&
-      frSmallDescription !== '' &&
-      rwSmallDescription !== '' &&
-      enChallenges !== '' &&
-      frChallenges !== '' &&
-      rwChallenges !== '' &&
+      name !== "" &&
+      enSmallDescription !== "" &&
+      frSmallDescription !== "" &&
+      rwSmallDescription !== "" &&
+      enChallenges !== "" &&
+      frChallenges !== "" &&
+      rwChallenges !== "" &&
       selectedFiles != null
     ) {
       setLoading(true);
       setError(null);
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('enSmallDescription', enSmallDescription);
-      formData.append('frSmallDescription', frSmallDescription);
-      formData.append('rwSmallDescription', rwSmallDescription);
-      formData.append('enChallenges', enChallenges);
-      formData.append('frChallenges', frChallenges);
-      formData.append('rwChallenges', rwChallenges);
-      formData.append('department', department);
+      formData.append("name", name);
+      formData.append("enSmallDescription", enSmallDescription);
+      formData.append("frSmallDescription", frSmallDescription);
+      formData.append("rwSmallDescription", rwSmallDescription);
+      formData.append("enChallenges", enChallenges);
+      formData.append("frChallenges", frChallenges);
+      formData.append("rwChallenges", rwChallenges);
+      formData.append("department", department);
       if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
+        formData.append("image", selectedFiles[0]);
       }
       axios
-        .post('/api/services/add', formData, {
+        .post("/api/services/add", formData, {
           headers: { Authorization: token },
           onUploadProgress: (progressEvent) => {
             setUploadProgress(
@@ -232,7 +234,7 @@ const ServiceAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     name,
@@ -251,27 +253,27 @@ const ServiceAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      name !== '' &&
-      enSmallDescription !== '' &&
-      frSmallDescription !== '' &&
-      rwSmallDescription !== '' &&
-      enChallenges !== '' &&
-      frChallenges !== '' &&
-      rwChallenges !== ''
+      name !== "" &&
+      enSmallDescription !== "" &&
+      frSmallDescription !== "" &&
+      rwSmallDescription !== "" &&
+      enChallenges !== "" &&
+      frChallenges !== "" &&
+      rwChallenges !== ""
     ) {
       setLoading(true);
       setError(null);
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('enSmallDescription', enSmallDescription);
-      formData.append('frSmallDescription', frSmallDescription);
-      formData.append('rwSmallDescription', rwSmallDescription);
-      formData.append('enChallenges', enChallenges);
-      formData.append('frChallenges', frChallenges);
-      formData.append('rwChallenges', rwChallenges);
-      formData.append('department', department);
+      formData.append("name", name);
+      formData.append("enSmallDescription", enSmallDescription);
+      formData.append("frSmallDescription", frSmallDescription);
+      formData.append("rwSmallDescription", rwSmallDescription);
+      formData.append("enChallenges", enChallenges);
+      formData.append("frChallenges", frChallenges);
+      formData.append("rwChallenges", rwChallenges);
+      formData.append("department", department);
       if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
+        formData.append("image", selectedFiles[0]);
       }
       axios
         .patch(`/api/services/${serviceId}`, formData, {
@@ -294,7 +296,7 @@ const ServiceAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     name,
@@ -357,65 +359,65 @@ const ServiceAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update service') : t('Add new service')}`}
+          name={`${isUpdating ? t("Update service") : t("Add new service")}`}
           color="red"
         />
         <Input
-          label={t('Name')}
+          label={t("Name")}
           elementType="input"
           elementConfig={{
-            type: 'text',
-            placeholder: t('Name'),
+            type: "text",
+            placeholder: t("Name"),
           }}
           value={name}
           changed={setName}
           validation={{ required: true, maxLength: 100 }}
           shouldValidate
-          error={t('Name is required and should be less than 100 characters')}
+          error={t("Name is required and should be less than 100 characters")}
         />
         <RichTextEditor
-          label={t('English Small Description')}
+          label={t("English Small Description")}
           value={enSmallDescription}
           onChange={(text) => setEnSmallDescription(text)}
-          placeholder={t('English Small Description')}
+          placeholder={t("English Small Description")}
         />
         <RichTextEditor
-          label={t('French Small Description')}
+          label={t("French Small Description")}
           value={frSmallDescription}
           onChange={(text) => setFrSmallDescription(text)}
-          placeholder={t('French Small Description')}
+          placeholder={t("French Small Description")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Small Description')}
+          label={t("Kinyarwanda Small Description")}
           value={rwSmallDescription}
           onChange={(text) => setRwSmallDescription(text)}
-          placeholder={t('Kinyarwanda Small Description')}
+          placeholder={t("Kinyarwanda Small Description")}
         />
         <RichTextEditor
-          label={t('English Challenges')}
+          label={t("English Challenges")}
           value={enChallenges}
           onChange={(text) => setEnChallenges(text)}
-          placeholder={t('English Challenges')}
+          placeholder={t("English Challenges")}
         />
         <RichTextEditor
-          label={t('French Challenges')}
+          label={t("French Challenges")}
           value={frChallenges}
           onChange={(text) => setFrChallenges(text)}
-          placeholder={t('French Challenges')}
+          placeholder={t("French Challenges")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Challenges')}
+          label={t("Kinyarwanda Challenges")}
           value={rwChallenges}
           onChange={(text) => setRwChallenges(text)}
-          placeholder={t('Kinyarwanda Challenges')}
+          placeholder={t("Kinyarwanda Challenges")}
         />
         {allDepartments && (
           <Input
-            label={t('Related department')}
+            label={t("Related department")}
             elementType="select"
             elementConfig={{
-              type: 'text',
-              startingValue: t('SELECT'),
+              type: "text",
+              startingValue: t("SELECT"),
               options: allDepartments?.results?.map((department) => {
                 return {
                   value: department._id,
@@ -429,7 +431,7 @@ const ServiceAuthor = () => {
         )}
         <FileUpload
           elementConfig={{
-            accept: 'image/*',
+            accept: "image/*",
           }}
           btnName="Upload image"
           uploadProgress={uploadProgress}
@@ -441,7 +443,7 @@ const ServiceAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -456,9 +458,9 @@ const ServiceAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive service')} color="red" />
+        <CardTitle name={t("Archive service")} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this service?')}
+          name={t("Are you sure you want to archive/unarchive this service?")}
         />
         {loading && <Spinner />}
         {error && (
@@ -466,14 +468,14 @@ const ServiceAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -488,10 +490,10 @@ const ServiceAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete service')} color="red" />
+        <CardTitle name={t("Delete service")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this service?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this service?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -500,14 +502,14 @@ const ServiceAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -517,7 +519,7 @@ const ServiceAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all service')} />
+        <SectionTitle name={t("List of all service")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -525,31 +527,31 @@ const ServiceAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new service')}
+                name={t("Add new service")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setName('');
-                  setEnSmallDescription('');
-                  setFrSmallDescription('');
-                  setRwSmallDescription('');
-                  setEnChallenges('');
-                  setFrChallenges('');
-                  setRwChallenges('');
+                  setName("");
+                  setEnSmallDescription("");
+                  setFrSmallDescription("");
+                  setRwSmallDescription("");
+                  setEnChallenges("");
+                  setFrChallenges("");
+                  setRwChallenges("");
                   setError(null);
                 }}
               />
@@ -563,7 +565,7 @@ const ServiceAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -583,7 +585,7 @@ const ServiceAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

@@ -1,29 +1,29 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useFetchAllCarouselsQuery } from '../../../features/API/admin-api-slice';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useFetchAllCarouselsQuery } from "../../../features/API/admin-api-slice";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import FileUpload from '../../../components/UI/FileUpload';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
+} from "react-icons/md";
+import FileUpload from "../../../components/UI/FileUpload";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
 
 const CarouselAuthor = () => {
   const { t } = useTranslation();
@@ -35,19 +35,19 @@ const CarouselAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllCarouselsQuery();
-  const [enTitle, setEnTitle] = useState('');
-  const [frTitle, setFrTitle] = useState('');
-  const [rwTitle, setRwTitle] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
+  const [enTitle, setEnTitle] = useState("");
+  const [frTitle, setFrTitle] = useState("");
+  const [rwTitle, setRwTitle] = useState("");
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
-  const [carouselId, setCarouselId] = useState('');
+  const [carouselId, setCarouselId] = useState("");
 
   const updateForm = useCallback(
     (carouselId) => {
@@ -79,7 +79,9 @@ const CarouselAuthor = () => {
             return {
               id: index + 1,
               title: carousel.title[selectedLanguage],
-              updatedBy: carousel.updatedBy.name,
+              updatedBy: carousel.updatedBy
+                ? carousel.updatedBy.name
+                : carousel.createdBy.name,
               updatedAt: carousel.updatedAt,
               status: carousel.isActive,
               _id: carousel._id,
@@ -90,30 +92,30 @@ const CarouselAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Title', accessor: 'title' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Title", accessor: "title" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -179,29 +181,29 @@ const CarouselAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
+      enTitle !== "" &&
+      frTitle !== "" &&
+      rwTitle !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== "" &&
       selectedFiles != null
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
+      formData.append("enTitle", enTitle);
+      formData.append("frTitle", frTitle);
+      formData.append("rwTitle", rwTitle);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
       if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
+        formData.append("image", selectedFiles[0]);
       }
       axios
-        .post('/api/carousels/add', formData, {
+        .post("/api/carousels/add", formData, {
           headers: { Authorization: token },
           onUploadProgress: (progressEvent) => {
             setUploadProgress(
@@ -221,7 +223,7 @@ const CarouselAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enTitle,
@@ -238,25 +240,25 @@ const CarouselAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      enTitle !== "" &&
+      frTitle !== "" &&
+      rwTitle !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== ""
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enTitle', enTitle);
-      formData.append('frTitle', frTitle);
-      formData.append('rwTitle', rwTitle);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
+      formData.append("enTitle", enTitle);
+      formData.append("frTitle", frTitle);
+      formData.append("rwTitle", rwTitle);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
       if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
+        formData.append("image", selectedFiles[0]);
       }
       axios
         .patch(`/api/carousels/${carouselId}`, formData, {
@@ -279,7 +281,7 @@ const CarouselAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enTitle,
@@ -340,100 +342,100 @@ const CarouselAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update carousel') : t('Add new carousel')}`}
+          name={`${isUpdating ? t("Update carousel") : t("Add new carousel")}`}
           color="red"
         />
         <div className="flex space-x-2">
           <Input
-            label={t('English Title')}
+            label={t("English Title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English Title'),
+              type: "text",
+              placeholder: t("English Title"),
             }}
             value={enTitle}
             changed={setEnTitle}
             validation={{ required: true, maxLength: 70 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 70 characters'
+              "English title is required and should be less than 70 characters"
             )}
           />
           <Input
-            label={t('French Title')}
+            label={t("French Title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French Title'),
+              type: "text",
+              placeholder: t("French Title"),
             }}
             value={frTitle}
             changed={setFrTitle}
             validation={{ required: true, maxLength: 70 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 70 characters'
+              "French title is required and should be less than 70 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda Title')}
+            label={t("Kinyarwanda Title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Title'),
+              type: "text",
+              placeholder: t("Kinyarwanda Title"),
             }}
             value={rwTitle}
             changed={setRwTitle}
             validation={{ required: true, maxLength: 70 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 70 characters'
+              "Kinyarwanda title is required and should be less than 70 characters"
             )}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Description')}
+            label={t("English Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English Description'),
+              type: "text",
+              placeholder: t("English Description"),
             }}
             value={enDescription}
             changed={setEnDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Description is required')}
+            error={t("English Description is required")}
           />
           <Input
-            label={t('French Description')}
+            label={t("French Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French Description'),
+              type: "text",
+              placeholder: t("French Description"),
             }}
             value={frDescription}
             changed={setFrDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Description is required')}
+            error={t("French Description is required")}
           />
           <Input
-            label={t('Kinyarwanda Description')}
+            label={t("Kinyarwanda Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Description'),
+              type: "text",
+              placeholder: t("Kinyarwanda Description"),
             }}
             value={rwDescription}
             changed={setRwDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Description is required')}
+            error={t("Kinyarwanda Description is required")}
           />
         </div>
         <FileUpload
           elementConfig={{
-            accept: 'image/*',
+            accept: "image/*",
           }}
           btnName="Upload image"
           uploadProgress={uploadProgress}
@@ -445,7 +447,7 @@ const CarouselAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -459,9 +461,9 @@ const CarouselAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive carousel')} color="red" />
+        <CardTitle name={t("Archive carousel")} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this carousel?')}
+          name={t("Are you sure you want to archive/unarchive this carousel?")}
         />
         {loading && <Spinner />}
         {error && (
@@ -469,14 +471,14 @@ const CarouselAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -491,10 +493,10 @@ const CarouselAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete carousel')} color="red" />
+        <CardTitle name={t("Delete carousel")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this carousel?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this carousel?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -503,14 +505,14 @@ const CarouselAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -520,7 +522,7 @@ const CarouselAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all Carousels')} />
+        <SectionTitle name={t("List of all Carousels")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -528,30 +530,30 @@ const CarouselAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new carousel')}
+                name={t("Add new carousel")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnTitle('');
-                  setFrTitle('');
-                  setRwTitle('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnTitle("");
+                  setFrTitle("");
+                  setRwTitle("");
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setError(null);
                 }}
               />
@@ -565,7 +567,7 @@ const CarouselAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -585,7 +587,7 @@ const CarouselAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

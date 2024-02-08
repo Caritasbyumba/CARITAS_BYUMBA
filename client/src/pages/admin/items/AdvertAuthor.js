@@ -1,31 +1,31 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import FileUpload from '../../../components/UI/FileUpload';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
-import RichTextEditor from '../../../components/UI/RichTextEditor';
-import { useFetchAllAdvertsQuery } from '../../../features/API/admin-api-slice';
-import ImageDescriptions from '../../../components/containers/admin/ImageDescriptions';
+} from "react-icons/md";
+import FileUpload from "../../../components/UI/FileUpload";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
+import RichTextEditor from "../../../components/UI/RichTextEditor";
+import { useFetchAllAdvertsQuery } from "../../../features/API/admin-api-slice";
+import ImageDescriptions from "../../../components/containers/admin/ImageDescriptions";
 
 const AdvertsAuthor = () => {
   const { t } = useTranslation();
@@ -37,19 +37,19 @@ const AdvertsAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllAdvertsQuery();
-  const [enName, setEnName] = useState('');
-  const [frName, setFrName] = useState('');
-  const [rwName, setRwName] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
+  const [enName, setEnName] = useState("");
+  const [frName, setFrName] = useState("");
+  const [rwName, setRwName] = useState("");
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
-  const [advertId, setAdvertId] = useState('');
+  const [advertId, setAdvertId] = useState("");
   const [imageDescriptions, setImageDescriptions] = useState([]);
 
   const updateForm = useCallback(
@@ -82,7 +82,9 @@ const AdvertsAuthor = () => {
             return {
               id: index + 1,
               name: advert.name[selectedLanguage],
-              updatedBy: advert.updatedBy.name,
+              updatedBy: advert.updatedBy
+                ? advert.updatedBy.name
+                : advert.createdBy.name,
               updatedAt: advert.updatedAt,
               status: advert.isActive,
               _id: advert._id,
@@ -93,30 +95,30 @@ const AdvertsAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Name', accessor: 'name' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Name", accessor: "name" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -182,30 +184,30 @@ const AdvertsAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enName !== '' &&
-      frName !== '' &&
-      rwName !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
+      enName !== "" &&
+      frName !== "" &&
+      rwName !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== "" &&
       selectedFiles != null
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enName', enName);
-      formData.append('frName', frName);
-      formData.append('rwName', rwName);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
+      formData.append("enName", enName);
+      formData.append("frName", frName);
+      formData.append("rwName", rwName);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
+      formData.append("imageDescriptions", JSON.stringify(imageDescriptions));
       for (let file in selectedFiles) {
-        formData.append('images', selectedFiles[file]);
+        formData.append("images", selectedFiles[file]);
       }
       axios
-        .post('/api/adverts/add', formData, {
+        .post("/api/adverts/add", formData, {
           headers: { Authorization: token },
           onUploadProgress: (progressEvent) => {
             setUploadProgress(
@@ -225,7 +227,7 @@ const AdvertsAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enName,
@@ -243,28 +245,28 @@ const AdvertsAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enName !== '' &&
-      frName !== '' &&
-      rwName !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      enName !== "" &&
+      frName !== "" &&
+      rwName !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== ""
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enName', enName);
-      formData.append('frName', frName);
-      formData.append('rwName', rwName);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
+      formData.append("enName", enName);
+      formData.append("frName", frName);
+      formData.append("rwName", rwName);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
       if (selectedFiles) {
         for (let file in selectedFiles) {
-          formData.append('images', selectedFiles[file]);
+          formData.append("images", selectedFiles[file]);
         }
-        formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
+        formData.append("imageDescriptions", JSON.stringify(imageDescriptions));
       }
       axios
         .patch(`/api/adverts/${advertId}`, formData, {
@@ -287,7 +289,7 @@ const AdvertsAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enName,
@@ -346,7 +348,7 @@ const AdvertsAuthor = () => {
     Array.from(files).forEach((file) => {
       descriptions.push({
         name: file.name,
-        description: { en: '', fr: '', rw: '' },
+        description: { en: "", fr: "", rw: "" },
       });
     });
     setImageDescriptions(descriptions);
@@ -376,77 +378,77 @@ const AdvertsAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update adverts') : t('Add new adverts')}`}
+          name={`${isUpdating ? t("Update adverts") : t("Add new adverts")}`}
           color="red"
         />
         <div className="flex space-x-2">
           <Input
-            label={t('English name')}
+            label={t("English name")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English name'),
+              type: "text",
+              placeholder: t("English name"),
             }}
             value={enName}
             changed={setEnName}
             validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 300 characters'
+              "English title is required and should be less than 300 characters"
             )}
           />
           <Input
-            label={t('French name')}
+            label={t("French name")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French name'),
+              type: "text",
+              placeholder: t("French name"),
             }}
             value={frName}
             changed={setFrName}
             validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 300 characters'
+              "French title is required and should be less than 300 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda name')}
+            label={t("Kinyarwanda name")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda name'),
+              type: "text",
+              placeholder: t("Kinyarwanda name"),
             }}
             value={rwName}
             changed={setRwName}
             validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 300 characters'
+              "Kinyarwanda title is required and should be less than 300 characters"
             )}
           />
         </div>
         <RichTextEditor
-          label={t('English Description')}
+          label={t("English Description")}
           value={enDescription}
           onChange={(text) => setEnDescription(text)}
-          placeholder={t('English Description')}
+          placeholder={t("English Description")}
         />
         <RichTextEditor
-          label={t('French Description')}
+          label={t("French Description")}
           value={frDescription}
           onChange={(text) => setFrDescription(text)}
-          placeholder={t('French Description')}
+          placeholder={t("French Description")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Description')}
+          label={t("Kinyarwanda Description")}
           value={rwDescription}
           onChange={(text) => setRwDescription(text)}
-          placeholder={t('Kinyarwanda Description')}
+          placeholder={t("Kinyarwanda Description")}
         />
         <FileUpload
           elementConfig={{
-            accept: 'image/*',
+            accept: "image/*",
             multiple: true,
           }}
           btnName="Upload images"
@@ -463,7 +465,7 @@ const AdvertsAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -477,9 +479,9 @@ const AdvertsAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive adverts')} color="red" />
+        <CardTitle name={t("Archive adverts")} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this adverts?')}
+          name={t("Are you sure you want to archive/unarchive this adverts?")}
         />
         {loading && <Spinner />}
         {error && (
@@ -487,14 +489,14 @@ const AdvertsAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -509,10 +511,10 @@ const AdvertsAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete adverts')} color="red" />
+        <CardTitle name={t("Delete adverts")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this adverts?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this adverts?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -521,14 +523,14 @@ const AdvertsAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -538,7 +540,7 @@ const AdvertsAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all Adverts')} />
+        <SectionTitle name={t("List of all Adverts")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -546,30 +548,30 @@ const AdvertsAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new advert')}
+                name={t("Add new advert")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnName('');
-                  setFrName('');
-                  setRwName('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnName("");
+                  setFrName("");
+                  setRwName("");
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setError(null);
                 }}
               />
@@ -583,7 +585,7 @@ const AdvertsAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -603,7 +605,7 @@ const AdvertsAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

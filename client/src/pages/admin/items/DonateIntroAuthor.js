@@ -1,30 +1,30 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { useFetchAllDonateIntrosQuery } from '../../../features/API/admin-api-slice';
-import axios from '../../../axios-base';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useFetchAllDonateIntrosQuery } from "../../../features/API/admin-api-slice";
+import axios from "../../../axios-base";
 import {
   MdArchive,
   MdDelete,
   MdEdit,
   MdSkipNext,
   MdSkipPrevious,
-} from 'react-icons/md';
+} from "react-icons/md";
 import {
   useGlobalFilter,
   usePagination,
   useSortBy,
   useTable,
-} from 'react-table';
-import Modal from '../../../components/UI/modal';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Input from '../../../components/UI/input';
-import Spinner from '../../../components/UI/spinner';
-import { Button } from '../../../components/UI/button';
-import Header from '../../../components/containers/Header';
-import Footer from '../../../components/containers/Footer';
-import RichTextEditor from '../../../components/UI/RichTextEditor';
-import parse from 'html-react-parser';
+} from "react-table";
+import Modal from "../../../components/UI/modal";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Input from "../../../components/UI/input";
+import Spinner from "../../../components/UI/spinner";
+import { Button } from "../../../components/UI/button";
+import Header from "../../../components/containers/Header";
+import Footer from "../../../components/containers/Footer";
+import RichTextEditor from "../../../components/UI/RichTextEditor";
+import parse from "html-react-parser";
 
 const DonateIntroAuthor = () => {
   const { t } = useTranslation();
@@ -36,16 +36,16 @@ const DonateIntroAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllDonateIntrosQuery();
-  const [enTitle, setEnTitle] = useState('');
-  const [frTitle, setFrTitle] = useState('');
-  const [rwTitle, setRwTitle] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
+  const [enTitle, setEnTitle] = useState("");
+  const [frTitle, setFrTitle] = useState("");
+  const [rwTitle, setRwTitle] = useState("");
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [donateIntroId, setDonateIntroId] = useState('');
+  const [donateIntroId, setDonateIntroId] = useState("");
 
   const updateForm = useCallback(
     (donateIntroId) => {
@@ -77,7 +77,9 @@ const DonateIntroAuthor = () => {
             return {
               id: index + 1,
               description: parse(donateIntro.description[selectedLanguage]),
-              updatedBy: donateIntro.updatedBy.name,
+              updatedBy: donateIntro.updatedBy
+                ? donateIntro.updatedBy.name
+                : donateIntro.createdBy.name,
               updatedAt: donateIntro.updatedAt,
               status: donateIntro.isActive,
               _id: donateIntro._id,
@@ -88,30 +90,30 @@ const DonateIntroAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Description', accessor: 'description' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Description", accessor: "description" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -177,12 +179,12 @@ const DonateIntroAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      enTitle !== "" &&
+      frTitle !== "" &&
+      rwTitle !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -195,7 +197,7 @@ const DonateIntroAuthor = () => {
         rwDescription,
       };
       axios
-        .post('/api/donateintro/add', formData, {
+        .post("/api/donateintro/add", formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -208,7 +210,7 @@ const DonateIntroAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enTitle,
@@ -224,12 +226,12 @@ const DonateIntroAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      enTitle !== "" &&
+      frTitle !== "" &&
+      rwTitle !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -255,7 +257,7 @@ const DonateIntroAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enTitle,
@@ -317,83 +319,83 @@ const DonateIntroAuthor = () => {
         <CardTitle
           name={`${
             isUpdating
-              ? t('Update donate introduction')
-              : t('Add new donate introduction')
+              ? t("Update donate introduction")
+              : t("Add new donate introduction")
           }`}
           color="red"
         />
 
         <div className="flex space-x-2">
           <Input
-            label={t('English title')}
+            label={t("English title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English title'),
+              type: "text",
+              placeholder: t("English title"),
             }}
             value={enTitle}
             changed={setEnTitle}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 50 characters'
+              "English title is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('French title')}
+            label={t("French title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French title'),
+              type: "text",
+              placeholder: t("French title"),
             }}
             value={frTitle}
             changed={setFrTitle}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 50 characters'
+              "French title is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda title')}
+            label={t("Kinyarwanda title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda title'),
+              type: "text",
+              placeholder: t("Kinyarwanda title"),
             }}
             value={rwTitle}
             changed={setRwTitle}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 50 characters'
+              "Kinyarwanda title is required and should be less than 50 characters"
             )}
           />
         </div>
         <RichTextEditor
-          label={t('English Description')}
+          label={t("English Description")}
           value={enDescription}
           onChange={(text) => setEnDescription(text)}
-          placeholder={t('English Description')}
+          placeholder={t("English Description")}
         />
         <RichTextEditor
-          label={t('French Description')}
+          label={t("French Description")}
           value={frDescription}
           onChange={(text) => setFrDescription(text)}
-          placeholder={t('French Description')}
+          placeholder={t("French Description")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Description')}
+          label={t("Kinyarwanda Description")}
           value={rwDescription}
           onChange={(text) => setRwDescription(text)}
-          placeholder={t('Kinyarwanda Description')}
+          placeholder={t("Kinyarwanda Description")}
         />
         {loading && <Spinner />}
         {error && (
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -408,10 +410,10 @@ const DonateIntroAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive partner introduction')} color="red" />
+        <CardTitle name={t("Archive partner introduction")} color="red" />
         <CardBody
           name={t(
-            'Are you sure you want to archive/unarchive this partner introduction?'
+            "Are you sure you want to archive/unarchive this partner introduction?"
           )}
         />
         {loading && <Spinner />}
@@ -420,14 +422,14 @@ const DonateIntroAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -442,11 +444,11 @@ const DonateIntroAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete donate introduction')} color="red" />
+        <CardTitle name={t("Delete donate introduction")} color="red" />
         <CardBody
           name={`${t(
-            'Are you sure you want to delete this donate introduction?'
-          )} ${t('Contents deleted can not be retrieved.')}`}
+            "Are you sure you want to delete this donate introduction?"
+          )} ${t("Contents deleted can not be retrieved.")}`}
         />
         {loading && <Spinner />}
         {error && (
@@ -454,14 +456,14 @@ const DonateIntroAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -471,7 +473,7 @@ const DonateIntroAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all donate introduction')} />
+        <SectionTitle name={t("List of all donate introduction")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -479,30 +481,30 @@ const DonateIntroAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new about us')}
+                name={t("Add new about us")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnTitle('');
-                  setFrTitle('');
-                  setRwTitle('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnTitle("");
+                  setFrTitle("");
+                  setRwTitle("");
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setError(null);
                 }}
               />
@@ -516,7 +518,7 @@ const DonateIntroAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -536,7 +538,7 @@ const DonateIntroAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

@@ -1,31 +1,31 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import FileUpload from '../../../components/UI/FileUpload';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
-import { useFetchAllProjectsQuery } from '../../../features/API/admin-api-slice';
-import RichTextEditor from '../../../components/UI/RichTextEditor';
-import ImageDescriptions from '../../../components/containers/admin/ImageDescriptions';
+} from "react-icons/md";
+import FileUpload from "../../../components/UI/FileUpload";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
+import { useFetchAllProjectsQuery } from "../../../features/API/admin-api-slice";
+import RichTextEditor from "../../../components/UI/RichTextEditor";
+import ImageDescriptions from "../../../components/containers/admin/ImageDescriptions";
 
 const ProjectsAuthor = () => {
   const { t } = useTranslation();
@@ -34,23 +34,23 @@ const ProjectsAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllProjectsQuery();
-  const [name, setName] = useState('');
-  const [enSmallDescription, setEnSmallDescription] = useState('');
-  const [frSmallDescription, setFrSmallDescription] = useState('');
-  const [rwSmallDescription, setRwSmallDescription] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
+  const [name, setName] = useState("");
+  const [enSmallDescription, setEnSmallDescription] = useState("");
+  const [frSmallDescription, setFrSmallDescription] = useState("");
+  const [rwSmallDescription, setRwSmallDescription] = useState("");
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
   const [selectedFiles, setSelectedFiles] = useState(null);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [isMain, setIsMain] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showProgressBar, setShowProgressBar] = useState(false);
-  const [projectId, setProjectId] = useState('');
+  const [projectId, setProjectId] = useState("");
   const [imageDescriptions, setImageDescriptions] = useState([]);
 
   const updateForm = useCallback(
@@ -88,7 +88,9 @@ const ProjectsAuthor = () => {
             return {
               id: index + 1,
               name: project.name,
-              updatedBy: project.updatedBy.name,
+              updatedBy: project.updatedBy
+                ? project.updatedBy.name
+                : project.createdBy.name,
               updatedAt: project.updatedAt,
               status: project.isActive,
               isMain: project.isMain,
@@ -100,37 +102,37 @@ const ProjectsAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Name', accessor: 'name' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Name", accessor: "name" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Main',
-        accessor: 'isMain',
+        Header: "Main",
+        accessor: "isMain",
         Cell: ({ value }) => {
-          return value ? 'Yes' : 'No';
+          return value ? "Yes" : "No";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -196,35 +198,35 @@ const ProjectsAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      name !== '' &&
-      enSmallDescription !== '' &&
-      frSmallDescription !== '' &&
-      rwSmallDescription !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
+      name !== "" &&
+      enSmallDescription !== "" &&
+      frSmallDescription !== "" &&
+      rwSmallDescription !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== "" &&
       selectedFiles != null
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('enSmallDescription', enSmallDescription);
-      formData.append('frSmallDescription', frSmallDescription);
-      formData.append('rwSmallDescription', rwSmallDescription);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      formData.append('startDate', startDate);
-      formData.append('endDate', endDate);
-      formData.append('isMain', isMain);
-      formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
+      formData.append("name", name);
+      formData.append("enSmallDescription", enSmallDescription);
+      formData.append("frSmallDescription", frSmallDescription);
+      formData.append("rwSmallDescription", rwSmallDescription);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
+      formData.append("startDate", startDate);
+      formData.append("endDate", endDate);
+      formData.append("isMain", isMain);
+      formData.append("imageDescriptions", JSON.stringify(imageDescriptions));
       for (let file in selectedFiles) {
-        formData.append('images', selectedFiles[file]);
+        formData.append("images", selectedFiles[file]);
       }
       axios
-        .post('/api/projects/add', formData, {
+        .post("/api/projects/add", formData, {
           headers: { Authorization: token },
           onUploadProgress: (progressEvent) => {
             setUploadProgress(
@@ -244,7 +246,7 @@ const ProjectsAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     name,
@@ -266,33 +268,33 @@ const ProjectsAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      name !== '' &&
-      enSmallDescription !== '' &&
-      frSmallDescription !== '' &&
-      rwSmallDescription !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      name !== "" &&
+      enSmallDescription !== "" &&
+      frSmallDescription !== "" &&
+      rwSmallDescription !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== ""
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('name', name);
-      formData.append('enSmallDescription', enSmallDescription);
-      formData.append('frSmallDescription', frSmallDescription);
-      formData.append('rwSmallDescription', rwSmallDescription);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
-      formData.append('startDate', startDate);
-      formData.append('endDate', endDate);
-      formData.append('isMain', isMain);
+      formData.append("name", name);
+      formData.append("enSmallDescription", enSmallDescription);
+      formData.append("frSmallDescription", frSmallDescription);
+      formData.append("rwSmallDescription", rwSmallDescription);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
+      formData.append("startDate", startDate);
+      formData.append("endDate", endDate);
+      formData.append("isMain", isMain);
       if (selectedFiles) {
         for (let file in selectedFiles) {
-          formData.append('images', selectedFiles[file]);
+          formData.append("images", selectedFiles[file]);
         }
-        formData.append('imageDescriptions', JSON.stringify(imageDescriptions));
+        formData.append("imageDescriptions", JSON.stringify(imageDescriptions));
       }
       axios
         .patch(`/api/projects/${projectId}`, formData, {
@@ -315,7 +317,7 @@ const ProjectsAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     name,
@@ -378,7 +380,7 @@ const ProjectsAuthor = () => {
     Array.from(files).forEach((file) => {
       descriptions.push({
         name: file.name,
-        description: { en: '', fr: '', rw: '' },
+        description: { en: "", fr: "", rw: "" },
       });
     });
     setImageDescriptions(descriptions);
@@ -408,116 +410,116 @@ const ProjectsAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update project') : t('Add new project')}`}
+          name={`${isUpdating ? t("Update project") : t("Add new project")}`}
           color="red"
         />
         <Input
-          label={t('Name')}
+          label={t("Name")}
           elementType="input"
           elementConfig={{
-            type: 'text',
-            placeholder: t('Name'),
+            type: "text",
+            placeholder: t("Name"),
           }}
           value={name}
           changed={setName}
           validation={{ required: true, maxLength: 50 }}
           shouldValidate
-          error={t('Name is required and should be less than 50 characters')}
+          error={t("Name is required and should be less than 50 characters")}
         />
         <div className="flex space-x-2">
           <Input
-            label={t('English short description')}
+            label={t("English short description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English short description'),
+              type: "text",
+              placeholder: t("English short description"),
             }}
             value={enSmallDescription}
             changed={setEnSmallDescription}
             validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
-              'English short description is required and should be less than 300 characters'
+              "English short description is required and should be less than 300 characters"
             )}
           />
           <Input
-            label={t('French short description')}
+            label={t("French short description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French short description'),
+              type: "text",
+              placeholder: t("French short description"),
             }}
             value={frSmallDescription}
             changed={setFrSmallDescription}
             validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
-              'French short description is required and should be less than 300 characters'
+              "French short description is required and should be less than 300 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda short description')}
+            label={t("Kinyarwanda short description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda short description'),
+              type: "text",
+              placeholder: t("Kinyarwanda short description"),
             }}
             value={rwSmallDescription}
             changed={setRwSmallDescription}
             validation={{ required: true, maxLength: 500 }}
             shouldValidate
             error={t(
-              'Kinyarwanda short description is required and should be less than 300 characters'
+              "Kinyarwanda short description is required and should be less than 300 characters"
             )}
           />
         </div>
         <RichTextEditor
-          label={t('English Description')}
+          label={t("English Description")}
           value={enDescription}
           onChange={(text) => setEnDescription(text)}
-          placeholder={t('English Description')}
+          placeholder={t("English Description")}
         />
         <RichTextEditor
-          label={t('French Description')}
+          label={t("French Description")}
           value={frDescription}
           onChange={(text) => setFrDescription(text)}
-          placeholder={t('French Description')}
+          placeholder={t("French Description")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Description')}
+          label={t("Kinyarwanda Description")}
           value={rwDescription}
           onChange={(text) => setRwDescription(text)}
-          placeholder={t('Kinyarwanda Description')}
+          placeholder={t("Kinyarwanda Description")}
         />
         <div className="flex space-x-2">
           <Input
-            label={t('Start Date')}
+            label={t("Start Date")}
             elementType="input"
             elementConfig={{
-              type: 'date',
+              type: "date",
               placeholder: new Date(),
             }}
             value={startDate}
             changed={setStartDate}
           />
           <Input
-            label={t('End Date')}
+            label={t("End Date")}
             elementType="input"
             elementConfig={{
-              type: 'date',
+              type: "date",
               placeholder: new Date(),
             }}
             value={endDate}
             changed={setEndDate}
           />
           <Input
-            label={t('Is Main project?')}
+            label={t("Is Main project?")}
             elementType="select"
             elementConfig={{
-              startingValue: 'SELECT',
+              startingValue: "SELECT",
               options: [
-                { value: false, displayValue: 'No' },
-                { value: true, displayValue: 'Yes' },
+                { value: false, displayValue: "No" },
+                { value: true, displayValue: "Yes" },
               ],
             }}
             value={isMain}
@@ -529,7 +531,7 @@ const ProjectsAuthor = () => {
         </div>
         <FileUpload
           elementConfig={{
-            accept: 'image/*',
+            accept: "image/*",
             multiple: true,
           }}
           btnName="Upload images"
@@ -546,7 +548,7 @@ const ProjectsAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -560,9 +562,9 @@ const ProjectsAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive projects')} color="red" />
+        <CardTitle name={t("Archive projects")} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this projects?')}
+          name={t("Are you sure you want to archive/unarchive this projects?")}
         />
         {loading && <Spinner />}
         {error && (
@@ -570,14 +572,14 @@ const ProjectsAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -592,10 +594,10 @@ const ProjectsAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete project')} color="red" />
+        <CardTitle name={t("Delete project")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this project?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this project?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -604,14 +606,14 @@ const ProjectsAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -621,7 +623,7 @@ const ProjectsAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all projects')} />
+        <SectionTitle name={t("List of all projects")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -629,31 +631,31 @@ const ProjectsAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new project')}
+                name={t("Add new project")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setName('');
-                  setEnSmallDescription('');
-                  setFrSmallDescription('');
-                  setRwSmallDescription('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setName("");
+                  setEnSmallDescription("");
+                  setFrSmallDescription("");
+                  setRwSmallDescription("");
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setIsMain(false);
                   setStartDate(new Date());
                   setEndDate(new Date());
@@ -670,7 +672,7 @@ const ProjectsAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -690,7 +692,7 @@ const ProjectsAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

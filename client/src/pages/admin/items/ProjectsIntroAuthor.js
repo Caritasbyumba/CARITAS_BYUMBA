@@ -1,28 +1,28 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
-import { useFetchAllProjectsIntroQuery } from '../../../features/API/admin-api-slice';
+} from "react-icons/md";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
+import { useFetchAllProjectsIntroQuery } from "../../../features/API/admin-api-slice";
 
 const ProjectsIntroAuthor = () => {
   const { t } = useTranslation();
@@ -34,16 +34,16 @@ const ProjectsIntroAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllProjectsIntroQuery();
-  const [enTitle, setEnTitle] = useState('');
-  const [frTitle, setFrTitle] = useState('');
-  const [rwTitle, setRwTitle] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
+  const [enTitle, setEnTitle] = useState("");
+  const [frTitle, setFrTitle] = useState("");
+  const [rwTitle, setRwTitle] = useState("");
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [projectsIntroId, setProjectsIntroId] = useState('');
+  const [projectsIntroId, setProjectsIntroId] = useState("");
 
   const updateForm = useCallback(
     (projectsIntroId) => {
@@ -75,7 +75,9 @@ const ProjectsIntroAuthor = () => {
             return {
               id: index + 1,
               description: projectsIntro.description[selectedLanguage],
-              updatedBy: projectsIntro.updatedBy.name,
+              updatedBy: projectsIntro.updatedBy
+                ? projectsIntro.updatedBy.name
+                : projectsIntro.createdBy.name,
               updatedAt: projectsIntro.updatedAt,
               status: projectsIntro.isActive,
               _id: projectsIntro._id,
@@ -86,30 +88,30 @@ const ProjectsIntroAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Description', accessor: 'description' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Description", accessor: "description" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -175,12 +177,12 @@ const ProjectsIntroAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      enTitle !== "" &&
+      frTitle !== "" &&
+      rwTitle !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -193,7 +195,7 @@ const ProjectsIntroAuthor = () => {
         rwDescription,
       };
       axios
-        .post('/api/projectsintro/add', formData, {
+        .post("/api/projectsintro/add", formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -206,7 +208,7 @@ const ProjectsIntroAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enTitle,
@@ -222,12 +224,12 @@ const ProjectsIntroAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enTitle !== '' &&
-      frTitle !== '' &&
-      rwTitle !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
+      enTitle !== "" &&
+      frTitle !== "" &&
+      rwTitle !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -253,7 +255,7 @@ const ProjectsIntroAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enTitle,
@@ -315,98 +317,98 @@ const ProjectsIntroAuthor = () => {
         <CardTitle
           name={`${
             isUpdating
-              ? t('Update projects introduction')
-              : t('Add new projects introduction')
+              ? t("Update projects introduction")
+              : t("Add new projects introduction")
           }`}
           color="red"
         />
 
         <div className="flex space-x-2">
           <Input
-            label={t('English title')}
+            label={t("English title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English title'),
+              type: "text",
+              placeholder: t("English title"),
             }}
             value={enTitle}
             changed={setEnTitle}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English title is required and should be less than 50 characters'
+              "English title is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('French title')}
+            label={t("French title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French title'),
+              type: "text",
+              placeholder: t("French title"),
             }}
             value={frTitle}
             changed={setFrTitle}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French title is required and should be less than 50 characters'
+              "French title is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda title')}
+            label={t("Kinyarwanda title")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda title'),
+              type: "text",
+              placeholder: t("Kinyarwanda title"),
             }}
             value={rwTitle}
             changed={setRwTitle}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda title is required and should be less than 50 characters'
+              "Kinyarwanda title is required and should be less than 50 characters"
             )}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Description')}
+            label={t("English Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English Description'),
+              type: "text",
+              placeholder: t("English Description"),
             }}
             value={enDescription}
             changed={setEnDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Description is required')}
+            error={t("English Description is required")}
           />
           <Input
-            label={t('French Description')}
+            label={t("French Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French Description'),
+              type: "text",
+              placeholder: t("French Description"),
             }}
             value={frDescription}
             changed={setFrDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Description is required')}
+            error={t("French Description is required")}
           />
           <Input
-            label={t('Kinyarwanda Description')}
+            label={t("Kinyarwanda Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Description'),
+              type: "text",
+              placeholder: t("Kinyarwanda Description"),
             }}
             value={rwDescription}
             changed={setRwDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Description is required')}
+            error={t("Kinyarwanda Description is required")}
           />
         </div>
         {loading && <Spinner />}
@@ -414,7 +416,7 @@ const ProjectsIntroAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -429,10 +431,10 @@ const ProjectsIntroAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive project introduction')} color="red" />
+        <CardTitle name={t("Archive project introduction")} color="red" />
         <CardBody
           name={t(
-            'Are you sure you want to archive/unarchive this project introduction?'
+            "Are you sure you want to archive/unarchive this project introduction?"
           )}
         />
         {loading && <Spinner />}
@@ -441,14 +443,14 @@ const ProjectsIntroAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -463,11 +465,11 @@ const ProjectsIntroAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete projects introduction')} color="red" />
+        <CardTitle name={t("Delete projects introduction")} color="red" />
         <CardBody
           name={`${t(
-            'Are you sure you want to delete this projects introduction?'
-          )} ${t('Contents deleted can not be retrieved.')}`}
+            "Are you sure you want to delete this projects introduction?"
+          )} ${t("Contents deleted can not be retrieved.")}`}
         />
         {loading && <Spinner />}
         {error && (
@@ -475,14 +477,14 @@ const ProjectsIntroAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -492,7 +494,7 @@ const ProjectsIntroAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all projects introduction')} />
+        <SectionTitle name={t("List of all projects introduction")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -500,30 +502,30 @@ const ProjectsIntroAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new about us')}
+                name={t("Add new about us")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnTitle('');
-                  setFrTitle('');
-                  setRwTitle('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnTitle("");
+                  setFrTitle("");
+                  setRwTitle("");
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setError(null);
                 }}
               />
@@ -537,7 +539,7 @@ const ProjectsIntroAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -557,7 +559,7 @@ const ProjectsIntroAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

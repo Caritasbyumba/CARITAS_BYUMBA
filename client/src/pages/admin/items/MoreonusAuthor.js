@@ -1,30 +1,30 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useFetchAllMoreonusQuery } from '../../../features/API/admin-api-slice';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useFetchAllMoreonusQuery } from "../../../features/API/admin-api-slice";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
-import RichTextEditor from '../../../components/UI/RichTextEditor';
-import parse from 'html-react-parser';
+} from "react-icons/md";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
+import RichTextEditor from "../../../components/UI/RichTextEditor";
+import parse from "html-react-parser";
 
 const MoreonusAuthor = () => {
   const { t } = useTranslation();
@@ -36,13 +36,13 @@ const MoreonusAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllMoreonusQuery();
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [moreonusId, setMoreonusId] = useState('');
+  const [moreonusId, setMoreonusId] = useState("");
 
   const updateForm = useCallback(
     (moreonusId) => {
@@ -71,7 +71,9 @@ const MoreonusAuthor = () => {
             return {
               id: index + 1,
               description: parse(moreonus.description[selectedLanguage]),
-              updatedBy: moreonus.updatedBy.name,
+              updatedBy: moreonus.updatedBy
+                ? moreonus.updatedBy.name
+                : moreonus.createdBy.name,
               updatedAt: moreonus.updatedAt,
               status: moreonus.isActive,
               _id: moreonus._id,
@@ -82,30 +84,30 @@ const MoreonusAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Description', accessor: 'description' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Description", accessor: "description" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -170,11 +172,7 @@ const MoreonusAuthor = () => {
   const { globalFilter, pageIndex } = state;
 
   const handleAdd = useCallback(() => {
-    if (
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
-    ) {
+    if (enDescription !== "" && frDescription !== "" && rwDescription !== "") {
       setLoading(true);
       setError(null);
       const formData = {
@@ -183,7 +181,7 @@ const MoreonusAuthor = () => {
         rwDescription,
       };
       axios
-        .post('/api/moreonus/add', formData, {
+        .post("/api/moreonus/add", formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -196,23 +194,12 @@ const MoreonusAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
-  }, [
-    enDescription,
-    frDescription,
-    rwDescription,
-    token,
-    t,
-    refetch,
-  ]);
+  }, [enDescription, frDescription, rwDescription, token, t, refetch]);
 
   const handleUpdate = useCallback(() => {
-    if (
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== ''
-    ) {
+    if (enDescription !== "" && frDescription !== "" && rwDescription !== "") {
       setLoading(true);
       setError(null);
       const formData = {
@@ -234,7 +221,7 @@ const MoreonusAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enDescription,
@@ -291,26 +278,26 @@ const MoreonusAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update About us') : t('Add new About us')}`}
+          name={`${isUpdating ? t("Update About us") : t("Add new About us")}`}
           color="red"
         />
         <RichTextEditor
-          label={t('English Description')}
+          label={t("English Description")}
           value={enDescription}
           onChange={(text) => setEnDescription(text)}
-          placeholder={t('English Description')}
+          placeholder={t("English Description")}
         />
         <RichTextEditor
-          label={t('French Description')}
+          label={t("French Description")}
           value={frDescription}
           onChange={(text) => setFrDescription(text)}
-          placeholder={t('French Description')}
+          placeholder={t("French Description")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Description')}
+          label={t("Kinyarwanda Description")}
           value={rwDescription}
           onChange={(text) => setRwDescription(text)}
-          placeholder={t('Kinyarwanda Description')}
+          placeholder={t("Kinyarwanda Description")}
         />
         {/* <div className="flex space-x-2">
           <Input
@@ -364,7 +351,7 @@ const MoreonusAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -379,9 +366,9 @@ const MoreonusAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive about us')} color="red" />
+        <CardTitle name={t("Archive about us")} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this about us?')}
+          name={t("Are you sure you want to archive/unarchive this about us?")}
         />
         {loading && <Spinner />}
         {error && (
@@ -389,14 +376,14 @@ const MoreonusAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -411,10 +398,10 @@ const MoreonusAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete about us')} color="red" />
+        <CardTitle name={t("Delete about us")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this about us?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this about us?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -423,14 +410,14 @@ const MoreonusAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -440,7 +427,7 @@ const MoreonusAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all about us')} />
+        <SectionTitle name={t("List of all about us")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -448,27 +435,27 @@ const MoreonusAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new about us')}
+                name={t("Add new about us")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setError(null);
                 }}
               />
@@ -482,7 +469,7 @@ const MoreonusAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -502,7 +489,7 @@ const MoreonusAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

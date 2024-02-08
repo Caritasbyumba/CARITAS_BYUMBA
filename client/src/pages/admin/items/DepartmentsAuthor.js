@@ -1,30 +1,30 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useFetchAllDepartmentsQuery } from '../../../features/API/admin-api-slice';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useFetchAllDepartmentsQuery } from "../../../features/API/admin-api-slice";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
-import RichTextEditor from '../../../components/UI/RichTextEditor';
-import FileUpload from '../../../components/UI/FileUpload';
+} from "react-icons/md";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
+import RichTextEditor from "../../../components/UI/RichTextEditor";
+import FileUpload from "../../../components/UI/FileUpload";
 
 const DepartmentAuthor = () => {
   const { t } = useTranslation();
@@ -36,22 +36,22 @@ const DepartmentAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllDepartmentsQuery();
-  const [enName, setEnName] = useState('');
-  const [frName, setFrName] = useState('');
-  const [rwName, setRwName] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
-  const [enSmallDescription, setEnSmallDescription] = useState('');
-  const [frSmallDescription, setFrSmallDescription] = useState('');
-  const [rwSmallDescription, setRwSmallDescription] = useState('');
+  const [enName, setEnName] = useState("");
+  const [frName, setFrName] = useState("");
+  const [rwName, setRwName] = useState("");
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
+  const [enSmallDescription, setEnSmallDescription] = useState("");
+  const [frSmallDescription, setFrSmallDescription] = useState("");
+  const [rwSmallDescription, setRwSmallDescription] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [showProgressBar, setShowProgressBar] = useState(false);
-  const [departmentId, setDepartmentId] = useState('');
+  const [departmentId, setDepartmentId] = useState("");
 
   const updateForm = useCallback(
     (departmentId) => {
@@ -86,7 +86,9 @@ const DepartmentAuthor = () => {
             return {
               id: index + 1,
               name: department.name[selectedLanguage],
-              updatedBy: department.updatedBy.name,
+              updatedBy: department.updatedBy
+                ? department.updatedBy.name
+                : department.createdBy.name,
               updatedAt: department.updatedAt,
               status: department.isActive,
               _id: department._id,
@@ -97,30 +99,30 @@ const DepartmentAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Name', accessor: 'name' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Name", accessor: "name" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -186,34 +188,34 @@ const DepartmentAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enName !== '' &&
-      frName !== '' &&
-      rwName !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
-      enSmallDescription !== '' &&
-      frSmallDescription !== '' &&
-      rwSmallDescription !== ''
+      enName !== "" &&
+      frName !== "" &&
+      rwName !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== "" &&
+      enSmallDescription !== "" &&
+      frSmallDescription !== "" &&
+      rwSmallDescription !== ""
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enName', enName);
-      formData.append('frName', frName);
-      formData.append('rwName', rwName);
-      formData.append('enSmallDescription', enSmallDescription);
-      formData.append('frSmallDescription', frSmallDescription);
-      formData.append('rwSmallDescription', rwSmallDescription);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
+      formData.append("enName", enName);
+      formData.append("frName", frName);
+      formData.append("rwName", rwName);
+      formData.append("enSmallDescription", enSmallDescription);
+      formData.append("frSmallDescription", frSmallDescription);
+      formData.append("rwSmallDescription", rwSmallDescription);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
       if (selectedFiles) {
-        formData.append('images', selectedFiles[0]);
+        formData.append("images", selectedFiles[0]);
       }
       axios
-        .post('/api/departments/add', formData, {
+        .post("/api/departments/add", formData, {
           headers: { Authorization: token },
           onUploadProgress: (progressEvent) => {
             setUploadProgress(
@@ -233,7 +235,7 @@ const DepartmentAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enName,
@@ -253,31 +255,31 @@ const DepartmentAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enName !== '' &&
-      frName !== '' &&
-      rwName !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
-      enSmallDescription !== '' &&
-      frSmallDescription !== '' &&
-      rwSmallDescription !== ''
+      enName !== "" &&
+      frName !== "" &&
+      rwName !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== "" &&
+      enSmallDescription !== "" &&
+      frSmallDescription !== "" &&
+      rwSmallDescription !== ""
     ) {
       setLoading(true);
       setShowProgressBar(true);
       setError(null);
       const formData = new FormData();
-      formData.append('enName', enName);
-      formData.append('frName', frName);
-      formData.append('rwName', rwName);
-      formData.append('enSmallDescription', enSmallDescription);
-      formData.append('frSmallDescription', frSmallDescription);
-      formData.append('rwSmallDescription', rwSmallDescription);
-      formData.append('enDescription', enDescription);
-      formData.append('frDescription', frDescription);
-      formData.append('rwDescription', rwDescription);
+      formData.append("enName", enName);
+      formData.append("frName", frName);
+      formData.append("rwName", rwName);
+      formData.append("enSmallDescription", enSmallDescription);
+      formData.append("frSmallDescription", frSmallDescription);
+      formData.append("rwSmallDescription", rwSmallDescription);
+      formData.append("enDescription", enDescription);
+      formData.append("frDescription", frDescription);
+      formData.append("rwDescription", rwDescription);
       if (selectedFiles) {
-        formData.append('image', selectedFiles[0]);
+        formData.append("image", selectedFiles[0]);
       }
       axios
         .patch(`/api/departments/${departmentId}`, formData, {
@@ -300,7 +302,7 @@ const DepartmentAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enName,
@@ -365,96 +367,96 @@ const DepartmentAuthor = () => {
       >
         <CardTitle
           name={`${
-            isUpdating ? t('Update department') : t('Add new department')
+            isUpdating ? t("Update department") : t("Add new department")
           }`}
           color="red"
         />
         <div className="flex space-x-2">
           <Input
-            label={t('English name')}
+            label={t("English name")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English name'),
+              type: "text",
+              placeholder: t("English name"),
             }}
             value={enName}
             changed={setEnName}
             validation={{ required: true, maxLength: 100 }}
             shouldValidate
             error={t(
-              'English name is required and should be less than 100 characters'
+              "English name is required and should be less than 100 characters"
             )}
           />
           <Input
-            label={t('French name')}
+            label={t("French name")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French name'),
+              type: "text",
+              placeholder: t("French name"),
             }}
             value={frName}
             changed={setFrName}
             validation={{ required: true, maxLength: 100 }}
             shouldValidate
             error={t(
-              'French name is required and should be less than 100 characters'
+              "French name is required and should be less than 100 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda name')}
+            label={t("Kinyarwanda name")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda name'),
+              type: "text",
+              placeholder: t("Kinyarwanda name"),
             }}
             value={rwName}
             changed={setRwName}
             validation={{ required: true, maxLength: 100 }}
             shouldValidate
             error={t(
-              'Kinyarwanda name is required and should be less than 100 characters'
+              "Kinyarwanda name is required and should be less than 100 characters"
             )}
           />
         </div>
         <RichTextEditor
-          label={t('English Description')}
+          label={t("English Description")}
           value={enDescription}
           onChange={(text) => setEnDescription(text)}
-          placeholder={t('English Description')}
+          placeholder={t("English Description")}
         />
         <RichTextEditor
-          label={t('French Description')}
+          label={t("French Description")}
           value={frDescription}
           onChange={(text) => setFrDescription(text)}
-          placeholder={t('French Description')}
+          placeholder={t("French Description")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Description')}
+          label={t("Kinyarwanda Description")}
           value={rwDescription}
           onChange={(text) => setRwDescription(text)}
-          placeholder={t('Kinyarwanda Description')}
+          placeholder={t("Kinyarwanda Description")}
         />
         <RichTextEditor
-          label={t('English Small Description')}
+          label={t("English Small Description")}
           value={enSmallDescription}
           onChange={(text) => setEnSmallDescription(text)}
-          placeholder={t('English Small Description')}
+          placeholder={t("English Small Description")}
         />
         <RichTextEditor
-          label={t('French Small Description')}
+          label={t("French Small Description")}
           value={frSmallDescription}
           onChange={(text) => setFrSmallDescription(text)}
-          placeholder={t('French Small Description')}
+          placeholder={t("French Small Description")}
         />
         <RichTextEditor
-          label={t('Kinyarwanda Small Description')}
+          label={t("Kinyarwanda Small Description")}
           value={rwSmallDescription}
           onChange={(text) => setRwSmallDescription(text)}
-          placeholder={t('Kinyarwanda Small Description')}
+          placeholder={t("Kinyarwanda Small Description")}
         />
         <FileUpload
           elementConfig={{
-            accept: 'image/*',
+            accept: "image/*",
           }}
           btnName="Upload image"
           uploadProgress={uploadProgress}
@@ -466,7 +468,7 @@ const DepartmentAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -481,10 +483,10 @@ const DepartmentAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive department')} color="red" />
+        <CardTitle name={t("Archive department")} color="red" />
         <CardBody
           name={t(
-            'Are you sure you want to archive/unarchive this department?'
+            "Are you sure you want to archive/unarchive this department?"
           )}
         />
         {loading && <Spinner />}
@@ -493,14 +495,14 @@ const DepartmentAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -515,10 +517,10 @@ const DepartmentAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete department')} color="red" />
+        <CardTitle name={t("Delete department")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this department?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this department?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -527,14 +529,14 @@ const DepartmentAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -544,7 +546,7 @@ const DepartmentAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all department')} />
+        <SectionTitle name={t("List of all department")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -552,30 +554,30 @@ const DepartmentAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new department')}
+                name={t("Add new department")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnName('');
-                  setFrName('');
-                  setRwName('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnName("");
+                  setFrName("");
+                  setRwName("");
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setError(null);
                 }}
               />
@@ -589,7 +591,7 @@ const DepartmentAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -609,7 +611,7 @@ const DepartmentAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

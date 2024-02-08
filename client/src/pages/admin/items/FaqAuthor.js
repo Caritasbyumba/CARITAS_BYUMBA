@@ -1,28 +1,28 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
-import { useFetchAllFaqsQuery } from '../../../features/API/admin-api-slice';
+} from "react-icons/md";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
+import { useFetchAllFaqsQuery } from "../../../features/API/admin-api-slice";
 
 const FaqAuthor = () => {
   const { t } = useTranslation();
@@ -34,16 +34,16 @@ const FaqAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllFaqsQuery();
-  const [enQuestion, setEnQuestion] = useState('');
-  const [frQuestion, setFrQuestion] = useState('');
-  const [rwQuestion, setRwQuestion] = useState('');
-  const [enAnswer, setEnAnswer] = useState('');
-  const [frAnswer, setFrAnswer] = useState('');
-  const [rwAnswer, setRwAnswer] = useState('');
+  const [enQuestion, setEnQuestion] = useState("");
+  const [frQuestion, setFrQuestion] = useState("");
+  const [rwQuestion, setRwQuestion] = useState("");
+  const [enAnswer, setEnAnswer] = useState("");
+  const [frAnswer, setFrAnswer] = useState("");
+  const [rwAnswer, setRwAnswer] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [faqId, setFaqId] = useState('');
+  const [faqId, setFaqId] = useState("");
 
   const updateForm = useCallback(
     (faqId) => {
@@ -75,7 +75,9 @@ const FaqAuthor = () => {
             return {
               id: index + 1,
               question: faq.question[selectedLanguage],
-              updatedBy: faq.updatedBy.name,
+              updatedBy: faq.updatedBy
+                ? faq.updatedBy.name
+                : faq.createdBy.name,
               updatedAt: faq.updatedAt,
               status: faq.isActive,
               _id: faq._id,
@@ -86,30 +88,30 @@ const FaqAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Question', accessor: 'question' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Question", accessor: "question" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -175,12 +177,12 @@ const FaqAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enQuestion !== '' &&
-      frQuestion !== '' &&
-      rwQuestion !== '' &&
-      enAnswer !== '' &&
-      frAnswer !== '' &&
-      rwAnswer !== ''
+      enQuestion !== "" &&
+      frQuestion !== "" &&
+      rwQuestion !== "" &&
+      enAnswer !== "" &&
+      frAnswer !== "" &&
+      rwAnswer !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -193,7 +195,7 @@ const FaqAuthor = () => {
         rwAnswer,
       };
       axios
-        .post('/api/faqs/add', formData, {
+        .post("/api/faqs/add", formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -206,7 +208,7 @@ const FaqAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enQuestion,
@@ -222,12 +224,12 @@ const FaqAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enQuestion !== '' &&
-      frQuestion !== '' &&
-      rwQuestion !== '' &&
-      enAnswer !== '' &&
-      frAnswer !== '' &&
-      rwAnswer !== ''
+      enQuestion !== "" &&
+      frQuestion !== "" &&
+      rwQuestion !== "" &&
+      enAnswer !== "" &&
+      frAnswer !== "" &&
+      rwAnswer !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -253,7 +255,7 @@ const FaqAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enQuestion,
@@ -313,96 +315,96 @@ const FaqAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update faq') : t('Add new faq')}`}
+          name={`${isUpdating ? t("Update faq") : t("Add new faq")}`}
           color="red"
         />
 
         <div className="flex space-x-2">
           <Input
-            label={t('English question')}
+            label={t("English question")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English question'),
+              type: "text",
+              placeholder: t("English question"),
             }}
             value={enQuestion}
             changed={setEnQuestion}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English question is required and should be less than 50 characters'
+              "English question is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('French question')}
+            label={t("French question")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French question'),
+              type: "text",
+              placeholder: t("French question"),
             }}
             value={frQuestion}
             changed={setFrQuestion}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French question is required and should be less than 50 characters'
+              "French question is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda question')}
+            label={t("Kinyarwanda question")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda question'),
+              type: "text",
+              placeholder: t("Kinyarwanda question"),
             }}
             value={rwQuestion}
             changed={setRwQuestion}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda question is required and should be less than 50 characters'
+              "Kinyarwanda question is required and should be less than 50 characters"
             )}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English answer')}
+            label={t("English answer")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English answer'),
+              type: "text",
+              placeholder: t("English answer"),
             }}
             value={enAnswer}
             changed={setEnAnswer}
             validation={{ required: true }}
             shouldValidate
-            error={t('English answer is required')}
+            error={t("English answer is required")}
           />
           <Input
-            label={t('French answer')}
+            label={t("French answer")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French answer'),
+              type: "text",
+              placeholder: t("French answer"),
             }}
             value={frAnswer}
             changed={setFrAnswer}
             validation={{ required: true }}
             shouldValidate
-            error={t('French answer is required')}
+            error={t("French answer is required")}
           />
           <Input
-            label={t('Kinyarwanda answer')}
+            label={t("Kinyarwanda answer")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda answer'),
+              type: "text",
+              placeholder: t("Kinyarwanda answer"),
             }}
             value={rwAnswer}
             changed={setRwAnswer}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda answer is required')}
+            error={t("Kinyarwanda answer is required")}
           />
         </div>
         {loading && <Spinner />}
@@ -410,7 +412,7 @@ const FaqAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -425,9 +427,9 @@ const FaqAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive faqs')} color="red" />
+        <CardTitle name={t("Archive faqs")} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this faqs?')}
+          name={t("Are you sure you want to archive/unarchive this faqs?")}
         />
         {loading && <Spinner />}
         {error && (
@@ -435,14 +437,14 @@ const FaqAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -457,10 +459,10 @@ const FaqAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete faq')} color="red" />
+        <CardTitle name={t("Delete faq")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this faq?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this faq?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -469,14 +471,14 @@ const FaqAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -486,7 +488,7 @@ const FaqAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all faq')} />
+        <SectionTitle name={t("List of all faq")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -494,30 +496,30 @@ const FaqAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new faq')}
+                name={t("Add new faq")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnQuestion('');
-                  setFrQuestion('');
-                  setRwQuestion('');
-                  setEnAnswer('');
-                  setFrAnswer('');
-                  setRwAnswer('');
+                  setEnQuestion("");
+                  setFrQuestion("");
+                  setRwQuestion("");
+                  setEnAnswer("");
+                  setFrAnswer("");
+                  setRwAnswer("");
                   setError(null);
                 }}
               />
@@ -531,7 +533,7 @@ const FaqAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -551,7 +553,7 @@ const FaqAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}

@@ -1,28 +1,28 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from '../../../components/containers/Footer';
-import Header from '../../../components/containers/Header';
-import { CardBody, CardTitle, SectionTitle } from '../../../components/text';
-import Spinner from '../../../components/UI/spinner';
-import { useFetchAllAboutusQuery } from '../../../features/API/admin-api-slice';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import Footer from "../../../components/containers/Footer";
+import Header from "../../../components/containers/Header";
+import { CardBody, CardTitle, SectionTitle } from "../../../components/text";
+import Spinner from "../../../components/UI/spinner";
+import { useFetchAllAboutusQuery } from "../../../features/API/admin-api-slice";
+import { useSelector } from "react-redux";
 import {
   useTable,
   useSortBy,
   useGlobalFilter,
   usePagination,
-} from 'react-table';
-import Input from '../../../components/UI/input';
-import Modal from '../../../components/UI/modal';
+} from "react-table";
+import Input from "../../../components/UI/input";
+import Modal from "../../../components/UI/modal";
 import {
   MdSkipPrevious,
   MdSkipNext,
   MdEdit,
   MdDelete,
   MdArchive,
-} from 'react-icons/md';
-import axios from '../../../axios-base';
-import { Button } from '../../../components/UI/button';
+} from "react-icons/md";
+import axios from "../../../axios-base";
+import { Button } from "../../../components/UI/button";
 
 const AboutusAuthor = () => {
   const { t } = useTranslation();
@@ -34,25 +34,25 @@ const AboutusAuthor = () => {
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data, isFetching, refetch } = useFetchAllAboutusQuery();
-  const [enName, setEnName] = useState('');
-  const [frName, setFrName] = useState('');
-  const [rwName, setRwName] = useState('');
-  const [enDescription, setEnDescription] = useState('');
-  const [frDescription, setFrDescription] = useState('');
-  const [rwDescription, setRwDescription] = useState('');
-  const [enVision, setEnVision] = useState('');
-  const [frVision, setFrVision] = useState('');
-  const [rwVision, setRwVision] = useState('');
-  const [enMission, setEnMission] = useState('');
-  const [frMission, setFrMission] = useState('');
-  const [rwMission, setRwMission] = useState('');
-  const [enObjectives, setEnObjectives] = useState('');
-  const [frObjectives, setFrObjectives] = useState('');
-  const [rwObjectives, setRwObjectives] = useState('');
+  const [enName, setEnName] = useState("");
+  const [frName, setFrName] = useState("");
+  const [rwName, setRwName] = useState("");
+  const [enDescription, setEnDescription] = useState("");
+  const [frDescription, setFrDescription] = useState("");
+  const [rwDescription, setRwDescription] = useState("");
+  const [enVision, setEnVision] = useState("");
+  const [frVision, setFrVision] = useState("");
+  const [rwVision, setRwVision] = useState("");
+  const [enMission, setEnMission] = useState("");
+  const [frMission, setFrMission] = useState("");
+  const [rwMission, setRwMission] = useState("");
+  const [enObjectives, setEnObjectives] = useState("");
+  const [frObjectives, setFrObjectives] = useState("");
+  const [rwObjectives, setRwObjectives] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [aboutusId, setAboutusId] = useState('');
+  const [aboutusId, setAboutusId] = useState("");
 
   const updateForm = useCallback(
     (aboutusId) => {
@@ -93,7 +93,9 @@ const AboutusAuthor = () => {
             return {
               id: index + 1,
               description: aboutus.description[selectedLanguage],
-              updatedBy: aboutus.updatedBy.name,
+              updatedBy: aboutus.updatedBy
+                ? aboutus.updatedBy.name
+                : aboutus.createdBy.name,
               updatedAt: aboutus.updatedAt,
               status: aboutus.isActive,
               _id: aboutus._id,
@@ -104,30 +106,30 @@ const AboutusAuthor = () => {
   );
   const columns = useMemo(
     () => [
-      { Header: 'N0', accessor: 'id' },
-      { Header: 'Description', accessor: 'description' },
-      { Header: 'UpdatedBy', accessor: 'updatedBy' },
+      { Header: "N0", accessor: "id" },
+      { Header: "Description", accessor: "description" },
+      { Header: "UpdatedBy", accessor: "updatedBy" },
       {
-        Header: 'UpdatedAt',
-        accessor: 'updatedAt',
+        Header: "UpdatedAt",
+        accessor: "updatedAt",
         Cell: ({ value }) => {
           return new Date(value).toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         },
       },
       {
-        Header: 'Status',
-        accessor: 'status',
+        Header: "Status",
+        accessor: "status",
         Cell: ({ value }) => {
-          return value ? 'Active' : 'Inactive';
+          return value ? "Active" : "Inactive";
         },
       },
       {
-        Header: 'Actions',
-        accessor: '_id',
+        Header: "Actions",
+        accessor: "_id",
         Cell: ({ value }) => {
           return (
             <div className="flex space-x-2 justify-center">
@@ -193,21 +195,21 @@ const AboutusAuthor = () => {
 
   const handleAdd = useCallback(() => {
     if (
-      enName !== '' &&
-      frName !== '' &&
-      rwName !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
-      enVision !== '' &&
-      frVision !== '' &&
-      rwVision !== '' &&
-      enMission !== '' &&
-      frMission !== '' &&
-      rwMission !== '' &&
-      enObjectives !== '' &&
-      frObjectives !== '' &&
-      rwObjectives !== ''
+      enName !== "" &&
+      frName !== "" &&
+      rwName !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== "" &&
+      enVision !== "" &&
+      frVision !== "" &&
+      rwVision !== "" &&
+      enMission !== "" &&
+      frMission !== "" &&
+      rwMission !== "" &&
+      enObjectives !== "" &&
+      frObjectives !== "" &&
+      rwObjectives !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -229,7 +231,7 @@ const AboutusAuthor = () => {
         rwObjectives,
       };
       axios
-        .post('/api/aboutus/add', formData, {
+        .post("/api/aboutus/add", formData, {
           headers: { Authorization: token },
         })
         .then((res) => {
@@ -242,7 +244,7 @@ const AboutusAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enName,
@@ -267,21 +269,21 @@ const AboutusAuthor = () => {
 
   const handleUpdate = useCallback(() => {
     if (
-      enName !== '' &&
-      frName !== '' &&
-      rwName !== '' &&
-      enDescription !== '' &&
-      frDescription !== '' &&
-      rwDescription !== '' &&
-      enVision !== '' &&
-      frVision !== '' &&
-      rwVision !== '' &&
-      enMission !== '' &&
-      frMission !== '' &&
-      rwMission !== '' &&
-      enObjectives !== '' &&
-      frObjectives !== '' &&
-      rwObjectives !== ''
+      enName !== "" &&
+      frName !== "" &&
+      rwName !== "" &&
+      enDescription !== "" &&
+      frDescription !== "" &&
+      rwDescription !== "" &&
+      enVision !== "" &&
+      frVision !== "" &&
+      rwVision !== "" &&
+      enMission !== "" &&
+      frMission !== "" &&
+      rwMission !== "" &&
+      enObjectives !== "" &&
+      frObjectives !== "" &&
+      rwObjectives !== ""
     ) {
       setLoading(true);
       setError(null);
@@ -316,7 +318,7 @@ const AboutusAuthor = () => {
           setError(err.response.data);
         });
     } else {
-      setError({ error: t('All fields must be filled') });
+      setError({ error: t("All fields must be filled") });
     }
   }, [
     enName,
@@ -385,218 +387,218 @@ const AboutusAuthor = () => {
         }}
       >
         <CardTitle
-          name={`${isUpdating ? t('Update About us') : t('Add new About us')}`}
+          name={`${isUpdating ? t("Update About us") : t("Add new About us")}`}
           color="red"
         />
         <div className="flex space-x-2">
           <Input
-            label={t('English name')}
+            label={t("English name")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English name'),
+              type: "text",
+              placeholder: t("English name"),
             }}
             value={enName}
             changed={setEnName}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'English name is required and should be less than 50 characters'
+              "English name is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('French name')}
+            label={t("French name")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French name'),
+              type: "text",
+              placeholder: t("French name"),
             }}
             value={frName}
             changed={setFrName}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'French name is required and should be less than 50 characters'
+              "French name is required and should be less than 50 characters"
             )}
           />
           <Input
-            label={t('Kinyarwanda name')}
+            label={t("Kinyarwanda name")}
             elementType="input"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda name'),
+              type: "text",
+              placeholder: t("Kinyarwanda name"),
             }}
             value={rwName}
             changed={setRwName}
             validation={{ required: true, maxLength: 50 }}
             shouldValidate
             error={t(
-              'Kinyarwanda name is required and should be less than 50 characters'
+              "Kinyarwanda name is required and should be less than 50 characters"
             )}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Description')}
+            label={t("English Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English Description'),
+              type: "text",
+              placeholder: t("English Description"),
             }}
             value={enDescription}
             changed={setEnDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Description is required')}
+            error={t("English Description is required")}
           />
           <Input
-            label={t('French Description')}
+            label={t("French Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French Description'),
+              type: "text",
+              placeholder: t("French Description"),
             }}
             value={frDescription}
             changed={setFrDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Description is required')}
+            error={t("French Description is required")}
           />
           <Input
-            label={t('Kinyarwanda Description')}
+            label={t("Kinyarwanda Description")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Description'),
+              type: "text",
+              placeholder: t("Kinyarwanda Description"),
             }}
             value={rwDescription}
             changed={setRwDescription}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Description is required')}
+            error={t("Kinyarwanda Description is required")}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Vision')}
+            label={t("English Vision")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English Vision'),
+              type: "text",
+              placeholder: t("English Vision"),
             }}
             value={enVision}
             changed={setEnVision}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Vision is required')}
+            error={t("English Vision is required")}
           />
           <Input
-            label={t('French Vision')}
+            label={t("French Vision")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French Vision'),
+              type: "text",
+              placeholder: t("French Vision"),
             }}
             value={frVision}
             changed={setFrVision}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Vision is required')}
+            error={t("French Vision is required")}
           />
           <Input
-            label={t('Kinyarwanda Vision')}
+            label={t("Kinyarwanda Vision")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Vision'),
+              type: "text",
+              placeholder: t("Kinyarwanda Vision"),
             }}
             value={rwVision}
             changed={setRwVision}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Vision is required')}
+            error={t("Kinyarwanda Vision is required")}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Mission')}
+            label={t("English Mission")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English Mission'),
+              type: "text",
+              placeholder: t("English Mission"),
             }}
             value={enMission}
             changed={setEnMission}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Mission is required')}
+            error={t("English Mission is required")}
           />
           <Input
-            label={t('French Mission')}
+            label={t("French Mission")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French Mission'),
+              type: "text",
+              placeholder: t("French Mission"),
             }}
             value={frMission}
             changed={setFrMission}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Mission is required')}
+            error={t("French Mission is required")}
           />
           <Input
-            label={t('Kinyarwanda Mission')}
+            label={t("Kinyarwanda Mission")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Mission'),
+              type: "text",
+              placeholder: t("Kinyarwanda Mission"),
             }}
             value={rwMission}
             changed={setRwMission}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Mission is required')}
+            error={t("Kinyarwanda Mission is required")}
           />
         </div>
         <div className="flex space-x-2">
           <Input
-            label={t('English Objectives')}
+            label={t("English Objectives")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('English Objectives'),
+              type: "text",
+              placeholder: t("English Objectives"),
             }}
             value={enObjectives}
             changed={setEnObjectives}
             validation={{ required: true }}
             shouldValidate
-            error={t('English Objectives is required')}
+            error={t("English Objectives is required")}
           />
           <Input
-            label={t('French Objectives')}
+            label={t("French Objectives")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('French Objectives'),
+              type: "text",
+              placeholder: t("French Objectives"),
             }}
             value={frObjectives}
             changed={setFrObjectives}
             validation={{ required: true }}
             shouldValidate
-            error={t('French Objectives is required')}
+            error={t("French Objectives is required")}
           />
           <Input
-            label={t('Kinyarwanda Objectives')}
+            label={t("Kinyarwanda Objectives")}
             elementType="textarea"
             elementConfig={{
-              type: 'text',
-              placeholder: t('Kinyarwanda Objectives'),
+              type: "text",
+              placeholder: t("Kinyarwanda Objectives"),
             }}
             value={rwObjectives}
             changed={setRwObjectives}
             validation={{ required: true }}
             shouldValidate
-            error={t('Kinyarwanda Objectives is required')}
+            error={t("Kinyarwanda Objectives is required")}
           />
         </div>
         {loading && <Spinner />}
@@ -604,7 +606,7 @@ const AboutusAuthor = () => {
           <CardBody name={error.error} color="red" additional="font-semibold" />
         )}
         <Button
-          name={t('Submit')}
+          name={t("Submit")}
           isSquare
           outline="false"
           color="red"
@@ -619,9 +621,9 @@ const AboutusAuthor = () => {
           setShowArchiveModal(false);
         }}
       >
-        <CardTitle name={t('Archive about us')} color="red" />
+        <CardTitle name={t("Archive about us")} color="red" />
         <CardBody
-          name={t('Are you sure you want to archive/unarchive this about us?')}
+          name={t("Are you sure you want to archive/unarchive this about us?")}
         />
         {loading && <Spinner />}
         {error && (
@@ -629,14 +631,14 @@ const AboutusAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowArchiveModal(false)}
           />
           <Button
-            name={t('Archive/Unarchive')}
+            name={t("Archive/Unarchive")}
             isSquare
             outline="false"
             color="red"
@@ -651,10 +653,10 @@ const AboutusAuthor = () => {
           setShowDeleteModal(false);
         }}
       >
-        <CardTitle name={t('Delete about us')} color="red" />
+        <CardTitle name={t("Delete about us")} color="red" />
         <CardBody
-          name={`${t('Are you sure you want to delete this about us?')} ${t(
-            'Contents deleted can not be retrieved.'
+          name={`${t("Are you sure you want to delete this about us?")} ${t(
+            "Contents deleted can not be retrieved."
           )}`}
         />
         {loading && <Spinner />}
@@ -663,14 +665,14 @@ const AboutusAuthor = () => {
         )}
         <div className="flex justify-between">
           <Button
-            name={t('Cancel')}
+            name={t("Cancel")}
             isSquare
             outline="false"
             color="blue"
             clicked={() => setShowDeleteModal(false)}
           />
           <Button
-            name={t('Delete')}
+            name={t("Delete")}
             isSquare
             outline="false"
             color="red"
@@ -680,7 +682,7 @@ const AboutusAuthor = () => {
       </Modal>
       <Header />
       <div className="w-70% m-auto py-10">
-        <SectionTitle name={t('List of all about us')} />
+        <SectionTitle name={t("List of all about us")} />
         {isFetching ? (
           <Spinner />
         ) : (
@@ -688,30 +690,30 @@ const AboutusAuthor = () => {
             <div className="flex justify-between items-center">
               <div className="w-1/3 py-3">
                 <Input
-                  label={t('Search')}
+                  label={t("Search")}
                   elementType="input"
                   elementConfig={{
-                    type: 'text',
-                    placeholder: t('Search'),
+                    type: "text",
+                    placeholder: t("Search"),
                   }}
                   value={globalFilter}
                   changed={setGlobalFilter}
                 />
               </div>
               <Button
-                name={t('Add new about us')}
+                name={t("Add new about us")}
                 isSquare
                 outline="false"
                 color="blue"
                 clicked={() => {
                   setShowEditModal(true);
                   setIsUpdating(false);
-                  setEnName('');
-                  setFrName('');
-                  setRwName('');
-                  setEnDescription('');
-                  setFrDescription('');
-                  setRwDescription('');
+                  setEnName("");
+                  setFrName("");
+                  setRwName("");
+                  setEnDescription("");
+                  setFrDescription("");
+                  setRwDescription("");
                   setError(null);
                 }}
               />
@@ -725,7 +727,7 @@ const AboutusAuthor = () => {
                         {...column.getHeaderProps(column.getSortByToggleProps)}
                         className="border border-gray-500 p-2 text-center"
                       >
-                        {column.render('Header')}
+                        {column.render("Header")}
                       </th>
                     ))}
                   </tr>
@@ -745,7 +747,7 @@ const AboutusAuthor = () => {
                             {...cell.getCellProps()}
                             className="border border-gray-500 p-2 text-center"
                           >
-                            {cell.render('Cell')}
+                            {cell.render("Cell")}
                           </td>
                         );
                       })}
