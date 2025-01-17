@@ -1,3 +1,6 @@
-node_modules/
-build/
-.env
+/vendor/ 
+.env 
+.env.* 
+!.env.example 
+*.log 
+.DS_Store 

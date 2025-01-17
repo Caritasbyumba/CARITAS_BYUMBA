@@ -1,13 +1,8 @@
-{
-    "name": "caritasbyumba/website",
-    "description": "Caritas Byumba Website",
-    "type": "project",
-    "require": {
-        "php": ">=7.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src/"
-        }
-    }
-}
+{ 
+    "name": "caritasbyumba/website", 
+    "description": "Caritas Byumba Website", 
+    "type": "project", 
+    "require": { 
+        "php": ">=7.4" 
+    }, 
+    "autoload": {          "psr-4": {              "App\\": "src/"          }      }  } 
