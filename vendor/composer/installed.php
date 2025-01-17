@@ -3,7 +3,7 @@
         'name' => 'caritasbyumba/website',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '017f0446feedfd210f050a713de5f3dd1ee5a796',
+        'reference' => '5b7df821625d89313ba60d355417e2bdfc03386e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -13,7 +13,7 @@
         'caritasbyumba/website' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '017f0446feedfd210f050a713de5f3dd1ee5a796',
+            'reference' => '5b7df821625d89313ba60d355417e2bdfc03386e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
